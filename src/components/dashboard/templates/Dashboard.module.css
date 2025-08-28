@@ -1,0 +1,12 @@
+.background {
+  background: linear-gradient(to right, white 50%, #F5F5F5 50%);
+  min-height: 100vh;
+}
+
+.menu {
+  cursor: pointer;
+}
+
+.menu:hover {
+  background: #F8F8F8;
+}
