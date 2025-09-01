@@ -24,7 +24,8 @@ export async function middleware(req: NextRequest) {
   // } else {
   //     url.pathname = `/site${url.pathname}`;
   // }
-  url.pathname = `/dashboard${url.pathname}`;
+  // url.pathname = `/dashboard${url.pathname}`;
+  url.pathname = `/site${url.pathname}`;
 
   return NextResponse.rewrite(url);
 }

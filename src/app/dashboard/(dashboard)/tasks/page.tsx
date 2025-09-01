@@ -1,3 +1,4 @@
+import { ButtonFormTask } from "@/components/dashboard/molecules/button-form-task";
 import { TaskListItem } from "@/components/dashboard/molecules/task/task-list-item";
 import {
   Avatar,
@@ -8,13 +9,7 @@ import {
   Select,
   Text,
 } from "@mantine/core";
-import {
-  IconSearch,
-  IconFilterFilled,
-  IconSortDescending,
-  IconBrandOffice,
-  IconUser,
-} from "@tabler/icons-react";
+import { IconSearch, IconFilterFilled, IconUser } from "@tabler/icons-react";
 
 export default function TaskPage() {
   return (
@@ -39,7 +34,7 @@ export default function TaskPage() {
           </Flex>
         </Flex>
 
-        <Button radius="md">Create task</Button>
+        <ButtonFormTask element={<Button radius="md">Create task</Button>} />
       </Flex>
 
       <Paper
@@ -106,9 +101,13 @@ export default function TaskPage() {
                 Today
               </Text>
 
-              <Button variant="transparent" size="xs">
-                Create task
-              </Button>
+              <ButtonFormTask
+                element={
+                  <Button variant="transparent" size="xs">
+                    Create task
+                  </Button>
+                }
+              />
             </Flex>
 
             <Flex direction="column" gap={4}>

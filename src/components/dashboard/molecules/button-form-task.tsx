@@ -1,8 +1,9 @@
 "use client"
 
 import { FC, ReactNode, useState } from "react";
-import { Modal, Button, Flex, Select, Textarea } from "@mantine/core";
+import { Modal, Button, Flex, Select, Textarea, Input, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { DateInput } from "@mantine/dates";
 
 type ButtonFormTaskProps = {
     element: ReactNode;
@@ -43,6 +44,8 @@ export const ButtonFormTask:FC<ButtonFormTaskProps> = ({element}) => {
             ]}
           />
 
+          <TextInput label="Task id"  />
+
           <Select
             label="People"
             placeholder="Selecione a pessoa"
@@ -51,6 +54,8 @@ export const ButtonFormTask:FC<ButtonFormTaskProps> = ({element}) => {
               { label: "Marketing", value: "Marketing" },
             ]}
           />
+
+          <DateInput label="Date"  />
 
           <Textarea minRows={3} label="Descrição" autosize placeholder="Descrição da task" />
           

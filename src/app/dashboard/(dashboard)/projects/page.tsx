@@ -1,6 +1,7 @@
 "use client";
 
 import { ProjectCard } from "@/components/dashboard/molecules/project/card-project";
+import { DrawerProjectForm } from "@/components/dashboard/molecules/project/drawer-project-form";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import {
   Button,
@@ -21,7 +22,7 @@ export default function ProjectPage() {
       header={{
         title: "Projects",
         description: "Manage your clients, link them with projects",
-        button: <Button radius="md">Create project</Button>,
+        button: <DrawerProjectForm element={<Button radius="md">Create project</Button>} />
       }}
       searchPanel={
         <Flex w="100%" gap={15} p={2}>

@@ -1,4 +1,5 @@
 import { CardUser } from "@/components/dashboard/molecules/user/card-user";
+import { DrawerUserForm } from "@/components/dashboard/molecules/user/drawer-user-form";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import {
   Avatar,
@@ -17,7 +18,7 @@ export default function TaskPage() {
       header={{
         title: "Team members",
         description: "Handle team members",
-        button: <Button radius="md">Create quote</Button>,
+        button: <DrawerUserForm element={<Button radius="md">Create team member</Button>} />
       }}
       searchPanel={
         <Flex w="100%" gap={15} p={2}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { QuoteCard } from "@/components/dashboard/molecules/quote/card-quote";
+import { DrawerQuoteForm } from "@/components/dashboard/molecules/quote/drawer-quote-form";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import {
   Button,
@@ -21,7 +22,7 @@ export default function QuotePage() {
       header={{
         title: "Quotes",
         description: "Create and send your quotes",
-        button: <Button radius="md">Create quote</Button>,
+        button: <DrawerQuoteForm element={<Button radius="md">Create quote</Button>} /> 
       }}
       searchPanel={
         <Flex w="100%" gap={15} p={2}>

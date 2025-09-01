@@ -12,7 +12,9 @@ import {
   Flex,
   Divider,
   Select,
+  Box,
 } from "@mantine/core";
+import { FC, ReactNode } from "react";
 
 type FormValues = {
   companyName: string;
@@ -25,7 +27,11 @@ type FormValues = {
   note: string;
 };
 
-export const DrawerClientForm = () => {
+type DrawerClientFormProps = {
+  element: ReactNode;
+};
+
+export const DrawerClientForm: FC<DrawerClientFormProps> = ({ element }) => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const { control, handleSubmit } = useForm<FormValues>({
@@ -52,7 +58,7 @@ export const DrawerClientForm = () => {
 
   return (
     <>
-      <Button onClick={open}>Open Client Drawer</Button>
+      <Box onClick={open}>{element}</Box>
 
       <Drawer
         position="right"
@@ -63,115 +69,124 @@ export const DrawerClientForm = () => {
         size="lg"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div style={{ flex: 1, overflowY: "auto" }}>
-          <Stack spacing="sm">
-            {/* Company Name */}
-            <Controller
-              name="companyName"
-              control={control}
-              render={({ field }) => (
-                <TextInput {...field} label="Company Name" required />
-              )}
-            />
-
-            <Divider />
-
-            {/* Emails */}
-            {emailsArray.fields.map((item, index) => (
+          <div style={{ flex: 1, overflowY: "auto" }}>
+            <Stack spacing="sm">
+              {/* Company Name */}
               <Controller
-                key={item.id}
-                name={`emails.${index}.value`}
+                name="companyName"
                 control={control}
                 render={({ field }) => (
-                  <Flex w="100%" gap={10}>
-                    <TextInput
-                      flex={1}
-                      {...field}
-                      label={index > 0 ? "" : `Emails`}
-                      required
-                    />
-                    {index > 0 && (
-                      <Button radius="sm" onClick={() => emailsArray.remove(index)}>
-                        Remove
-                      </Button>
-                    )}
-                  </Flex>
+                  <TextInput {...field} label="Company Name" required />
                 )}
               />
-            ))}
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={() => emailsArray.append({ value: "" })}
-            >
-              + Add Email
-            </Button>
 
-            {/* Phones */}
-            {phonesArray.fields.map((item, index) => (
-              <Controller
-                key={item.id}
-                name={`phones.${index}.value`}
-                control={control}
-                render={({ field }) => (
-                  <Flex w="100%" gap={10}>
-                    <TextInput
-                      flex={1}
-                      {...field}
-                      label={index > 0 ? "" : `Phones`}
-                      required
-                    />
-                    {index > 0 && (
-                      <Button radius="sm" onClick={() => phonesArray.remove(index)}>
-                        Remove
-                      </Button>
-                    )}
-                  </Flex>
-                )}
-              />
-            ))}
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={() => phonesArray.append({ value: "" })}
-            >
-              + Add Phone
-            </Button>
+              <Divider />
 
-            {/* Websites */}
-            {websitesArray.fields.map((item, index) => (
-              <Controller
-                key={item.id}
-                name={`websites.${index}.value`}
-                control={control}
-                render={({ field }) => (
-                  <Flex w="100%" gap={10}>
-                    <TextInput
-                      flex={1}
-                      {...field}
-                      label={index > 0 ? "" : `Websites`}
-                      required
-                    />
-                    {index > 0 && (
-                      <Button radius="sm" onClick={() => websitesArray.remove(index)}>
-                        Remove
-                      </Button>
-                    )}
-                  </Flex>
-                )}
-              />
-            ))}
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={() => websitesArray.append({ value: "" })}
-            >
-              + Add Website
-            </Button>
+              {/* Emails */}
+              {emailsArray.fields.map((item, index) => (
+                <Controller
+                  key={item.id}
+                  name={`emails.${index}.value`}
+                  control={control}
+                  render={({ field }) => (
+                    <Flex w="100%" gap={10}>
+                      <TextInput
+                        flex={1}
+                        {...field}
+                        label={index > 0 ? "" : `Emails`}
+                        required
+                      />
+                      {index > 0 && (
+                        <Button
+                          radius="sm"
+                          onClick={() => emailsArray.remove(index)}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </Flex>
+                  )}
+                />
+              ))}
+              <Button
+                size="xs"
+                variant="outline"
+                onClick={() => emailsArray.append({ value: "" })}
+              >
+                + Add Email
+              </Button>
 
-            <Divider />
+              {/* Phones */}
+              {phonesArray.fields.map((item, index) => (
+                <Controller
+                  key={item.id}
+                  name={`phones.${index}.value`}
+                  control={control}
+                  render={({ field }) => (
+                    <Flex w="100%" gap={10}>
+                      <TextInput
+                        flex={1}
+                        {...field}
+                        label={index > 0 ? "" : `Phones`}
+                        required
+                      />
+                      {index > 0 && (
+                        <Button
+                          radius="sm"
+                          onClick={() => phonesArray.remove(index)}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </Flex>
+                  )}
+                />
+              ))}
+              <Button
+                size="xs"
+                variant="outline"
+                onClick={() => phonesArray.append({ value: "" })}
+              >
+                + Add Phone
+              </Button>
 
-             {/* Status select */}
+              {/* Websites */}
+              {websitesArray.fields.map((item, index) => (
+                <Controller
+                  key={item.id}
+                  name={`websites.${index}.value`}
+                  control={control}
+                  render={({ field }) => (
+                    <Flex w="100%" gap={10}>
+                      <TextInput
+                        flex={1}
+                        {...field}
+                        label={index > 0 ? "" : `Websites`}
+                        required
+                      />
+                      {index > 0 && (
+                        <Button
+                          radius="sm"
+                          onClick={() => websitesArray.remove(index)}
+                        >
+                          Remove
+                        </Button>
+                      )}
+                    </Flex>
+                  )}
+                />
+              ))}
+              <Button
+                size="xs"
+                variant="outline"
+                onClick={() => websitesArray.append({ value: "" })}
+              >
+                + Add Website
+              </Button>
+
+              <Divider />
+
+              {/* Status select */}
               <Controller
                 name="status"
                 control={control}
@@ -188,21 +203,23 @@ export const DrawerClientForm = () => {
                 )}
               />
 
-            {/* Notes */}
-            <Controller
-              name="note"
-              control={control}
-              render={({ field }) => (
-                <Textarea {...field} label="Notes" autosize minRows={3} />
-              )}
-            />
+              {/* Notes */}
+              <Controller
+                name="note"
+                control={control}
+                render={({ field }) => (
+                  <Textarea {...field} label="Notes" autosize minRows={3} />
+                )}
+              />
 
-            {/* Fixed footer */}
-            <Group>
-              <Button variant="outline" onClick={close}>Cancel</Button>
-              <Button type="submit">Save</Button>
-            </Group>
-          </Stack>
+              {/* Fixed footer */}
+              <Group>
+                <Button variant="outline" onClick={close}>
+                  Cancel
+                </Button>
+                <Button type="submit">Save</Button>
+              </Group>
+            </Stack>
           </div>
         </form>
       </Drawer>
