@@ -3,13 +3,14 @@
 import ThemeProvider from "@/providers";
 import { Dashboard } from "@/components/dashboard/templates/navbar";
 import { Button, Card, Flex, Text } from "@mantine/core";
+import { SiteTemplate } from "@/components/site/templates/site-template";
 
 export default function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ThemeProvider themeKey="dashboard-theme">
-      {children}
+    <ThemeProvider themeKey="site-theme">
+      <SiteTemplate>{children}</SiteTemplate>
     </ThemeProvider>
   );
 }
