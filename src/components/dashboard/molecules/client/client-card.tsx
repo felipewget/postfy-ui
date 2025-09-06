@@ -10,13 +10,27 @@ import {
 } from "@mantine/core";
 import { IconDots, IconEdit, IconTrash, IconUser } from "@tabler/icons-react";
 import { DrawerClientForm } from "./drawer-client-form";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { modals } from "@mantine/modals";
 import { ModalClientPreview } from "./modal-client-preview";
+import { Client } from "@/declarators";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDelete } from "@/api/dashboard";
 
-export const ClientCard = () => {
+export const ClientCard: FC<{ client: Client }> = ({ client }) => {
+  const queryClient = useQueryClient();
+
+  const onSuccessDelete = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-clients"] });
+  };
+
   const editFormButton = useRef<HTMLDivElement>(null);
   const openPreviewButton = useRef<HTMLDivElement>(null);
+
+  const { mutate: deleteClient } = useDelete(
+    { entity: "clients", recordId: client.id },
+    onSuccessDelete
+  );
 
   const openDrawer = () => editFormButton?.current?.click();
   const openPreview = () => openPreviewButton?.current?.click();
@@ -36,30 +50,51 @@ export const ClientCard = () => {
       labels: { confirm: "Delete Client", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => console.log(clientId),
+      onConfirm: () => {
+        deleteClient();
+      },
     });
   };
 
   return (
     <Paper w="100%">
-      <DrawerClientForm element={<VisuallyHidden ref={editFormButton} />} />
+      <DrawerClientForm
+        element={<VisuallyHidden ref={editFormButton} />}
+        client={client}
+      />
 
-      <ModalClientPreview element={<VisuallyHidden ref={openPreviewButton} />} />
+      <ModalClientPreview
+        element={<VisuallyHidden ref={openPreviewButton} />}
+      />
 
       <Flex gap={20} justify="space-between">
         <Flex gap={20}>
           <Avatar title="asdsa" size="lg">
-            E
+            {client.name[0].toUpperCase()}
           </Avatar>
 
           <Flex direction="column">
             <Text size="lg" fw={500}>
-              Enterness company
+              {client.name}
             </Text>
 
-            <Text>Email: felipe.wget@gmail.com</Text>
-            <Text>Phone: +41 5689 7458</Text>
-            <Text>Website: https://google.com</Text>
+            <Flex gap={5}>
+              <Text>Email: </Text>
+
+              {rowArrayCard(client.emails)}
+            </Flex>
+
+            <Flex gap={5}>
+              <Text>Phone:</Text>
+
+              {rowArrayCard(client.phones)}
+            </Flex>
+
+            <Flex gap={5}>
+              <Text>Website:</Text>
+
+              {rowArrayCard(client.websites)}
+            </Flex>
           </Flex>
         </Flex>
 
@@ -87,7 +122,7 @@ export const ClientCard = () => {
               <Menu.Divider />
 
               <Menu.Item
-                onClick={() => confirmDelete(123456)}
+                onClick={() => confirmDelete(client.id)}
                 color="red"
                 leftSection={<IconTrash size={14} />}
               >
@@ -109,4 +144,29 @@ export const ClientCard = () => {
       </Flex>
     </Paper>
   );
+};
+
+const rowArrayCard = (row: string[] = []) => {
+  if (row.length > 1)
+    return (
+      <Flex gap={5} align="center">
+        <Text>{row[0]}</Text>
+
+        <Flex
+          align="center"
+          justify="center"
+          w="15px"
+          h="15px"
+          bg="violet.3"
+          p={2}
+          style={{
+            borderRadius: "50%",
+          }}
+        >
+          <Text size="9px">+{row.length - 1}</Text>
+        </Flex>
+      </Flex>
+    );
+
+  return row[0] ?? row[0] ?? "--";
 };

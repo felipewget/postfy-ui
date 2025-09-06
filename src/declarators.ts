@@ -1,18 +1,22 @@
 export type Client = {
-    id: number;
-    name: string;
-    email?: string;
-    phone?: string;
-    website?: string;
-    description?: string;
-}
+  accountId: number;
+  id:number;
+  name: string;
+  phones?: string[];
+  emails?: string[];
+  websites?: string[];
+  status: "active" | "inactive";
+  notes?: string;
+  projects?: any[];
+};
+
 
 export type ProjectType = 'quote'|'item'|'job'|'note';
 
 export type Project = {
     id: number;
     type: ProjectType;
-    name: string;
+    title: string;
     description?: string;
     notes?: string;
     client?: Client;
@@ -47,3 +51,11 @@ export type Config = {
     weekBusinessDays: WeekDay[];
     hoursPerDay: number;
 }
+
+export type Quote = {
+  title: string;
+  client_id: string;
+  status: "no_content" | "pending" | "sent" | "approved" | "refused";
+  project_id: string;
+  content_id: string;
+};

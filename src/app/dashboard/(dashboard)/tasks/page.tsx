@@ -1,5 +1,9 @@
+"use client"
+
+import { useList } from "@/api/dashboard";
 import { ButtonFormTask } from "@/components/dashboard/molecules/button-form-task";
 import { TaskListItem } from "@/components/dashboard/molecules/task/task-list-item";
+import { Task } from "@/declarators";
 import {
   Avatar,
   Button,
@@ -9,9 +13,24 @@ import {
   Select,
   Text,
 } from "@mantine/core";
+import { useDebouncedState } from "@mantine/hooks";
 import { IconSearch, IconFilterFilled, IconUser } from "@tabler/icons-react";
 
 export default function TaskPage() {
+  const [search, setSearch] = useDebouncedState("", 300);
+  const [status, setStatus] = useDebouncedState(null, 300);
+
+  const { data } = useList({
+    entity: "tasks",
+    // params: {
+    //   search,
+    //   searchFields: "title",
+    //   filters: { status },
+    // },
+  });
+
+  const tasks = (data?.pages.flat() ?? []) as Task[];
+
   return (
     <Flex
       p={20}

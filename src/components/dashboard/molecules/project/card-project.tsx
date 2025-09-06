@@ -12,18 +12,36 @@ import {
 import { IconDots, IconEdit, IconTrash, IconUser } from "@tabler/icons-react";
 import { DrawerProjectForm } from "./drawer-project-form";
 import { modals } from "@mantine/modals";
-import { useRef } from "react";
+import { FC, useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDelete } from "@/api/dashboard";
+import { Project } from "@/declarators";
 
-export const ProjectCard = () => {
+type ProjectCard = {
+  project: Project;
+}
+
+export const ProjectCard:FC<ProjectCard> = ({project}) => {
+  const queryClient = useQueryClient();
+
+  const onSuccessDelete = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-projects"] });
+  };
+  
   const editFormButton = useRef<HTMLDivElement>(null);
   const openPreviewButton = useRef<HTMLDivElement>(null);
+
+  const { mutate: deleteProject } = useDelete(
+      { entity: "projects", recordId: project.id },
+      onSuccessDelete
+    );
 
   const openDrawer = () => editFormButton?.current?.click();
   const openPreview = () => openPreviewButton?.current?.click();
 
   const confirmDelete = (projectId: number) => {
     modals.openConfirmModal({
-      id: `client_${projectId}`,
+      id: `project_${projectId}`,
       title: "Delete project",
       centered: true,
       size: "lg",
@@ -36,13 +54,15 @@ export const ProjectCard = () => {
       labels: { confirm: "Delete Client", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => console.log(projectId),
+      onConfirm: () => {
+        deleteProject();
+      },
     });
   };
 
   return (
     <>
-      <DrawerProjectForm element={<VisuallyHidden ref={editFormButton} />} />
+      <DrawerProjectForm element={<VisuallyHidden ref={editFormButton} />} project={project} />
 
       {/* <ModalUserPreview element={<VisuallyHidden ref={openPreviewButton} />} /> */}
 
@@ -73,7 +93,7 @@ export const ProjectCard = () => {
 
                 <Menu.Divider />
 
-                <Menu.Item color="red" leftSection={<IconTrash size={14} />} onClick={() => confirmDelete(123)}>
+                <Menu.Item color="red" leftSection={<IconTrash size={14} />} onClick={() => confirmDelete(project.id)}>
                   Delete project
                 </Menu.Item>
               </Menu.Dropdown>
@@ -84,25 +104,25 @@ export const ProjectCard = () => {
         <Flex gap={20} justify="space-between">
           <Flex gap={20} w="calc(100% - 50px)">
             <Avatar title="asdsa" size="lg">
-              PN
+              {project.title[0].toUpperCase()}
             </Avatar>
 
             <Flex direction="column" w="100%">
               <Text size="lg" fw={500}>
-                Project's name
+                {project.title}
               </Text>
 
               <Flex align="center" gap={10}>
                 <Text>Categories: </Text>
 
-                {[...Array(3)].map(() => (
+                {project.categories.map((categorie) => (
                   <Badge variant="light" radius="md">
-                    adasd
+                    {categorie}
                   </Badge>
                 ))}
               </Flex>
 
-              <Text>Description here osdsaisa saio dsa</Text>
+              <Text>{project.description}</Text>
 
               <Flex w="100%" align="center" gap={20} my={10}>
                 <Progress radius="sm" w="100%" value={80} size="lg" />

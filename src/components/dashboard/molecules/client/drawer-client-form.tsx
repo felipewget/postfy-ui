@@ -1,4 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
+import { useQueryClient } from "@tanstack/react-query";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import {
   Drawer,
@@ -15,35 +16,75 @@ import {
   Box,
 } from "@mantine/core";
 import { FC, ReactNode } from "react";
+import { Client } from "@/declarators";
+import { useCreate, useUpdate } from "@/api/dashboard";
+import { notifications } from "@mantine/notifications";
 
 type FormValues = {
-  companyName: string;
+  name: string;
   emails: { value: string }[];
   phones: { value: string }[];
   websites: { value: string }[];
   project: string;
-  activeClient: boolean;
+  status: string;
   hasNotes: boolean;
-  note: string;
+  notes: string;
 };
 
 type DrawerClientFormProps = {
   element: ReactNode;
+  client?: Client;
 };
 
-export const DrawerClientForm: FC<DrawerClientFormProps> = ({ element }) => {
+export const DrawerClientForm: FC<DrawerClientFormProps> = ({
+  element,
+  client,
+}) => {
+  const queryClient = useQueryClient();
+
+  const onSuccessCreated = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-clients"] });
+
+    notifications.show({
+      title: "Create",
+      message: "Client create with success!"
+    });
+
+    close();
+  };
+
+  const onSuccessUpdated = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-clients"] });
+
+    notifications.show({
+      title: "Updated",
+      message: "Client updated with success!"
+    });
+
+    close();
+  };
+
+  const { mutate: createClient } = useCreate(
+    { entity: "clients" },
+    onSuccessCreated
+  );
+  const { mutate: updateClient } = useUpdate(
+    { entity: "clients", recordId: client?.id ?? 0 },
+    onSuccessUpdated
+  );
+
   const [opened, { open, close }] = useDisclosure(false);
 
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      companyName: "Enterness company",
-      emails: [{ value: "felipe.wget@gmail.com" }],
-      phones: [{ value: "+41 5689 7458" }],
-      websites: [{ value: "https://google.com" }],
-      project: "1 Project",
-      activeClient: true,
-      hasNotes: true,
-      note: "",
+      name: client?.name,
+      emails: (client?.emails ?? []).map((value) => ({ value })),
+      phones: (client?.phones ?? []).map((value) => ({ value })),
+      websites: (client?.websites ?? []).map((value) => ({ value })),
+      project: client?.name,
+      status: client?.status ?? "active",
+      hasNotes: (client?.notes ?? "")?.length > 0,
+      notes: client?.notes,
     },
   });
 
@@ -52,8 +93,16 @@ export const DrawerClientForm: FC<DrawerClientFormProps> = ({ element }) => {
   const websitesArray = useFieldArray({ control, name: "websites" });
 
   const onSubmit = (data: FormValues) => {
-    console.log("Form data:", data);
-    close();
+    const payload = {
+      name: data.name,
+      emails: (data?.emails ?? []).map((field) => field.value),
+      websites: (data?.websites ?? []).map((field) => field.value),
+      phones: (data?.phones ?? []).map((field) => field.value),
+      notes: data.notes,
+      status: data.status,
+    };
+
+    client ? updateClient(payload) : createClient(payload);
   };
 
   return (
@@ -73,7 +122,7 @@ export const DrawerClientForm: FC<DrawerClientFormProps> = ({ element }) => {
             <Stack spacing="sm">
               {/* Company Name */}
               <Controller
-                name="companyName"
+                name="name"
                 control={control}
                 render={({ field }) => (
                   <TextInput {...field} label="Company Name" required />
@@ -194,10 +243,12 @@ export const DrawerClientForm: FC<DrawerClientFormProps> = ({ element }) => {
                   <Select
                     {...field}
                     label="Status"
+                    value={field.value}
+                    onChange={field.onChange}
                     data={[
-                      { value: "Active", label: "Active" },
-                      { value: "Inactive", label: "Inactive" },
-                      { value: "Prospect", label: "Prospect" },
+                      { value: "active", label: "Active" },
+                      { value: "inactive", label: "Inactive" },
+                      { value: "prospect", label: "Prospect" },
                     ]}
                   />
                 )}
@@ -205,7 +256,7 @@ export const DrawerClientForm: FC<DrawerClientFormProps> = ({ element }) => {
 
               {/* Notes */}
               <Controller
-                name="note"
+                name="notes"
                 control={control}
                 render={({ field }) => (
                   <Textarea {...field} label="Notes" autosize minRows={3} />

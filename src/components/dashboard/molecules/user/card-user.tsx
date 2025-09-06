@@ -21,10 +21,28 @@ import {
 import { useRef } from "react";
 import { DrawerUserForm } from "./drawer-user-form";
 import { ModalUserPreview } from "./modal-user-preview";
+import { User } from "@/declarators";
+import { useDelete } from "@/api/dashboard";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const CardUser = () => {
+type CardUser = {
+  user?: User;
+}
+
+export const CardUser = ({user}) => {
+  const queryClient = useQueryClient();
+
   const editFormButton = useRef<HTMLDivElement>(null);
   const openPreviewButton = useRef<HTMLDivElement>(null);
+
+  const onSuccessDelete = () => {
+      queryClient.invalidateQueries({ queryKey: ["crud-list-users"] });
+    };
+  
+    const { mutate: deleteClient } = useDelete(
+        { entity: "users", recordId: user.id },
+        onSuccessDelete
+      );
 
   const openDrawer = () => editFormButton?.current?.click();
   const openPreview = () => openPreviewButton?.current?.click();
@@ -44,13 +62,13 @@ export const CardUser = () => {
       labels: { confirm: "Delete Client", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => console.log(clientId),
+      onConfirm: () => deleteClient(),
     });
   };
 
   return (
     <>
-      <DrawerUserForm element={<VisuallyHidden ref={editFormButton} />} />
+      <DrawerUserForm element={<VisuallyHidden ref={editFormButton} />} user={user} />
 
       <ModalUserPreview element={<VisuallyHidden ref={openPreviewButton} />} />
 
@@ -58,7 +76,7 @@ export const CardUser = () => {
         <Flex justify="space-between">
           <Flex gap={10}>
             <Badge radius="sm" mb={20}>
-              Developer
+              {user.role}
             </Badge>
           </Flex>
 
@@ -105,15 +123,15 @@ export const CardUser = () => {
 
             <Flex direction="column" w="100%">
               <Text size="lg" fw={500}>
-                Felipe Oliveira
+                {user.name}
               </Text>
 
-              <Text>E-mail: felipe.wget@gmail.com</Text>
+              <Text>E-mail: {user.email}</Text>
 
-              <Text>Hours per week: 42hours</Text>
+              <Text>Hours per week: {user.work_hours_per_week}</Text>
 
               <Flex gap={5}>
-                <Text>Price per hour: ***</Text>
+                <Text>Price per hour: {user.price_per_hour}</Text>
 
                 <IconEye />
               </Flex>

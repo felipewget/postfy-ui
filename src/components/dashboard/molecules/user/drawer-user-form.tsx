@@ -19,45 +19,86 @@ import {
   Text,
 } from "@mantine/core";
 import { FC, ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+import { useCreate, useUpdate } from "@/api/dashboard";
+import { User } from "@/declarators";
 
 type FormValues = {
   name: string;
-  emails: { value: string }[];
-  phones: { value: string }[];
-  websites: { value: string }[];
-  project: string;
-  activeClient: boolean;
-  hasNotes: boolean;
-  note: string;
+  phone: string;
+  email: string;
+  password: string;
+  work_hours_per_week: number; // horas semanais de trabalho
+  price_per_hour: number; // valor/hora em R$
+  notes?: string;
+  role?: string; // ex: 'designer', 'developer', 'manager'
+  status: "active" | "inactive";
 };
 
 type DrawerUserFormProps = {
   element: ReactNode;
+  user?: User;
 };
 
-export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element }) => {
+export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element, user }) => {
+    const queryClient = useQueryClient();
+
+  const onSuccessCreated = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-users"] });
+
+    notifications.show({
+      title: "Create",
+      message: "Client create with success!",
+    });
+
+    close();
+  };
+
+  const onSuccessUpdated = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-users"] });
+
+    notifications.show({
+      title: "Updated",
+      message: "Client updated with success!",
+    });
+
+    close();
+  };
+
+  const { mutate: createUser } = useCreate(
+    { entity: "users" },
+    onSuccessCreated
+  );
+  const { mutate: updateUser } = useUpdate(
+    { entity: "users", recordId: user?.id ?? 0 },
+    onSuccessUpdated
+  );
+
+  
   const [opened, { open, close }] = useDisclosure(false);
 
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      name: "Enterness company",
-      emails: [{ value: "felipe.wget@gmail.com" }],
-      phones: [{ value: "+41 5689 7458" }],
-      websites: [{ value: "https://google.com" }],
-      project: "1 Project",
-      activeClient: true,
-      hasNotes: true,
-      note: "",
+      name: user?.name,
+      phone: user?.phone,
+      email: user?.email,
+      password: user?.password,
+      work_hours_per_week: user?.work_hours_per_week,
+      price_per_hour: user?.price_per_hour,
+      notes: user?.notes,
+      role: user?.role,
+      status: user?.status
     },
   });
 
-  const emailsArray = useFieldArray({ control, name: "emails" });
-  const phonesArray = useFieldArray({ control, name: "phones" });
-  const websitesArray = useFieldArray({ control, name: "websites" });
-
   const onSubmit = (data: FormValues) => {
     console.log("Form data:", data);
+
+    user ? updateUser(data) : createUser(data);
+
     close();
+    // close();
   };
 
   return (
@@ -97,7 +138,7 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element }) => {
               <Flex gap={20}>
                 <Controller
                   flex={1}
-                  name="hurs[erWeek"
+                  name="work_hours_per_week"
                   control={control}
                   render={({ field }) => (
                     <NumberInput
@@ -112,7 +153,7 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element }) => {
 
                 <Controller
                   flex={1}
-                  name="Salary amount peer week"
+                  name="price_per_hour"
                   control={control}
                   render={({ field }) => (
                     <NumberInput
@@ -128,7 +169,7 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element }) => {
 
               {/* Notes */}
               <Controller
-                name="note"
+                name="notes"
                 control={control}
                 render={({ field }) => (
                   <Textarea {...field} label="Notes" autosize minRows={3} />
@@ -146,8 +187,8 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element }) => {
                     {...field}
                     label="Status"
                     data={[
-                      { value: "Active", label: "Active" },
-                      { value: "Inactive", label: "Inactive" },
+                      { value: "active", label: "Active" },
+                      { value: "inactive", label: "Inactive" },
                     ]}
                   />
                 )}

@@ -1,6 +1,10 @@
+"use client"
+
+import { useList } from "@/api/dashboard";
 import { CardUser } from "@/components/dashboard/molecules/user/card-user";
 import { DrawerUserForm } from "@/components/dashboard/molecules/user/drawer-user-form";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
+import { User } from "@/declarators";
 import {
   Avatar,
   Button,
@@ -10,15 +14,34 @@ import {
   Select,
   Text,
 } from "@mantine/core";
+import { useDebouncedState } from "@mantine/hooks";
 import { IconSearch, IconFilterFilled, IconUser } from "@tabler/icons-react";
 
 export default function TaskPage() {
+  const [search, setSearch] = useDebouncedState("", 300);
+  const [status, setStatus] = useDebouncedState(null, 300);
+
+  const { data } = useList({
+    entity: "users",
+    params: {
+      search,
+      searchFields: "title",
+      filters: { status },
+    },
+  });
+
+  const users = (data?.pages.flat() ?? []) as User[];
+
   return (
     <ListTemplate
       header={{
         title: "Team members",
         description: "Handle team members",
-        button: <DrawerUserForm element={<Button radius="md">Create team member</Button>} />
+        button: (
+          <DrawerUserForm
+            element={<Button radius="md">Create team member</Button>}
+          />
+        ),
       }}
       searchPanel={
         <Flex w="100%" gap={15} p={2}>
@@ -79,7 +102,9 @@ export default function TaskPage() {
           </Flex>
         </Flex>
       }
-      cards={[<CardUser />, <CardUser />, <CardUser />, <CardUser />]}
+      cards={users.map((user) => (
+        <CardUser user={user} key={user.id} />
+      ))}
     />
   );
 }

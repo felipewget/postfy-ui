@@ -11,12 +11,30 @@ import {
 } from "@mantine/core";
 import { IconDots, IconEdit, IconTrash, IconUser } from "@tabler/icons-react";
 import { DrawerQuoteForm } from "./drawer-quote-form";
-import { useRef } from "react";
+import { FC, useRef } from "react";
 import { modals } from "@mantine/modals";
 import Link from "next/link";
+import { Quote } from "@/constants";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDelete } from "@/api/dashboard";
 
-export const QuoteCard = () => {
+type QuoteCard = {
+  quote: Quote;
+};
+
+export const QuoteCard: FC<QuoteCard> = ({ quote }) => {
+  const queryClient = useQueryClient();
+
   const editFormButton = useRef<HTMLDivElement>(null);
+
+  const onSuccessDelete = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-quotes"] });
+  };
+
+  const { mutate: deleteClient } = useDelete(
+      { entity: "quotes", recordId: quote.id },
+      onSuccessDelete
+    );
 
   const openDrawer = () => editFormButton?.current?.click();
 
@@ -35,13 +53,16 @@ export const QuoteCard = () => {
       labels: { confirm: "Delete Client", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => console.log(quoteId),
+      onConfirm: () => deleteClient(),
     });
   };
 
   return (
     <>
-      <DrawerQuoteForm element={<VisuallyHidden ref={editFormButton} />} />
+      <DrawerQuoteForm
+        element={<VisuallyHidden ref={editFormButton} />}
+        quote={quote}
+      />
 
       <Paper w="100%">
         <Flex gap={20} justify="space-between" align="center">
@@ -53,7 +74,7 @@ export const QuoteCard = () => {
 
           <Flex gap={20} align="center">
             <Link href="/quote/XXXXXXXX">
-            <Button size="xs">Edit proposal</Button>
+              <Button size="xs">Edit proposal</Button>
             </Link>
 
             <Menu>
@@ -73,10 +94,8 @@ export const QuoteCard = () => {
 
                 <Menu.Item
                   color="red"
-                  onClick={() => confirmDelete(120)} 
-                  leftSection={
-                    <IconTrash size={14} />
-                  }
+                  onClick={() => confirmDelete(120)}
+                  leftSection={<IconTrash size={14} />}
                 >
                   Delete quote
                 </Menu.Item>
@@ -92,7 +111,7 @@ export const QuoteCard = () => {
 
           <Flex direction="column">
             <Text size="lg" fw={500}>
-              Proposal aosidjas aiod asdoi
+              {quote.title}
             </Text>
 
             <Flex gap={5} align="center">
@@ -107,7 +126,7 @@ export const QuoteCard = () => {
 
             <Flex gap={5} align="center" mt={10}>
               <Badge radius="sm" variant="light">
-                Status: Proposal not created
+                Status: {quote.status}
               </Badge>
             </Flex>
           </Flex>

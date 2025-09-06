@@ -15,44 +15,74 @@ import {
   Box,
 } from "@mantine/core";
 import { FC, ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { notifications } from "@mantine/notifications";
+import { useCreate, useUpdate } from "@/api/dashboard";
+import { Quote } from "@/declarators";
 
 type FormValues = {
-  companyName: string;
-  emails: { value: string }[];
-  phones: { value: string }[];
-  websites: { value: string }[];
-  project: string;
-  activeClient: boolean;
-  hasNotes: boolean;
-  note: string;
+  title: string;
+  client_id: string;
+  project_id: string;
 };
 
 type DrawerQuoteFormProps = {
   element: ReactNode;
+  quote?: Quote;
 };
 
-export const DrawerQuoteForm: FC<DrawerQuoteFormProps> = ({ element }) => {
+export const DrawerQuoteForm: FC<DrawerQuoteFormProps> = ({
+  element,
+  quote,
+}) => {
+  const queryClient = useQueryClient();
+
+  const onSuccessCreated = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-quotes"] });
+
+    notifications.show({
+      title: "Create",
+      message: "Client create with success!",
+    });
+
+    close();
+  };
+
+  const onSuccessUpdated = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-quotes"] });
+
+    notifications.show({
+      title: "Updated",
+      message: "Client updated with success!",
+    });
+
+    close();
+  };
+
+  const { mutate: createQuote } = useCreate(
+    { entity: "quotes" },
+    onSuccessCreated
+  );
+  const { mutate: updateQuote } = useUpdate(
+    { entity: "quotes", recordId: quote?.id ?? 0 },
+    onSuccessUpdated
+  );
+
   const [opened, { open, close }] = useDisclosure(false);
 
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      companyName: "Enterness company",
-      emails: [{ value: "felipe.wget@gmail.com" }],
-      phones: [{ value: "+41 5689 7458" }],
-      websites: [{ value: "https://google.com" }],
-      project: "1 Project",
-      activeClient: true,
-      hasNotes: true,
-      note: "",
+      title: quote?.title,
+      project_id: quote?.project_id,
+      client_id: quote?.client_id,
     },
   });
 
-  const emailsArray = useFieldArray({ control, name: "emails" });
-  const phonesArray = useFieldArray({ control, name: "phones" });
-  const websitesArray = useFieldArray({ control, name: "websites" });
-
   const onSubmit = (data: FormValues) => {
-    console.log("Form data:", data);
+    //  const { team_members, ...payload } = data;
+
+    quote ? updateQuote(data) : createQuote(data);
+
     close();
   };
 
@@ -72,7 +102,7 @@ export const DrawerQuoteForm: FC<DrawerQuoteFormProps> = ({ element }) => {
           <div style={{ flex: 1, overflowY: "auto" }}>
             <Stack spacing="sm">
               <Controller
-                name="quoteTitle"
+                name="title"
                 control={control}
                 render={({ field }) => (
                   <TextInput {...field} label="Quote title" required />
@@ -81,19 +111,27 @@ export const DrawerQuoteForm: FC<DrawerQuoteFormProps> = ({ element }) => {
 
               <Divider />
 
-               <Controller
-                name="client"
+              <Controller
+                name="client_id"
                 control={control}
                 render={({ field }) => (
-                  <Select data={[]} label="Client" />
+                  <Select
+                    onChange={field.onChange}
+                    data={[{ value: "1", label: "Amazon" }]}
+                    label="Client"
+                  />
                 )}
               />
 
               <Controller
-                name="project"
+                name="project_id"
                 control={control}
                 render={({ field }) => (
-                  <Select data={[]} label="Project" />
+                  <Select
+                    onChange={field.onChange}
+                    data={[{ value: "1", label: "Project xxxx" }]}
+                    label="Project"
+                  />
                 )}
               />
 

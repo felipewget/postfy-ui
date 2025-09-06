@@ -22,7 +22,7 @@ export const Dashboard = ({
   const [reportItemOpened, setReportItemOpened] = useState<boolean>(false);
 
   return (
-    <ThemeProvider themeKey="dashboard-theme">
+    // <ThemeProvider themeKey="dashboard-theme">
       <Flex w="100%" justify="center" className={classes.background}>
         <Flex
           w="100%"
@@ -186,7 +186,7 @@ export const Dashboard = ({
           </Flex>
         </Flex>
       </Flex>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 };
 
