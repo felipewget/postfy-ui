@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import { useList } from "@/api/dashboard";
 import { ButtonFormTask } from "@/components/dashboard/molecules/button-form-task";
 import { TaskListItem } from "@/components/dashboard/molecules/task/task-list-item";
-import { Task } from "@/declarators";
+import { Task, User } from "@/declarators";
 import {
   Avatar,
   Button,
@@ -14,7 +14,13 @@ import {
   Text,
 } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
-import { IconSearch, IconFilterFilled, IconUser } from "@tabler/icons-react";
+import {
+  IconSearch,
+  IconFilterFilled,
+  IconUser,
+  IconNotebook,
+} from "@tabler/icons-react";
+import { groupBy } from "lodash";
 
 export default function TaskPage() {
   const [search, setSearch] = useDebouncedState("", 300);
@@ -22,14 +28,28 @@ export default function TaskPage() {
 
   const { data } = useList({
     entity: "tasks",
-    // params: {
-    //   search,
-    //   searchFields: "title",
-    //   filters: { status },
-    // },
+    params: {
+      // search,
+      //   searchFields: "title",
+      //   filters: { status },
+    },
+  });
+
+  const { data: dataUsers } = useList({
+    entity: "users",
+    params: {
+      // search,
+      //   searchFields: "title",
+      //   filters: { status },
+    },
   });
 
   const tasks = (data?.pages.flat() ?? []) as Task[];
+
+  const users = (dataUsers?.pages.flat() ?? []) as User[];
+
+  const groupedTask = groupBy(tasks, "date");
+  console.log(groupedTask);
 
   return (
     <Flex
@@ -42,7 +62,9 @@ export default function TaskPage() {
     >
       <Flex w="100%" justify="space-between" align="center" pb={20} pt={10}>
         <Flex gap={20}>
-          <Avatar size="lg" />
+          <Avatar size="lg">
+            <IconNotebook size="30px" />
+          </Avatar>
 
           <Flex direction="column">
             <Text size="2xl" fw={500}>
@@ -112,8 +134,8 @@ export default function TaskPage() {
         </Flex>
       </Paper>
 
-      {[...Array(4)].map(() => (
-        <Flex direction="column" gap={10} w="100%" mb="20px">
+      {Object.keys(groupedTask).map((tasksByDate, key) => (
+        <Flex key={key} direction="column" gap={10} w="100%" mb="20px">
           <Flex direction="column" gap={10}>
             <Flex align="center">
               <Text size="lg" fw={500}>
@@ -130,8 +152,8 @@ export default function TaskPage() {
             </Flex>
 
             <Flex direction="column" gap={4}>
-              {[...Array(3)].map(() => (
-                <TaskListItem />
+              {groupedTask[tasksByDate].map((task, key) => (
+                <TaskListItem key={key} task={task} users={users} />
               ))}
             </Flex>
           </Flex>

@@ -1,15 +1,11 @@
 "use client";
 
+import { Avatar, Button, Flex, Paper, Table, Text, Title } from "@mantine/core";
 import {
-  Avatar,
-  Button,
-  Flex,
-  Paper,
-  Table,
-  Text,
-  Title,
-} from "@mantine/core";
-import { IconArrowUpRight, IconCreditCard } from "@tabler/icons-react";
+  IconArrowUpRight,
+  IconCircleDottedLetterP,
+  IconCreditCard,
+} from "@tabler/icons-react";
 
 type Payment = {
   id: string;
@@ -181,7 +177,9 @@ export default function FinancialPage() {
       }}
     >
       <Flex gap={20} align="center" mb="xl">
-        <Avatar size="lg" />
+        <Avatar size="lg">
+          <IconCircleDottedLetterP />
+        </Avatar>
 
         <Flex direction="column" gap={5}>
           <Title order={3}>Financial Overview</Title>

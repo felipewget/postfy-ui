@@ -18,6 +18,7 @@ import {
   NumberInput,
   Text,
   TagsInput,
+  MultiSelect,
 } from "@mantine/core";
 import { FC, ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -142,12 +143,16 @@ export const DrawerProjectForm: FC<DrawerProjectFormProps> = ({
                 name="categories"
                 control={control}
                 render={({ field }) => (
-                  <TagsInput
+                  <MultiSelect
                     {...field}
                     label="Categories"
-                    allowDuplicates={false}
-                    value={field.value || []}
-                    onChange={field.onChange}
+                    placeholder="Pick value"
+                    data={[
+                      { value: "1", label: "React" },
+                      { value: "2", label: "Angular" },
+                      { value: "3", label: "Vue" },
+                      { value: "4", label: "Svelte" },
+                    ]}
                   />
                 )}
               />

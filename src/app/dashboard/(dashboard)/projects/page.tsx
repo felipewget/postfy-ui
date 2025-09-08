@@ -10,6 +10,7 @@ import { useDebouncedState } from "@mantine/hooks";
 import {
   IconChartTreemap,
   IconFilterFilled,
+  IconFlask,
   IconSearch,
   IconSortDescending,
 } from "@tabler/icons-react";
@@ -33,6 +34,7 @@ export default function ProjectPage() {
   return (
     <ListTemplate
       header={{
+        icon: <IconFlask size="30px" />,
         title: "Projects",
         description: "Manage your clients, link them with projects",
         button: (

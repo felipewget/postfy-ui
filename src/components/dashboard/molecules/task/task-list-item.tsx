@@ -21,8 +21,36 @@ import {
 } from "@tabler/icons-react";
 import { useRef } from "react";
 import { ButtonFormTask } from "../button-form-task";
+import { Task, User } from "@/declarators";
+import { useQueryClient } from "@tanstack/react-query";
+import { useDelete, useUpdate } from "@/api/dashboard";
 
-export const TaskListItem = () => {
+type TaskListItem = {
+  task: Task;
+  users: User[];
+};
+
+export const TaskListItem = ({ task, users }) => {
+  const queryClient = useQueryClient();
+
+  const onSuccessDelete = () => {
+    queryClient.invalidateQueries({ queryKey: ["crud-list-tasks"] });
+  };
+
+  const onUpdateSigned = () => {
+    console.log('updated')
+  }
+
+  const { mutate: deleteTask } = useDelete(
+    { entity: "tasks", recordId: task.id },
+    onSuccessDelete
+  );
+
+  const { mutate: updateSignedTo } = useUpdate(
+    { entity: "tasks", recordId: task.id },
+    onUpdateSigned
+  );
+
   const editFormButton = useRef<HTMLDivElement>(null);
   const openPreviewButton = useRef<HTMLDivElement>(null);
 
@@ -43,13 +71,13 @@ export const TaskListItem = () => {
       labels: { confirm: "Delete task", cancel: "Cancel" },
       confirmProps: { color: "red" },
       onCancel: () => console.log("Cancel"),
-      onConfirm: () => console.log(taskId),
+      onConfirm: () => deleteTask(),
     });
   };
 
   return (
     <>
-    <ButtonFormTask element={<VisuallyHidden ref={editFormButton} />} />
+      <ButtonFormTask element={<VisuallyHidden ref={editFormButton} />} task={task} />
       <Paper w="100%">
         <Flex gap={20} justify="space-between" w="100%">
           <Flex gap={20} direction={{ base: "column", md: "row" }}>
@@ -58,9 +86,11 @@ export const TaskListItem = () => {
             </Flex>
 
             <Flex direction="column">
-              <Text fw={500} size="lg" mr={5}>
-                Title iasif sdafhdof asfidsdufda di
-              </Text>
+              {task.title && task.title.length > 0 && (
+                <Text fw={500} size="lg" mr={5}>
+                  {task.title}
+                </Text>
+              )}
 
               <Flex align="center" gap={5} mb={10}>
                 <Badge radius="sm">Enterness ico asdoiiasjd</Badge>
@@ -68,9 +98,9 @@ export const TaskListItem = () => {
                 <Badge radius="sm">Development</Badge>
               </Flex>
 
-              <Text>
-                Description aoidjas iaj iosafoaj dsof ajdss fd fiuf dui d
-              </Text>
+              {task.description && task.description.length > 0 && (
+                <Text>{task.description}</Text>
+              )}
             </Flex>
 
             <Flex gap={5} align="center" ml={{ base: 0, md: 20 }}>
@@ -96,7 +126,12 @@ export const TaskListItem = () => {
                     <Avatar size="sm" ml={10} mr={5} />
                   </Flex>
                 }
-                data={[{ label: "Felipe Oliveira", value: "fadas" }]}
+                onChange={(userId) => {
+                  updateSignedTo({
+                    assignedTo: userId
+                  })
+                }}
+                data={users.map((user) => ({ label: user.name, value: `${user.id}` }))}
               />
 
               <Menu>

@@ -29,6 +29,8 @@ import {
 } from "recharts";
 import { ReportTemplate } from "@/components/dashboard/templates/report-template";
 import { IconFilterFilled } from "@tabler/icons-react";
+import { CardReportGeneralProjectStatuses } from "@/components/dashboard/molecules/project/card-report-general-project-statuses";
+import { CardReportProjectCategoryStatuses } from "@/components/dashboard/molecules/project/card-report-project-category-statuses";
 
 interface Project {
   id: number;
@@ -151,106 +153,11 @@ export default function ProjectsReports() {
           </Paper>
 
           <Flex>
-            <Card shadow="sm" padding="lg" flex={1}>
-              <Text weight={500} mb={16}>
-                General view
-              </Text>
-
-              <Flex direction="column" gap={10}>
-                <Flex gap={20}>
-                  <Text
-                    w={180}
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Projects done (12/90)
-                  </Text>
-
-                  <Flex w="100%" align="center" gap={20}>
-                    <Progress flex={1} value={80} />
-
-                    <Text>85%</Text>
-                  </Flex>
-                </Flex>
-
-                <Flex gap={20}>
-                  <Text
-                    w={180}
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Project In progress (12/90)
-                  </Text>
-
-                  <Flex w="100%" align="center" gap={20}>
-                    <Progress flex={1} value={80} />
-
-                    <Text>85%</Text>
-                  </Flex>
-                </Flex>
-
-                <Flex gap={20}>
-                  <Text
-                    w={180}
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Projects to Do (12/90)
-                  </Text>
-
-                  <Flex w="100%" align="center" gap={20}>
-                    <Progress flex={1} value={80} />
-
-                    <Text>85%</Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Card>
+            <CardReportGeneralProjectStatuses />
           </Flex>
 
           <Flex>
-            <Card shadow="sm" padding="lg" flex={1}>
-              <Flex justify="space-between" align="center">
-                <Text weight={500} mb={16}>
-                  Project categories mensurement
-                </Text>
-
-                <SegmentedControl
-                  size="xs"
-                  data={[
-                    { label: "By tasks", value: "all" },
-                    { label: "By hour", value: "active" },
-                  ]}
-                />
-              </Flex>
-
-              <Flex direction="column" gap={10} mt={10}>
-                {[...Array(5)].map(() => (
-                  <Flex align="center" gap={10}>
-                    <Text w={200}>Development</Text>
-                    <Progress w="100%" value={0} />
-                    25.4%
-                  </Flex>
-                ))}
-              </Flex>
-
-              <Divider my={20} />
-
-              <Flex gap={20} align="center">
-                <Text>Team members involved with</Text>
-                <Avatar.Group spacing="sm">
-                  <div>
-                    <Avatar src="image.png" radius="xl" />
-                  </div>
-                  <Avatar src="image.png" radius="xl" />
-                  <Avatar src="image.png" radius="xl" />
-                  <Avatar radius="xl">+5</Avatar>
-                </Avatar.Group>
-              </Flex>
-            </Card>
+            <CardReportProjectCategoryStatuses />
           </Flex>
         </Flex>
       }

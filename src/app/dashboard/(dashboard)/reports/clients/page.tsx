@@ -37,9 +37,16 @@ import {
 } from "recharts";
 import { ReportTemplate } from "@/components/dashboard/templates/report-template";
 import { TaskListItem } from "@/components/dashboard/molecules/task/task-list-item";
-import { IconEyePause, IconFilterFilled, IconSearch } from "@tabler/icons-react";
+import {
+  IconEyePause,
+  IconFilterFilled,
+  IconSearch,
+} from "@tabler/icons-react";
 import { TaskListItemSmall } from "@/components/dashboard/molecules/task/task-list-item-small";
 import { useDisclosure } from "@mantine/hooks";
+import { CardReportProjectsByClient } from "@/components/dashboard/molecules/project/card-report-projects-by-client";
+import { CardReportClientHourProfitByClient } from "@/components/dashboard/molecules/client/card-report-client-hour-profit";
+import { CardReportChartClientHourProfitByClient } from "@/components/dashboard/molecules/client/card-report-chart-hour-profit";
 
 interface Task {
   id: number;
@@ -167,94 +174,17 @@ export default function TasksReports() {
               General view
             </Text>
 
-            <SimpleGrid cols={2} spacing="lg">
-              {/* Hours & Profit by Client */}
-              <Paper p="md" radius="md" withBorder>
-                <Text size="sm" fw={600} mb="sm">
-                  Hours & Profit by Client
-                </Text>
-                <ResponsiveContainer width="100%" height={200}>
-                  <BarChart
-                    data={[
-                      { client: "Client A", hours: 120, profit: 2000 },
-                      { client: "Client B", hours: 90, profit: 1500 },
-                      { client: "Client C", hours: 60, profit: 800 },
-                    ]}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="client" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="hours" fill="#228be6" />
-                    <Bar dataKey="profit" fill="#40c057" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </Paper>
+            <Flex align="start" w="100%" gap={20}>
+              <Flex flex={1} gap={20} direction="column">
+                <CardReportChartClientHourProfitByClient />
+                
+                <CardReportClientHourProfitByClient />
+              </Flex>
 
-              {/* Projects by Client */}
-              <Paper p="md" radius="md" withBorder>
- <Group justify="space-between" mb="sm">
-        <Text size="sm" fw={600}>
-          Projects by Client
-        </Text>
-        <SegmentedControl
-          size="xs"
-          data={[
-            { label: "Todos", value: "all" },
-            { label: "Ativos", value: "active" },
-            { label: "Inativos", value: "inactive" },
-          ]}
-        />
-      </Group>
-
-      <Input leftSection={<IconSearch size={14} />} mb={10} />
-      
-                <Stack gap="sm">
-                  <Group justify="space-between">
-                    <Text size="sm">Client A</Text>
-                    <Badge color="blue" variant="light">
-                      4 projects
-                    </Badge>
-                  </Group>
-                  <Group justify="space-between">
-                    <Text size="sm">Client B</Text>
-                    <Badge color="blue" variant="light">
-                      3 projects
-                    </Badge>
-                  </Group>
-                  <Group justify="space-between">
-                    <Text size="sm">Client C</Text>
-                    <Flex gap={10}>
-                      <Badge color="blue" variant="light">
-                        Active
-                      </Badge>
-
-                      <Badge color="blue" variant="light">
-                        2 projects
-                      </Badge>
-                    </Flex>
-                  </Group>
-                </Stack>
-              </Paper>
-            </SimpleGrid>
-
-            <SimpleGrid cols={2} spacing="lg" mt="lg">
-
-              {/* Avg planned vs actual time */}
-              <Paper p="md" radius="md" withBorder>
-                <Text size="sm" fw={600} mb="sm">
-                  Avg Planned vs Actual Time
-                </Text>
-
-                <Text>Client 1</Text>
-
-                <Text size="xs" c="dimmed" mb="xs">
-                  Planned: 100h | Actual: 120h
-                </Text>
-                <Progress value={120} max={100} color="red" />
-              </Paper>
-            </SimpleGrid>
+              <Flex flex={1}>
+                <CardReportProjectsByClient />
+              </Flex>
+            </Flex>
           </Card>
         </Flex>
       }

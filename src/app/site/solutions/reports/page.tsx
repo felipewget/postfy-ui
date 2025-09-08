@@ -1,19 +1,14 @@
 "use client";
 
-import { Datepicker } from "@/components/dashboard/atoms/datepicker";
-import { ButtonFormTask } from "@/components/dashboard/molecules/button-form-task";
-import { BoardTodo } from "@/components/dashboard/organisms/board-todo";
+import { useQuoteReport } from "@/api/dashboard/reports.api";
 import { TextCentralized } from "@/components/site/molecules/text-centralized";
 import { TextNextToImage } from "@/components/site/molecules/text-next-to-image";
 import {
   Button,
   Card,
-  Divider,
   Flex,
   Image,
-  PasswordInput,
   Text,
-  TextInput,
 } from "@mantine/core";
 
 export default function Reports() {

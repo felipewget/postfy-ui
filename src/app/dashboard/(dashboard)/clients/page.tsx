@@ -17,9 +17,11 @@ import {
 } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 import {
+  IconContract,
   IconFilterFilled,
   IconSearch,
   IconSortDescending,
+  IconUsersGroup,
 } from "@tabler/icons-react";
 
 export default function ClientPage() {
@@ -40,6 +42,7 @@ export default function ClientPage() {
   return (
     <ListTemplate
       header={{
+        icon: <IconUsersGroup size="30px" />,
         title: "Clients",
         description: "Manage your clients, link them with projects",
         button: (

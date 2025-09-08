@@ -9,6 +9,7 @@ import { Button, Flex, Input, Select } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
 import {
   IconChartTreemap,
+  IconContract,
   IconFilterFilled,
   IconSearch,
   IconSortDescending,
@@ -32,6 +33,7 @@ export default function QuotePage() {
   return (
     <ListTemplate
       header={{
+        icon: <IconContract size="30px" />,
         title: "Quotes",
         description: "Create and send your quotes",
         button: (

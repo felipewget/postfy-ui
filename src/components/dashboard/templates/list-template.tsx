@@ -1,10 +1,12 @@
 "use client";
 
 import { Avatar, Flex, Paper, Text } from "@mantine/core";
+import { IconContract } from "@tabler/icons-react";
 import { FC, ReactNode } from "react";
 
 type ListTemplateProps = {
   header: {
+    icon: ReactNode;
     title: string;
     description?: string;
     button?: ReactNode;
@@ -28,7 +30,9 @@ export const ListTemplate: FC<ListTemplateProps> = ({
   >
     <Flex w="100%" justify="space-between" align="center" pb={20} pt={10}>
       <Flex gap={20}>
-        <Avatar size="lg" />
+        <Avatar size="lg">
+          {header.icon}
+        </Avatar>
 
         <Flex direction="column">
           <Text size="2xl" fw={500}>
@@ -51,6 +55,7 @@ export const ListTemplate: FC<ListTemplateProps> = ({
         style={{
           zIndex: 1,
         }}
+        withBorder={false}
       >
         {searchPanel}
       </Paper>
@@ -58,7 +63,7 @@ export const ListTemplate: FC<ListTemplateProps> = ({
 
     <Flex w="100%" wrap="wrap" gap={10}>
       {cards.map((card) => (
-        <Flex w={{base: '100%', md: "calc(50% - 5px)"}}>{card}</Flex>
+        <Flex w={{ base: "100%", md: "calc(50% - 5px)" }}>{card}</Flex>
       ))}
     </Flex>
   </Flex>

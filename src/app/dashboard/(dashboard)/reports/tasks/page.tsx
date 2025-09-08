@@ -39,6 +39,8 @@ import { TaskListItem } from "@/components/dashboard/molecules/task/task-list-it
 import { IconEyePause, IconFilterFilled } from "@tabler/icons-react";
 import { TaskListItemSmall } from "@/components/dashboard/molecules/task/task-list-item-small";
 import { useDisclosure } from "@mantine/hooks";
+import { CardReportTaskGeneral } from "@/components/dashboard/molecules/task/card-report-task-general";
+import { CardReportTaskUser } from "@/components/dashboard/molecules/task/card-report-task-user";
 
 interface Task {
   id: number;
@@ -88,7 +90,7 @@ export default function TasksReports() {
   const rowHeight = 50;
   const [opened, { toggle }] = useDisclosure(false);
 
-    const [startDate, setStartDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
 
   return (
@@ -163,120 +165,12 @@ export default function TasksReports() {
               />
             </Flex>
           </Paper>
-          
+
           <Flex>
-            <Card shadow="sm" padding="lg" flex={1}>
-              <Text weight={500} mb={16}>
-                General view
-              </Text>
-
-              <Flex direction="column" gap={10}>
-                <Flex gap={20}>
-                  <Text
-                    w={180}
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Done (12/90)
-                  </Text>
-
-                  <Flex w="100%" align="center" gap={20}>
-                    <Progress flex={1} value={80} />
-
-                    <Text>85%</Text>
-                  </Flex>
-                </Flex>
-
-                <Flex gap={20}>
-                  <Text
-                    w={180}
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    In progress (12/90)
-                  </Text>
-
-                  <Flex w="100%" align="center" gap={20}>
-                    <Progress flex={1} value={80} />
-
-                    <Text>85%</Text>
-                  </Flex>
-                </Flex>
-
-                <Flex gap={20}>
-                  <Text
-                    w={180}
-                    style={{
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    To Do (12/90)
-                  </Text>
-
-                  <Flex w="100%" align="center" gap={20}>
-                    <Progress flex={1} value={80} />
-
-                    <Text>85%</Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Card>
+            <CardReportTaskGeneral />
           </Flex>
 
-          <Card shadow="sm" padding="lg" flex={1}>
-            <Flex justify="space-between" align="center">
-              <Text fw={500}>Tasks per team member</Text>
-              <Button size="xs" variant="light" onClick={toggle}>
-                {opened ? "Collapse" : "Expand"}
-              </Button>
-            </Flex>
-
-            <Collapse in={opened}>
-              <Stack spacing="md" mt={16}>
-                {memberStatusData.map((m) => {
-                  const total = m.todo + m.doing + m.done;
-                  const todoPercent = (m.todo / total) * 100;
-                  const doingPercent = (m.doing / total) * 100;
-                  const donePercent = (m.done / total) * 100;
-
-                  return (
-                    <div key={m.member}>
-                      <Text fw={500}>{m.member}</Text>
-                      <Flex w="100%" gap={4} mt={4}>
-                        <Progress
-                        flex={1}
-                          value={todoPercent}
-                          color="#CCC"
-                          style={{ flex: todoPercent }}
-                          radius="xl"
-                        />
-                        <Progress
-                        flex={1}
-                          value={doingPercent}
-                          color="#ffe066"
-                          style={{ flex: doingPercent }}
-                          radius="xl"
-                        />
-                        <Progress
-                        flex={1}
-                          value={donePercent}
-                          color="#69db7c"
-                          style={{ flex: donePercent }}
-                          radius="xl"
-                        />
-                      </Flex>
-                      <Text size="sm" mt={2}>
-                        To do: {m.todo}, Doing: {m.doing}, Done: {m.done}{" "}
-                        (Total: {total})
-                      </Text>
-                    </div>
-                  );
-                })}
-              </Stack>
-            </Collapse>
-          </Card>
+          <CardReportTaskUser />
 
           <SimpleGrid cols={3} spacing="lg">
             {["To-do", "In progress", "Done"].map((title) => (

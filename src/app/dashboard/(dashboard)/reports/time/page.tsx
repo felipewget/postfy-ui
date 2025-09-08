@@ -34,6 +34,10 @@ import {
   IconFilterFilled,
   IconSortDescending,
 } from "@tabler/icons-react";
+import { useListReportTimeByUsers } from "@/api/dashboard/reports.api";
+import { useTimeAllTeamReport } from "@/api/dashboard/task.api";
+import { CardReportTimeGeneralPerDay } from "@/components/dashboard/molecules/task/card-report-time-general-per-day";
+import { CardReportTimeUser } from "@/components/dashboard/molecules/task/card-report-time-user";
 
 // --- Mock data ---
 const hoursData = [
@@ -50,6 +54,13 @@ const workloadData = [
 ];
 
 export default function TimeTeamReports() {
+  const { data } = useTimeAllTeamReport();
+
+  console.log("datadata", data);
+  // const { data } = useListReportTimeByUsers({});
+
+  // const times = data?.pages.flat() ?? [];
+
   const [person, setPerson] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -133,7 +144,7 @@ export default function TimeTeamReports() {
           {/*  */}
           <Flex gap={20} direction="column">
             <Flex gap={20}>
-              <Card flex={1} shadow="sm" radius="md" withBorder>
+              {/* <Card flex={1} shadow="sm" radius="md" withBorder>
                 <Text fw={500} mb="sm">
                   Horas Planejadas vs Realizadas (por pessoa)
                 </Text>
@@ -148,92 +159,18 @@ export default function TimeTeamReports() {
                     <Bar dataKey="actual" fill="#82ca9d" name="Realizado" />
                   </BarChart>
                 </ResponsiveContainer>
-              </Card>
+              </Card> */}
 
-              <Card flex={1} shadow="sm" radius="md" withBorder>
-                <Text fw={500} mb="sm">
-                  Carga de trabalho semanal
-                </Text>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={workloadData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="week" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="workload"
-                      stroke="#8884d8"
-                      name="Carga (h)"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </Card>
+              <Flex w="100%">
+                <CardReportTimeGeneralPerDay />
+              </Flex>
             </Flex>
 
             {/*  */}
-            <Card w="100%">
-              <Flex flex={1} direction="column" gap={20}>
-                <Flex w="100%" direction="column">
-                  <Text fw={500} mb="sm">
-                    Details by team member
-                  </Text>
-
-                  <Input leftSection={<IconSearch size="16px" />} />
-                </Flex>
-
-                <Flex w="100%" wrap="wrap" gap={10}>
-                  {[...Array(20)].map((card) => (
-                    <Flex w="calc(50% - 5px)">
-                      <CardReportMember />
-                    </Flex>
-                  ))}
-                </Flex>
-              </Flex>
-            </Card>
+            <CardReportTimeUser />
           </Flex>
         </Flex>
       }
     />
   );
 }
-
-const CardReportMember = () => (
-  <Card w="100%">
-    <Flex gap={0} direction="column">
-      <Flex justify="start" align="center" gap={10} mb={10}>
-        <Avatar radius="md">FO</Avatar>
-
-        <Flex w="100%" gap={10} align="center">
-          <Text fw={700}>Felipe Oliveira</Text>
-
-          <Text size="sm">(Productivity per time: 124%)</Text>
-        </Flex>
-      </Flex>
-
-      <Flex gap={20}>
-        {[...Array(3)].map(() => (
-          <Flex gap={10} align="center" w="50%">
-            <Text
-              fw={500}
-              style={{
-                whiteSpace: "nowrap",
-              }}
-            >
-              Planned
-            </Text>
-
-            <Text
-              style={{
-                whiteSpace: "nowrap",
-              }}
-            >
-              124Hours
-            </Text>
-          </Flex>
-        ))}
-      </Flex>
-    </Flex>
-  </Card>
-);

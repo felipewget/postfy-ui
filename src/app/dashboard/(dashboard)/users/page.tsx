@@ -15,7 +15,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
-import { IconSearch, IconFilterFilled, IconUser } from "@tabler/icons-react";
+import { IconSearch, IconFilterFilled, IconUser, IconUsersGroup, IconUsers } from "@tabler/icons-react";
 
 export default function TaskPage() {
   const [search, setSearch] = useDebouncedState("", 300);
@@ -35,6 +35,7 @@ export default function TaskPage() {
   return (
     <ListTemplate
       header={{
+        icon: <IconUsers size="30px" />,
         title: "Team members",
         description: "Handle team members",
         button: (
