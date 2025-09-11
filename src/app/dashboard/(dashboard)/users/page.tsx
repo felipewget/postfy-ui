@@ -1,32 +1,28 @@
-"use client"
+"use client";
 
 import { useList } from "@/api/dashboard";
+import { SelectClientFilter } from "@/components/dashboard/molecules/client/select-client-filter";
+import { SelectProjectFilter } from "@/components/dashboard/molecules/project/select-project-filter";
 import { CardUser } from "@/components/dashboard/molecules/user/card-user";
 import { DrawerUserForm } from "@/components/dashboard/molecules/user/drawer-user-form";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { User } from "@/declarators";
-import {
-  Avatar,
-  Button,
-  Flex,
-  Input,
-  Paper,
-  Select,
-  Text,
-} from "@mantine/core";
+import { Button, Flex, Input, Select, Text } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";
-import { IconSearch, IconFilterFilled, IconUser, IconUsersGroup, IconUsers } from "@tabler/icons-react";
+import { IconSearch, IconFilterFilled, IconUsers } from "@tabler/icons-react";
 
 export default function TaskPage() {
   const [search, setSearch] = useDebouncedState("", 300);
   const [status, setStatus] = useDebouncedState(null, 300);
+  const [role, setRole] = useDebouncedState(null, 300);
+  const [clientId, setClientId] = useDebouncedState(null, 300);
 
   const { data } = useList({
     entity: "users",
     params: {
       search,
-      searchFields: "title",
-      filters: { status },
+      searchFields: "name,email",
+      filters: { status, role },
     },
   });
 
@@ -55,6 +51,7 @@ export default function TaskPage() {
               <Input
                 placeholder="Search"
                 leftSection={<IconSearch size="16px" />}
+                onChange={(e) => setSearch(e.currentTarget.value.trim())}
                 flex={1}
                 radius="sm"
               />
@@ -64,40 +61,37 @@ export default function TaskPage() {
               leftSection={<IconFilterFilled size="12px" />}
               radius="sm"
               label="status"
+              onChange={(e) => setStatus(e)}
               data={[
-                { label: "Hold", value: "active" },
-                { label: "In progress", value: "non-active" },
+                { label: "Active", value: "active" },
+                { label: "Inactive", value: "inactive" },
               ]}
             />
 
-            <Select
-              label="Projects"
-              leftSection={<IconFilterFilled size="12px" />}
-              multiple
-              radius="sm"
-              data={[
-                { label: "Hold", value: "active" },
-                { label: "In progress", value: "non-active" },
-              ]}
-            />
+            <Flex direction="column">
+              <Text>Client</Text>
 
-            <Select
-              label="Client"
-              leftSection={<IconFilterFilled size="12px" />}
-              radius="sm"
-              data={[
-                { label: "Hold", value: "active" },
-                { label: "In progress", value: "non-active" },
-              ]}
-            />
+              <SelectClientFilter onChange={setClientId} />
+            </Flex>
+
+            <Flex direction="column">
+              <Text>Project</Text>
+
+              <SelectProjectFilter onChange={null} client_id={clientId} />
+            </Flex>
 
             <Select
               label="Role"
               leftSection={<IconFilterFilled size="12px" />}
               radius="sm"
+              onChange={(e) => setRole(e)}
               data={[
-                { label: "Hold", value: "active" },
-                { label: "In progress", value: "non-active" },
+                {
+                  value: "Project Manager",
+                  label: "Project Manager",
+                },
+                { value: "Developer", label: "Developer" },
+                { value: "Jr. developer", label: "Jr. developer" },
               ]}
             />
           </Flex>

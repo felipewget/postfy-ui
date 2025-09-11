@@ -5,6 +5,7 @@ import { FC, ReactNode } from "react";
 
 type ReportTemplateProps = {
   header: {
+    icon: ReactNode;
     title: string;
     description?: string;
   };
@@ -31,7 +32,7 @@ export const ReportTemplate: FC<ReportTemplateProps> = ({
     >
       <Flex w="100%" justify="space-between" align="center" py={10}>
         <Flex gap={20}>
-          <Avatar size="lg" />
+          <Avatar size="lg">{header.icon}</Avatar>
 
           <Flex direction="column">
             <Text size="2xl" fw={500}>
@@ -46,10 +47,12 @@ export const ReportTemplate: FC<ReportTemplateProps> = ({
       <Tabs defaultValue="gallery">
         <Tabs.List>
           {tabs.map((tab, key) => (
-            <Link href={tab.link}>
-            <Tabs.Tab key={key} value="gallery" fw={800}>
-              {tab.label}
-            </Tabs.Tab>
+            <Link href={tab.link} style={{
+              textDecoration: "none"
+            }}>
+              <Tabs.Tab key={key} value="gallery" fw={800}>
+                <Text fw={800} size="sm" c="violet">{tab.label}</Text>
+              </Tabs.Tab>
             </Link>
           ))}
         </Tabs.List>

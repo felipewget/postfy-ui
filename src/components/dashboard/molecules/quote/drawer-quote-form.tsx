@@ -100,7 +100,16 @@ export const DrawerQuoteForm: FC<DrawerQuoteFormProps> = ({
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <div style={{ flex: 1, overflowY: "auto" }}>
-            <Stack spacing="sm">
+            <Stack h="calc(100vh - 107px)">
+              <Flex
+                direction="column"
+                mt={20}
+                flex={1}
+                style={{
+                  overflow: "auto",
+                }}
+              >
+                <Stack>
               <Controller
                 name="title"
                 control={control}
@@ -135,14 +144,19 @@ export const DrawerQuoteForm: FC<DrawerQuoteFormProps> = ({
                 )}
               />
 
-              <Divider />
+               </Stack>
+              </Flex>
 
-              <Group>
-                <Button variant="outline" onClick={close}>
-                  Cancel
-                </Button>
-                <Button type="submit">Save</Button>
-              </Group>
+              <Flex direction="column" gap={10}>
+                <Divider />
+
+                <Group justify="end">
+                  <Button variant="outline" onClick={close}>
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </Group>
+              </Flex>
             </Stack>
           </div>
         </form>

@@ -1,6 +1,10 @@
 import dashboardClientApi from "@/providers/axios/dashboard-axios";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
+const getProjectById = async (id: number) => {
+  return dashboardClientApi.get(`/projects/${id}`);
+};
+
 const reportProjectByClients = async (params: any) => {
   return dashboardClientApi.get<
     {
@@ -27,13 +31,15 @@ const getGeneralStatusesReport = () => {
 };
 
 const getCategoriesStatusesReport = () => {
-  return dashboardClientApi.get<{
-    category_id: 2;
-    category_name: string;
-    minutes: number;
-    minutes_done: number;
-    tasks_count: number;
-  }[]>(`/reports/projects/categories`);
+  return dashboardClientApi.get<
+    {
+      category_id: 2;
+      category_name: string;
+      minutes: number;
+      minutes_done: number;
+      tasks_count: number;
+    }[]
+  >(`/reports/projects/categories`);
 };
 
 export const useReportProjectByClients = (params?: { search: string }) => {
@@ -80,5 +86,16 @@ export const useGetCategoriesStatusesReport = (params?: { search: string }) => {
       return lastItem.id;
     },
     initialPageParam: undefined,
+  });
+};
+
+export const useGetProjectById = (id: number) => {
+  return useQuery({
+    queryKey: ["project-by-id", id],
+    queryFn: async () => {
+      const { data } = await getProjectById(id);
+
+      return data;
+    },
   });
 };

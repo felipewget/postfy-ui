@@ -19,22 +19,23 @@ import { Project } from "@/declarators";
 
 type ProjectCard = {
   project: Project;
-}
+  categories: any[];
+};
 
-export const ProjectCard:FC<ProjectCard> = ({project}) => {
+export const ProjectCard: FC<ProjectCard> = ({ project, categories }) => {
   const queryClient = useQueryClient();
 
   const onSuccessDelete = () => {
     queryClient.invalidateQueries({ queryKey: ["crud-list-projects"] });
   };
-  
+
   const editFormButton = useRef<HTMLDivElement>(null);
   const openPreviewButton = useRef<HTMLDivElement>(null);
 
   const { mutate: deleteProject } = useDelete(
-      { entity: "projects", recordId: project.id },
-      onSuccessDelete
-    );
+    { entity: "projects", recordId: project.id },
+    onSuccessDelete
+  );
 
   const openDrawer = () => editFormButton?.current?.click();
   const openPreview = () => openPreviewButton?.current?.click();
@@ -62,7 +63,11 @@ export const ProjectCard:FC<ProjectCard> = ({project}) => {
 
   return (
     <>
-      <DrawerProjectForm element={<VisuallyHidden ref={editFormButton} />} project={project} />
+      <DrawerProjectForm
+        categories={categories}
+        element={<VisuallyHidden ref={editFormButton} />}
+        project={project}
+      />
 
       {/* <ModalUserPreview element={<VisuallyHidden ref={openPreviewButton} />} /> */}
 
@@ -73,7 +78,7 @@ export const ProjectCard:FC<ProjectCard> = ({project}) => {
               Job
             </Badge>
 
-            <Badge radius="sm">Briefing</Badge>
+            <Badge radius="sm">{project.stage}</Badge>
           </Flex>
 
           <Flex>
@@ -87,13 +92,20 @@ export const ProjectCard:FC<ProjectCard> = ({project}) => {
                   View client
                 </Menu.Item>
 
-                <Menu.Item leftSection={<IconEdit size={14} />} onClick={openDrawer}>
+                <Menu.Item
+                  leftSection={<IconEdit size={14} />}
+                  onClick={openDrawer}
+                >
                   Edit project
                 </Menu.Item>
 
                 <Menu.Divider />
 
-                <Menu.Item color="red" leftSection={<IconTrash size={14} />} onClick={() => confirmDelete(project.id)}>
+                <Menu.Item
+                  color="red"
+                  leftSection={<IconTrash size={14} />}
+                  onClick={() => confirmDelete(project.id)}
+                >
                   Delete project
                 </Menu.Item>
               </Menu.Dropdown>
@@ -115,11 +127,19 @@ export const ProjectCard:FC<ProjectCard> = ({project}) => {
               <Flex align="center" gap={10}>
                 <Text>Categories: </Text>
 
-                {project.categories.map((categorie) => (
-                  <Badge variant="light" radius="md">
-                    {categorie}
-                  </Badge>
-                ))}
+                {project.categories.map((categorie) => {
+                  const name = categories.find(
+                    (category) => category.id == categorie
+                  )?.name;
+                  return name ? (
+                    <Badge variant="light" radius="md">
+                      {
+                        categories.find((category) => category.id == categorie)
+                          ?.name
+                      }
+                    </Badge>
+                  ) : null;
+                })}
               </Flex>
 
               <Text>{project.description}</Text>
@@ -143,7 +163,7 @@ export const ProjectCard:FC<ProjectCard> = ({project}) => {
         <Divider my={14} />
 
         <Flex gap="10" wrap="wrap">
-          <Badge radius="sm">Created at: 22/08/1994</Badge>
+          <Badge >Created at: 22/08/1994</Badge>
         </Flex>
       </Paper>
     </>

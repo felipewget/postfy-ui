@@ -73,7 +73,7 @@ export const QuoteCard: FC<QuoteCard> = ({ quote }) => {
           </Flex>
 
           <Flex gap={20} align="center">
-            <Link href="/quote/XXXXXXXX">
+            <Link href="/quotes/XXXXXXXX">
               <Button size="xs">Edit proposal</Button>
             </Link>
 

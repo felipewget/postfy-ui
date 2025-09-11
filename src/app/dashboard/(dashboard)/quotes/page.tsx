@@ -1,6 +1,7 @@
 "use client";
 
 import { useList } from "@/api/dashboard";
+import { SelectClientFilter } from "@/components/dashboard/molecules/client/select-client-filter";
 import { QuoteCard } from "@/components/dashboard/molecules/quote/card-quote";
 import { DrawerQuoteForm } from "@/components/dashboard/molecules/quote/drawer-quote-form";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
@@ -18,13 +19,14 @@ import {
 export default function QuotePage() {
   const [search, setSearch] = useDebouncedState("", 300);
   const [status, setStatus] = useDebouncedState(null, 300);
+  const [client_id, setClientId] = useDebouncedState(null, 300);
 
   const { data } = useList({
     entity: "quotes",
     params: {
       search,
       searchFields: "title",
-      filters: { status },
+      filters: { status, client_id },
     },
   });
 
@@ -45,6 +47,8 @@ export default function QuotePage() {
       searchPanel={
         <Flex w="100%" gap={15} p={2}>
           <Flex w="100%" gap={5}>
+            <SelectClientFilter onChange={setClientId} />
+
             <Input
               onChange={(e) => setSearch(e.currentTarget.value.trim())}
               placeholder="Search"
@@ -66,12 +70,6 @@ export default function QuotePage() {
               ]}
             />
           </Flex>
-
-          <Select
-            leftSection={<IconChartTreemap size="16px" />}
-            radius="sm"
-            data={[{ label: "Enterness co", value: "enterness" }]}
-          />
 
           {/* <Select
             leftSection={<IconSortDescending size="16px" />}

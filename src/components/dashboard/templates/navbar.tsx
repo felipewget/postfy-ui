@@ -97,7 +97,12 @@ export const Dashboard = ({
                       }}
                     >
                       {!collapsed && (
-                        <Text color="black" size="sm" fw={500} flex={1}>
+                        <Text
+                          color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))"
+                          size="sm"
+                          fw={500}
+                          flex={1}
+                        >
                           {item.text}
                         </Text>
                       )}
@@ -121,7 +126,7 @@ export const Dashboard = ({
                 }}
               >
                 {!collapsed && (
-                  <Text color="black" size="sm" fw={500} flex={1}>
+                  <Text size="sm" fw={500} flex={1}  color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))">
                     Reports
                   </Text>
                 )}
@@ -163,7 +168,7 @@ export const Dashboard = ({
                         {!collapsed && (
                           <Text
                             ml={10}
-                            color="black"
+                            color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))"
                             size="sm"
                             fw={500}
                             flex={1}

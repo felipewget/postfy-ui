@@ -28,9 +28,12 @@ import {
   Legend,
 } from "recharts";
 import { ReportTemplate } from "@/components/dashboard/templates/report-template";
-import { IconFilterFilled } from "@tabler/icons-react";
+import { IconFilterFilled, IconFlask } from "@tabler/icons-react";
 import { CardReportGeneralProjectStatuses } from "@/components/dashboard/molecules/project/card-report-general-project-statuses";
 import { CardReportProjectCategoryStatuses } from "@/components/dashboard/molecules/project/card-report-project-category-statuses";
+import { SelectClientFilter } from "@/components/dashboard/molecules/client/select-client-filter";
+import { SelectProjectFilter } from "@/components/dashboard/molecules/project/select-project-filter";
+import { SelectCategoryFilter } from "@/components/dashboard/molecules/project/select-category-filter";
 
 interface Project {
   id: number;
@@ -85,6 +88,7 @@ export default function ProjectsReports() {
   return (
     <ReportTemplate
       header={{
+        icon: <IconFlask size="30px" />,
         title: "Project reports",
         description: "handle you team progress",
       }}
@@ -102,39 +106,23 @@ export default function ProjectsReports() {
           >
             <Flex w="100%" gap={15} p={2}>
               {/* <Flex w="100%" gap={5}> */}
-              <Select
-                leftSection={<IconFilterFilled size="12px" />}
-                radius="sm"
-                label="Client"
-                placeholder="Client"
-                data={[
-                  { label: "Active", value: "active" },
-                  { label: "Non active", value: "non-active" },
-                ]}
-              />
+              <Flex direction="column">
+                <Text>Client</Text>
 
-              <Select
-                flex={1}
-                leftSection={<IconFilterFilled size="12px" />}
-                radius="sm"
-                label="Project"
-                placeholder="Project"
-                data={[
-                  { label: "Active", value: "active" },
-                  { label: "Non active", value: "non-active" },
-                ]}
-              />
+                <SelectClientFilter onChange={null} />
+              </Flex>
 
-              <Select
-                leftSection={<IconFilterFilled size="12px" />}
-                radius="sm"
-                label="Category"
-                placeholder="Category"
-                data={[
-                  { label: "Active", value: "active" },
-                  { label: "Non active", value: "non-active" },
-                ]}
-              />
+              <Flex direction="column">
+                <Text>Project</Text>
+
+                <SelectProjectFilter onChange={null} />
+              </Flex>
+
+              <Flex direction="column">
+                <Text>Category</Text>
+
+                <SelectCategoryFilter onChange={null} />
+              </Flex>
               {/* </Flex> */}
 
               <TextInput

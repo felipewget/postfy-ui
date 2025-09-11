@@ -42,7 +42,7 @@ type DrawerUserFormProps = {
 };
 
 export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element, user }) => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const onSuccessCreated = () => {
     queryClient.invalidateQueries({ queryKey: ["crud-list-users"] });
@@ -75,7 +75,6 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element, user }) => {
     onSuccessUpdated
   );
 
-  
   const [opened, { open, close }] = useDisclosure(false);
 
   const { control, handleSubmit } = useForm<FormValues>({
@@ -88,7 +87,7 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element, user }) => {
       price_per_hour: user?.price_per_hour,
       notes: user?.notes,
       role: user?.role,
-      status: user?.status
+      status: user?.status,
     },
   });
 
@@ -115,108 +114,125 @@ export const DrawerUserForm: FC<DrawerUserFormProps> = ({ element, user }) => {
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <div style={{ flex: 1, overflowY: "auto" }}>
-            <Stack spacing="sm">
-              {/* Company Name */}
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                  <TextInput {...field} label="Name" required />
-                )}
-              />
+            <Stack h="calc(100vh - 107px)">
+              <Flex
+                direction="column"
+                mt={20}
+                flex={1}
+                style={{
+                  overflow: "auto",
+                }}
+              >
+                <Stack>
+                  {/* Company Name */}
+                  <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Name" required />
+                    )}
+                  />
 
-              <Divider />
+                  <Divider />
 
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <TextInput {...field} label="Email" required />
-                )}
-              />
+                  <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Email" required />
+                    )}
+                  />
 
-              <Flex gap={20}>
-                <Controller
-                  flex={1}
-                  name="work_hours_per_week"
-                  control={control}
-                  render={({ field }) => (
-                    <NumberInput
-                      {...field}
-                      label="Work hours per week"
-                      required
-                      rightSectionWidth={100}
-                      rightSection={<Text>Hours</Text>}
+                  <Flex gap={20}>
+                    <Controller
+                      flex={1}
+                      name="work_hours_per_week"
+                      control={control}
+                      render={({ field }) => (
+                        <NumberInput
+                          {...field}
+                          label="Work hours per week"
+                          required
+                          rightSectionWidth={100}
+                          rightSection={<Text>Hours</Text>}
+                        />
+                      )}
                     />
-                  )}
-                />
 
-                <Controller
-                  flex={1}
-                  name="price_per_hour"
-                  control={control}
-                  render={({ field }) => (
-                    <NumberInput
-                      {...field}
-                      label="Work hours per week"
-                      required
-                      leftSectionWidth={50}
-                      leftSection={<Text>R$</Text>}
+                    <Controller
+                      flex={1}
+                      name="price_per_hour"
+                      control={control}
+                      render={({ field }) => (
+                        <NumberInput
+                          {...field}
+                          label="Work hours per week"
+                          required
+                          leftSectionWidth={50}
+                          leftSection={<Text>R$</Text>}
+                        />
+                      )}
                     />
-                  )}
-                />
+                  </Flex>
+
+                  {/* Notes */}
+                  <Controller
+                    name="notes"
+                    control={control}
+                    render={({ field }) => (
+                      <Textarea {...field} label="Notes" autosize minRows={3} />
+                    )}
+                  />
+
+                  <Divider />
+
+                  {/* Status select */}
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        label="Status"
+                        data={[
+                          { value: "active", label: "Active" },
+                          { value: "inactive", label: "Inactive" },
+                        ]}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="role"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        label="Role"
+                        data={[
+                          {
+                            value: "Project Manager",
+                            label: "Project Manager",
+                          },
+                          { value: "Developer", label: "Developer" },
+                          { value: "Jr. developer", label: "Jr. developer" },
+                        ]}
+                      />
+                    )}
+                  />
+                </Stack>
               </Flex>
 
-              {/* Notes */}
-              <Controller
-                name="notes"
-                control={control}
-                render={({ field }) => (
-                  <Textarea {...field} label="Notes" autosize minRows={3} />
-                )}
-              />
-              
-              <Divider />
+              <Flex direction="column" gap={10}>
+                <Divider />
 
-              {/* Status select */}
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Status"
-                    data={[
-                      { value: "active", label: "Active" },
-                      { value: "inactive", label: "Inactive" },
-                    ]}
-                  />
-                )}
-              />
-
-              <Controller
-                name="role"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Role"
-                    data={[
-                      { value: "Project Manager", label: "Project Manager" },
-                      { value: "Developer", label: "Developer" },
-                      { value: "Jr. developer", label: "Jr. developer" },
-                    ]}
-                  />
-                )}
-              />
-
-              {/* Fixed footer */}
-              <Group>
-                <Button variant="outline" onClick={close}>
-                  Cancel
-                </Button>
-                <Button type="submit">Save</Button>
-              </Group>
+                <Group justify="end">
+                  <Button variant="outline" onClick={close}>
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </Group>
+              </Flex>
             </Stack>
           </div>
         </form>

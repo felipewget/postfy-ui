@@ -23,7 +23,7 @@ import {
 import { FC, ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { notifications } from "@mantine/notifications";
-import { useCreate, useUpdate } from "@/api/dashboard";
+import { useCreate, useList, useUpdate } from "@/api/dashboard";
 import { Project } from "@/declarators";
 
 type FormValues = {
@@ -39,14 +39,16 @@ type FormValues = {
 type DrawerProjectFormProps = {
   element: ReactNode;
   project?: Project;
+  categories: any[];
 };
 
 export const DrawerProjectForm: FC<DrawerProjectFormProps> = ({
   element,
   project,
+  categories,
 }) => {
   const queryClient = useQueryClient();
-
+console.log('drawer categori', categories)
   const onSuccessCreated = () => {
     queryClient.invalidateQueries({ queryKey: ["crud-list-projects"] });
 
@@ -122,103 +124,120 @@ export const DrawerProjectForm: FC<DrawerProjectFormProps> = ({
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <div style={{ flex: 1, overflowY: "auto" }}>
-            <Stack spacing="sm">
-              <Controller
-                name="title"
-                control={control}
-                render={({ field }) => (
-                  <TextInput {...field} label="Title" required />
-                )}
-              />
-
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                  <Textarea {...field} label="Description" autosize required />
-                )}
-              />
-
-              <Controller
-                name="categories"
-                control={control}
-                render={({ field }) => (
-                  <MultiSelect
-                    {...field}
-                    label="Categories"
-                    placeholder="Pick value"
-                    data={[
-                      { value: "1", label: "React" },
-                      { value: "2", label: "Angular" },
-                      { value: "3", label: "Vue" },
-                      { value: "4", label: "Svelte" },
-                    ]}
+            <Stack h="calc(100vh - 107px)">
+              <Flex
+                direction="column"
+                mt={20}
+                flex={1}
+                style={{
+                  overflow: "auto",
+                }}
+              >
+                <Stack>
+                  <Controller
+                    name="title"
+                    control={control}
+                    render={({ field }) => (
+                      <TextInput {...field} label="Title" required />
+                    )}
                   />
-                )}
-              />
 
-              {/* Notes */}
-              <Controller
-                name="notes"
-                control={control}
-                render={({ field }) => (
-                  <Textarea {...field} label="Notes" autosize minRows={3} />
-                )}
-              />
-
-              <Divider />
-
-              <Controller
-                name="stage"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Stage"
-                    data={[
-                      { value: "briefing", label: "Briefing" },
-                      { value: "done", label: "Done" },
-                      { value: "job", label: "Job" },
-                      { value: "in_progress", label: "In progress" },
-                    ]}
+                  <Controller
+                    name="description"
+                    control={control}
+                    render={({ field }) => (
+                      <Textarea
+                        {...field}
+                        label="Description"
+                        autosize
+                        required
+                      />
+                    )}
                   />
-                )}
-              />
 
-              <Controller
-                name="status"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Status"
-                    data={[
-                      { value: "active", label: "Active" },
-                      { value: "inactive", label: "Inactive" },
-                    ]}
+                  <Controller
+                    name="categories"
+                    control={control}
+                    render={({ field }) => (
+                      <MultiSelect
+                        {...field}
+                        label="Categories"
+                        placeholder="Pick value"
+                        data={categories.map((category) => ({
+                          value: String(category.id),
+                          label: category.name,
+                        }))}
+                      />
+                    )}
                   />
-                )}
-              />
 
-              <Controller
-                name="team_members"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    multiple
-                    label="Team members on the project"
-                    data={[{ label: "ADAAAS", value: "131" }]}
+                  {/* Notes */}
+                  <Controller
+                    name="notes"
+                    control={control}
+                    render={({ field }) => (
+                      <Textarea {...field} label="Notes" autosize minRows={3} />
+                    )}
                   />
-                )}
-              />
 
-              {/* Fixed footer */}
-              <Group>
-                <Button variant="outline" onClick={close}>
-                  Cancel
-                </Button>
-                <Button type="submit">Save</Button>
-              </Group>
+                  <Divider />
+
+                  <Controller
+                    name="stage"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        label="Stage"
+                        data={[
+                          { value: "briefing", label: "Briefing" },
+                          { value: "done", label: "Done" },
+                          { value: "job", label: "Job" },
+                          { value: "in_progress", label: "In progress" },
+                        ]}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="status"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        label="Status"
+                        data={[
+                          { value: "active", label: "Active" },
+                          { value: "inactive", label: "Inactive" },
+                        ]}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="team_members"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        multiple
+                        label="Team members on the project"
+                        data={[{ label: "ADAAAS", value: "131" }]}
+                      />
+                    )}
+                  />
+                </Stack>
+              </Flex>
+
+              <Flex direction="column" gap={10}>
+                <Divider />
+
+                <Group justify="end">
+                  <Button variant="outline" onClick={close}>
+                    Cancel
+                  </Button>
+                  <Button type="submit">Save</Button>
+                </Group>
+              </Flex>
             </Stack>
           </div>
         </form>

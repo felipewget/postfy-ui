@@ -2,7 +2,11 @@
 
 import { useList } from "@/api/dashboard";
 import { ButtonFormTask } from "@/components/dashboard/molecules/button-form-task";
+import { SelectClientFilter } from "@/components/dashboard/molecules/client/select-client-filter";
+import { SelectCategoryFilter } from "@/components/dashboard/molecules/project/select-category-filter";
+import { SelectProjectFilter } from "@/components/dashboard/molecules/project/select-project-filter";
 import { TaskListItem } from "@/components/dashboard/molecules/task/task-list-item";
+import { SelectUserFilter } from "@/components/dashboard/molecules/user/select-user-filter";
 import { Task, User } from "@/declarators";
 import {
   Avatar,
@@ -25,23 +29,28 @@ import { groupBy } from "lodash";
 export default function TaskPage() {
   const [search, setSearch] = useDebouncedState("", 300);
   const [status, setStatus] = useDebouncedState(null, 300);
+  const [assignedTo, setAssignedTo] = useDebouncedState(null, 300);
+  const [clientId, setclientId] = useDebouncedState(null, 300);
+  const [projectId, setProjectId] = useDebouncedState(null, 300);
+  const [categoryId, setCategoryId] = useDebouncedState(null, 300);
 
   const { data } = useList({
     entity: "tasks",
     params: {
-      // search,
-      //   searchFields: "title",
-      //   filters: { status },
+      search,
+      searchFields: "taskIdentifier,description,title",
+      filters: {
+        assignedTo,
+        status,
+        categoryId,
+        projectId,
+      },
     },
   });
 
   const { data: dataUsers } = useList({
     entity: "users",
-    params: {
-      // search,
-      //   searchFields: "title",
-      //   filters: { status },
-    },
+    params: {},
   });
 
   const tasks = (data?.pages.flat() ?? []) as Task[];
@@ -49,7 +58,6 @@ export default function TaskPage() {
   const users = (dataUsers?.pages.flat() ?? []) as User[];
 
   const groupedTask = groupBy(tasks, "date");
-  console.log(groupedTask);
 
   return (
     <Flex
@@ -90,6 +98,7 @@ export default function TaskPage() {
         <Flex w="100%" gap={15} p={2}>
           <Flex w="100%" gap={5}>
             <Input
+              onChange={(e) => setSearch(e.currentTarget.value.trim())}
               placeholder="Search"
               leftSection={<IconSearch size="16px" />}
               flex={1}
@@ -97,6 +106,7 @@ export default function TaskPage() {
             />
 
             <Select
+              onChange={(e) => setStatus(e)}
               leftSection={<IconFilterFilled size="12px" />}
               radius="sm"
               data={[
@@ -108,29 +118,29 @@ export default function TaskPage() {
         </Flex>
 
         <Flex w="100%" gap={15} p={2}>
-          <Select
-            flex={1}
-            label="Assigned to"
-            leftSection={<IconUser size="16px" />}
-            radius="sm"
-            data={[{ label: "Enterness", value: "active" }]}
-          />
+          <Flex direction="column">
+            <Text>Assigned to</Text>
 
-          <Select
-            flex={1}
-            label="Client"
-            leftSection={<IconUser size="16px" />}
-            radius="sm"
-            data={[{ label: "Enterness", value: "active" }]}
-          />
+            <SelectUserFilter onChange={setAssignedTo} />
+          </Flex>
 
-          <Select
-            flex={1}
-            label="Category"
-            leftSection={<IconUser size="16px" />}
-            radius="sm"
-            data={[{ label: "Enterness", value: "active" }]}
-          />
+          <Flex direction="column">
+            <Text>Client</Text>
+
+            <SelectClientFilter onChange={setclientId} />
+          </Flex>
+
+          <Flex direction="column">
+            <Text>Project</Text>
+
+            <SelectProjectFilter onChange={setProjectId} />
+          </Flex>
+
+          <Flex direction="column">
+            <Text>Project category</Text>
+
+            <SelectCategoryFilter onChange={null} projectId={8} />
+          </Flex>
         </Flex>
       </Paper>
 

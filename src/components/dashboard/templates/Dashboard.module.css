@@ -8,5 +8,5 @@
 }
 
 .menu:hover {
-  background: #F8F8F8;
+  background: "light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-5))";
 }
