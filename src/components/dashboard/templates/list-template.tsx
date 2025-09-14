@@ -1,8 +1,9 @@
 "use client";
 
-import { Avatar, Flex, Paper, Text } from "@mantine/core";
+import { Avatar, Box, Flex, Paper, Text } from "@mantine/core";
 import { IconContract } from "@tabler/icons-react";
 import { FC, ReactNode } from "react";
+import { Header } from "../organisms/header";
 
 type ListTemplateProps = {
   header: {
@@ -11,6 +12,7 @@ type ListTemplateProps = {
     description?: string;
     button?: ReactNode;
   };
+  listType?: "grid" | "row";
   searchPanel?: ReactNode;
   cards: ReactNode[];
 };
@@ -19,6 +21,7 @@ export const ListTemplate: FC<ListTemplateProps> = ({
   header,
   searchPanel,
   cards,
+  listType = "grid",
 }) => (
   <Flex
     p={20}
@@ -28,43 +31,36 @@ export const ListTemplate: FC<ListTemplateProps> = ({
       maxWidth: "1300px",
     }}
   >
-    <Flex w="100%" justify="space-between" align="center" pb={20} pt={10}>
-      <Flex gap={20}>
-        <Avatar size="lg">
-          {header.icon}
-        </Avatar>
-
-        <Flex direction="column">
-          <Text size="2xl" fw={500}>
-            {header.title}
-          </Text>
-
-          {header?.description && <Text>{header.description}</Text>}
-        </Flex>
-      </Flex>
-
-      {header?.button ?? ""}
-    </Flex>
+    <Header {...header} />
 
     {searchPanel && (
-      <Paper
-        p={4}
-        mb={10}
+      <Box
+        py={5}
+        mb={5}
         pos="sticky"
         top="10px"
         style={{
           zIndex: 1,
         }}
-        withBorder={false}
       >
         {searchPanel}
-      </Paper>
+      </Box>
     )}
 
-    <Flex w="100%" wrap="wrap" gap={10}>
-      {cards.map((card) => (
-        <Flex w={{ base: "100%", md: "calc(50% - 5px)" }}>{card}</Flex>
-      ))}
-    </Flex>
+    {listType === "grid" && (
+      <Flex w="100%" wrap="wrap" gap={10}>
+        {cards.map((card) => (
+          <Flex w={{ base: "100%", md: "calc(50% - 5px)" }}>{card}</Flex>
+        ))}
+      </Flex>
+    )}
+
+    {listType === "row" && (
+      <Flex w="100%" direction="column" gap={10}>
+        {cards.map((card) => (
+          <Flex w="100%">{card}</Flex>
+        ))}
+      </Flex>
+    )}
   </Flex>
 );

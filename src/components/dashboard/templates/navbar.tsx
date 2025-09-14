@@ -3,6 +3,7 @@
 import {
   Divider,
   Flex,
+  Paper,
   Switch,
   Text,
   Tooltip,
@@ -10,6 +11,7 @@ import {
 } from "@mantine/core";
 import {
   IconBusinessplan,
+  IconChevronRight,
   IconCircleDottedLetterP,
   IconClockHour9,
   IconContract,
@@ -23,7 +25,9 @@ import {
   IconNotebook,
   IconNotes,
   IconPlus,
+  IconSettings,
   IconSun,
+  IconUser,
   IconUsers,
   IconUsersGroup,
 } from "@tabler/icons-react";
@@ -32,14 +36,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
+import { Logo } from "../atoms/logo";
 
 export const Dashboard = ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
-  const isMobile = useMediaQuery(`(max-width: 900px)`);
-  const pathname = usePathname();
+  const collapsed = useMediaQuery(`(max-width: 900px)`);
 
-  const collapsed = pathname === "/" || isMobile;
   const [reportItemOpened, setReportItemOpened] = useState<boolean>(false);
 
   return (
@@ -61,15 +64,13 @@ export const Dashboard = ({
         >
           <Flex direction="column" w="100%" align="end">
             <Flex
-              w={collapsed ? 30 : 50}
-              h={collapsed ? 30 : 50}
+              w={collapsed ? 30 : 35}
+              h={30}
               m={collapsed ? 15 : 20}
-              style={{
-                background: "url('/logo.svg')no-repeat",
-                backgroundSize: "cover",
-              }}
               mb={40}
-            />
+            >
+              <Logo size={30} />
+            </Flex>
 
             <Flex direction="column" w="100%">
               {menuItems.map((item) => (
@@ -126,8 +127,13 @@ export const Dashboard = ({
                 }}
               >
                 {!collapsed && (
-                  <Text size="sm" fw={500} flex={1}  color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))">
-                    Reports
+                  <Text
+                    size="sm"
+                    fw={500}
+                    flex={1}
+                    color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))"
+                  >
+                    Analytics
                   </Text>
                 )}
 
@@ -141,7 +147,7 @@ export const Dashboard = ({
               </Flex>
 
               {reportItemOpened &&
-                menuReportItems.map((reportItem) => (
+                menuAnalyticsItems.map((reportItem) => (
                   <Tooltip
                     label={reportItem.text}
                     arrowSize={4}
@@ -186,26 +192,27 @@ export const Dashboard = ({
           </Flex>
 
           <Flex mb={10} direction="column">
-            <Flex
-              className={classes.menu}
-              h={30}
-              w="100%"
-              align="center"
-              px={10}
-            >
-              <Text size="sm" fw={500} flex={1}>
-                Felipe Olivei..
-              </Text>
+            {collapsed ? (
+              <Paper m={10} withBorder={false} p={10}>
+                <Flex align="center" justify="center">
+                  <IconUser size="11px" />
+                </Flex>
+              </Paper>
+            ) : (
+              <Paper m={10} withBorder={false} p={10}>
+                <Flex align="center">
+                  <Flex direction="column" flex={1}>
+                    <Text size="xs">Account</Text>
 
-              <Flex
-                w={30}
-                h={30}
-                bg="blue"
-                style={{
-                  borderRadius: "5px",
-                }}
-              />
-            </Flex>
+                    <Text size="sm" fw={500}>
+                      Google
+                    </Text>
+                  </Flex>
+
+                  <IconChevronRight size="11px" />
+                </Flex>
+              </Paper>
+            )}
 
             <Divider m={10} mb={0} />
 
@@ -217,7 +224,7 @@ export const Dashboard = ({
           justify="center"
           ml={collapsed ? 60 : 210}
           style={{
-            backgroundColor: `light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6))`,
+            backgroundColor: `light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7))`,
             width: `calc(100% - ${collapsed ? 60 : 210}px)`,
           }}
         >
@@ -266,24 +273,41 @@ const menuItems = [
     icon: <IconLayoutCollage {...iconAttributes} />,
     link: "/dashboard",
   },
-  { text: "To do", icon: <IconListCheck {...iconAttributes} />, link: "/" },
   {
-    text: "Clients",
+    text: "Create Publication",
     icon: <IconUsersGroup {...iconAttributes} />,
     link: "/clients",
   },
   {
-    text: "Projects",
+    text: "Campaigns",
     icon: <IconFlask {...iconAttributes} />,
     link: "/projects",
   },
   {
-    text: "Quotes",
+    text: "Schedule",
+    icon: <IconFlask {...iconAttributes} />,
+    link: "/projects",
+  },
+  {
+    text: "Knowledgment AI",
     icon: <IconContract {...iconAttributes} />,
     link: "/quotes",
   },
-  { text: "Tasks", icon: <IconNotebook {...iconAttributes} />, link: "/tasks" },
-  { text: "Team", icon: <IconUsers {...iconAttributes} />, link: "/users" },
+  {
+    text: "Social Profiles",
+    icon: <IconCircleDottedLetterP {...iconAttributes} />,
+    link: "/my-plan",
+  },
+  {
+    text: "Settings",
+    icon: <IconSettings {...iconAttributes} />,
+    link: "/my-plan",
+  },
+  {
+    text: "Support",
+    icon: <IconNotebook {...iconAttributes} />,
+    link: "/tasks",
+  },
   {
     text: "My plan",
     icon: <IconCircleDottedLetterP {...iconAttributes} />,
@@ -291,30 +315,20 @@ const menuItems = [
   },
 ];
 
-const menuReportItems = [
+const menuAnalyticsItems = [
   {
-    text: "Time",
+    text: "General",
     icon: <IconClockHour9 {...iconAttributes} />,
     link: "/reports/time",
   },
   {
-    text: "Tasks",
+    text: "Engagement",
     icon: <IconNote {...iconAttributes} />,
     link: "/reports/tasks",
   },
   {
-    text: "Clients",
+    text: "Reach",
     icon: <IconBusinessplan {...iconAttributes} />,
     link: "/reports/clients",
-  },
-  {
-    text: "Projects",
-    icon: <IconFlask {...iconAttributes} />,
-    link: "/reports/projects",
-  },
-  {
-    text: "Quotes",
-    icon: <IconNotes {...iconAttributes} />,
-    link: "/reports/quotes",
   },
 ];
