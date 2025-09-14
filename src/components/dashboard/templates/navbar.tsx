@@ -276,37 +276,37 @@ const menuItems = [
   {
     text: "Create Publication",
     icon: <IconUsersGroup {...iconAttributes} />,
-    link: "/clients",
+    link: "/publications/create",
   },
   {
     text: "Campaigns",
     icon: <IconFlask {...iconAttributes} />,
-    link: "/projects",
+    link: "/campaings",
   },
   {
     text: "Schedule",
     icon: <IconFlask {...iconAttributes} />,
-    link: "/projects",
+    link: "/schedule",
   },
   {
     text: "Knowledgment AI",
     icon: <IconContract {...iconAttributes} />,
-    link: "/quotes",
+    link: "/knowledgment-ai",
   },
   {
     text: "Social Profiles",
     icon: <IconCircleDottedLetterP {...iconAttributes} />,
-    link: "/my-plan",
+    link: "/social-profiles",
   },
   {
     text: "Settings",
     icon: <IconSettings {...iconAttributes} />,
-    link: "/my-plan",
+    link: "/settings",
   },
   {
     text: "Support",
     icon: <IconNotebook {...iconAttributes} />,
-    link: "/tasks",
+    link: "/supports",
   },
   {
     text: "My plan",
