@@ -6,9 +6,13 @@ import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import {
   ActionIcon,
+  Badge,
+  Box,
   Button,
   Card,
+  Divider,
   Flex,
+  Image,
   Input,
   Menu,
   SegmentedControl,
@@ -75,6 +79,59 @@ export default function Schedule() {
                 },
               })}
             />
+
+            {[...Array(6)].map(() => (
+              <>
+                <Flex w="100%">
+                  <Flex
+                    direction="column"
+                    align="center"
+                    w="150px"
+                    style={{
+                      minWidth: "150px",
+                    }}
+                  >
+                    <Text fw={600}>12:30</Text>
+
+                    <Text fw={600}>Jan 2025</Text>
+                  </Flex>
+
+                  <Flex direction="column" flex={1}>
+                    <Flex gap={10}>
+                      <Image src="#" w="50px" h="50px" />
+
+                      <Flex direction="column">
+                        <Text>
+                          ausd asud dua uasd asud sau uad ud aud auda du dua
+                          duad aud u
+                        </Text>
+
+                        <Flex gap={10} align="center" mt={5}>
+                          <Image src="#" w="20px" h="20px" />
+
+                          <Text>Page name</Text>
+
+                          <Box
+                            w="5px"
+                            h="5px"
+                            bg="violet"
+                            style={{
+                              borderRadius: "50%",
+                            }}
+                          />
+
+                          <Text>Facebook</Text>
+                        </Flex>
+                      </Flex>
+                    </Flex>
+                  </Flex>
+
+                  <Badge>Published</Badge>
+                </Flex>
+
+                <Divider />
+              </>
+            ))}
 
             <Flex direction="column" align="center" my={20} gap={10}>
               <IconClock size="30px" />

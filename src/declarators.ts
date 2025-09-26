@@ -1,6 +1,38 @@
+export type SocialProfile = {
+  id: number;
+  channel: string;
+  profileId: string;
+  profileTitle: string;
+  secretToken?: string;
+  type: string;
+};
+
+export type Account = {
+  id: number;
+  accountName: string;
+  additionalInstructions?: string;
+  audience?: string;
+  description?: string;
+  industry: string;
+  language: string;
+  useEmoji: boolean;
+  toneOfVoice?: string;
+  createdAt: string;
+};
+
+export type Ticket = {
+  category: string;
+  subject: string;
+  message: string;
+  status: "opened" | "closed";
+  response?: string;
+};
+
+////////////////
+
 export type Client = {
   accountId: number;
-  id:number;
+  id: number;
   name: string;
   phones?: string[];
   emails?: string[];
@@ -10,47 +42,53 @@ export type Client = {
   projects?: any[];
 };
 
-
-export type ProjectType = 'quote'|'item'|'job'|'note';
+export type ProjectType = "quote" | "item" | "job" | "note";
 
 export type Project = {
-    id: number;
-    type: ProjectType;
-    title: string;
-    description?: string;
-    notes?: string;
-    client?: Client;
-}
+  id: number;
+  type: ProjectType;
+  title: string;
+  description?: string;
+  notes?: string;
+  client?: Client;
+};
 
 export type Category = {
-    id: number;
-    projectId: number;
-    title: string;
-}
+  id: number;
+  projectId: number;
+  title: string;
+};
 
 export type Task = {
-    id: number;
-    categoryId: number;
-    title: string;
-    description?: string;
-    time: number;
-}
+  id: number;
+  categoryId: number;
+  title: string;
+  description?: string;
+  time: number;
+};
 
 export type User = {
-    id: number;
-    name: string;
-    email: string;
-    photo?: string;
-    role: string;
-    pricePerHour: number;
-}
+  id: number;
+  name: string;
+  email: string;
+  photo?: string;
+  role: string;
+  pricePerHour: number;
+};
 
-type WeekDay = 'sunday'|'monday'|'tuesday'|'wednesday'|'thursday'|'friday'|'saturday'
+type WeekDay =
+  | "sunday"
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday";
 
 export type Config = {
-    weekBusinessDays: WeekDay[];
-    hoursPerDay: number;
-}
+  weekBusinessDays: WeekDay[];
+  hoursPerDay: number;
+};
 
 export type Quote = {
   title: string;

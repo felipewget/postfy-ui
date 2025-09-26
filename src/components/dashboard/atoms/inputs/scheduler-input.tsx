@@ -24,6 +24,7 @@ export const SchedulerInput: FC<SchedulerInputProps> = ({
   return (
     <DateTimePicker
       w="200px"
+      valueFormat="DD/MM/YYYY HH:mm"
       radius="md"
       placeholder="Schedule this publication"
       value={value}

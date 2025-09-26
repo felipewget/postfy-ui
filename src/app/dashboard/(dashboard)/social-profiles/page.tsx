@@ -1,18 +1,45 @@
 "use client";
 
+import { useList } from "@/apis/crud.api";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
-import { Button, Card, Flex, Input, Menu, Select } from "@mantine/core";
+import { BASE_BACKEND_URL } from "@/constants";
+import { SocialProfile } from "@/declarators";
+import {
+  Button,
+  Card,
+  Flex,
+  Image,
+  Input,
+  Menu,
+  Select,
+  Text,
+} from "@mantine/core";
+import { useDebouncedState } from "@mantine/hooks";
 import {
   IconFilterFilled,
   IconMessages,
   IconSearch,
   IconUsersGroup,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function Campaigns() {
+  const [search, setSearch] = useDebouncedState("", 300);
+  const [channel, setChannel] = useDebouncedState(null, 300);
+
+  const { data } = useList({
+    entity: "social-profiles",
+    params: {
+      search,
+      searchFields: "profileTitle",
+      filters: { channel },
+    }
+  });
+
+  const socialProfiles = (data?.pages.flat() ?? []) as SocialProfile[];
+
   return (
     <ListTemplate
-      listType="row"
       header={{
         icon: <IconUsersGroup size="30px" />,
         title: "Social profiles",
@@ -30,11 +57,19 @@ export default function Campaigns() {
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<IconMessages size={16} stroke={1.5} />}
+                <Link
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  target="_blank"
+                  href={`${BASE_BACKEND_URL}/social-profiles/facebook/auth`}
                 >
-                  Facebook
-                </Menu.Item>
+                  <Menu.Item
+                    leftSection={<IconMessages size={16} stroke={1.5} />}
+                  >
+                    Facebook
+                  </Menu.Item>
+                </Link>
 
                 <Menu.Item
                   leftSection={<IconMessages size={16} stroke={1.5} />}
@@ -59,66 +94,42 @@ export default function Campaigns() {
               placeholder="Search"
               leftSection={<IconSearch size="16px" />}
               flex={1}
-              //   onChange={(e) => setSearch(e.currentTarget.value.trim())}
+              onChange={(e) => setSearch(e.currentTarget.value.trim())}
               radius="sm"
             />
 
             <Select
               leftSection={<IconFilterFilled size="12px" />}
               radius="sm"
-              //   onChange={(e) => setStatus(e)}
+              onChange={(e) => setChannel(e)}
               data={[
-                { label: "Active", value: "active" },
+                { label: "Facebook", value: "facebook" },
                 { label: "Inactive", value: "inactive" },
               ]}
             />
           </Flex>
         </Flex>
       }
-      cards={[
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-        <Card />,
-      ]}
+      cards={socialProfiles.map((profile) => (
+        <Card p={10} w="100%">
+          <Flex gap={10} align="center">
+            <Image
+              src={`https://graph.facebook.com/${profile.profileId}/picture?type=large`}
+              w={50}
+              h={50}
+              radius="sm"
+            />
+
+            <Flex direction="column">
+              <Text size="sm" c="dimmed">
+                {profile.channel}
+              </Text>
+
+              <Text fw={600}>{profile.profileTitle}</Text>
+            </Flex>
+          </Flex>
+        </Card>
+      ))}
     />
   );
 }

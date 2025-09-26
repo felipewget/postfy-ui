@@ -1,11 +1,18 @@
 "use client";
 
+import { useList } from "@/apis/crud.api";
+import { useGetTickets } from "@/apis/ticket.api";
 import { CalendarFilter } from "@/components/dashboard/atoms/inputs/calendar-filter";
+import { ModalAddTicket } from "@/components/dashboard/molecules/ticket/modal-add-ticket";
+import { TicketCard } from "@/components/dashboard/molecules/ticket/ticket-card";
 import { Header } from "@/components/dashboard/organisms/header";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
+import { useDashboardContext } from "@/components/dashboard/templates/navbar";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
+import { Ticket } from "@/declarators";
 import {
   ActionIcon,
+  Badge,
   Box,
   Button,
   Card,
@@ -33,15 +40,35 @@ import {
   IconTrash,
   IconUsersGroup,
 } from "@tabler/icons-react";
+import { useState } from "react";
 
 export default function Support() {
+  const [status, setStatus] = useState();
+  const { selectedAccount } = useDashboardContext();
+
+  if (!selectedAccount) return null;
+
+  const { data } = useGetTickets({
+    accountId: selectedAccount.id,
+    params: {
+      filters: { status },
+    },
+  });
+
+  const tickets = (data?.pages.flat() ?? []) as Ticket[];
+
   return (
     <PageTemplate maxWidth="800px">
       <Header
         icon={<IconUsersGroup size="30px" />}
         title="Support"
         description="Manage your clients, link them with projects base knowledgment"
-        button={<Button radius="md">Open ticket</Button>}
+        button={
+          <ModalAddTicket
+            accountId={selectedAccount.id}
+            element={<Button radius="md">Open ticket</Button>}
+          />
+        }
       />
 
       <Flex direction="column">
@@ -59,24 +86,44 @@ export default function Support() {
         </Card>
 
         <Flex mt={20} w="100%" justify="space-between" align="center">
-          <Text size="lg" fw={500}>Tickets</Text>
+          <Text size="lg" fw={500}>
+            Tickets
+          </Text>
 
-          <Select data={[{ value: "opened", label: "Opened tickets" }]} />
+          <Select
+            onChange={(value) => setStatus(value)}
+            data={[
+              { value: "opened", label: "Opened tickets" },
+              { value: "closed", label: "Closed tickets" },
+            ]}
+          />
         </Flex>
 
-        <Card mt={10} withBorder={false}>
-          <Flex justify="center">
-            <Flex direction="column">
-              <Text>You dont have opened tickets yet</Text>
-
-              <Text>
-                Create your first support ticket to get help from our team.
-              </Text>
-
-              <Button>create your first ticket</Button>
+        {tickets.length > 0 && (
+          <Card mt={10} withBorder={false}>
+            <Flex direction="column" gap={10}>
+              {tickets.map((ticket) => (
+                <TicketCard ticket={ticket} />
+              ))}
             </Flex>
-          </Flex>
-        </Card>
+          </Card>
+        )}
+
+        {tickets.length === 0 && (
+          <Card mt={10} withBorder={false}>
+            <Flex justify="center">
+              <Flex direction="column">
+                <Text>You dont have opened tickets yet</Text>
+
+                <Text>
+                  Create your first support ticket to get help from our team.
+                </Text>
+
+                <Button>create your first ticket</Button>
+              </Flex>
+            </Flex>
+          </Card>
+        )}
       </Flex>
     </PageTemplate>
   );
