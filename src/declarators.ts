@@ -97,3 +97,62 @@ export type Quote = {
   project_id: string;
   content_id: string;
 };
+
+type ContentType =
+  | "Tips & Tricks"
+  | "Industry Insight"
+  | "Article / Blog Summary"
+  | "Quote / Inspiration"
+  | "Behind the Scenes"
+  | "Poll"
+  | "Client Story"
+  | "Stats & Data"
+  | "Listicle"
+  | "Founder's Note";
+
+export type Campaign = {
+  id: number;
+
+  createdAt: Date;
+  updatedAt: Date;
+
+  enabled: boolean;
+  title: string;
+  needsApprovation: boolean;
+  emailToApprove?: string | null;
+
+  monday?: ContentType | null;
+  mondayHour?: string | null;
+  mondayConfig?: any;
+
+  tuesday?: ContentType | null;
+  tuesdayHour?: string | null;
+  tuesdayConfig?: any;
+
+  wednesday?: ContentType | null;
+  wednesdayHour?: string | null;
+  wednesdayConfig?: any;
+
+  thursday?: ContentType | null;
+  thursayHour?: string | null;
+  thursayConfig?: any;
+
+  friday?: ContentType | null;
+  fridayHour?: string | null;
+  fridayConfig?: any;
+
+  saturday?: ContentType | null;
+  saturdayHour?: string | null;
+  saturdayConfig?: any;
+
+  sunday?: ContentType | null;
+  sundayHour?: string | null;
+  sundayConfig?: any;
+
+  profiles: number[]; // ou Profiles[], se quiser tipar o objeto inteiro
+  accountId: number; // simplificado para id da conta
+};
+
+export type CampaignWithProfile = Campaign & {
+  profiles: SocialProfile[];
+}

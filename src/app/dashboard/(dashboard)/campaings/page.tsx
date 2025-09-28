@@ -1,11 +1,13 @@
 "use client";
 
 import { useListCampaign } from "@/apis/campaign.api";
+import { useList } from "@/apis/crud.api";
 import { CampaignCard } from "@/components/dashboard/molecules/campaign/campaign-card";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { useDashboardContext } from "@/components/dashboard/templates/navbar";
-import { Campaign } from "@/constants";
+import { Campaign, SocialProfile } from "@/declarators";
 import { Button, Card, Flex, Input, Select, Text } from "@mantine/core";
+import { useDebouncedState } from "@mantine/hooks";
 import {
   IconFilterFilled,
   IconSearch,
@@ -13,13 +15,18 @@ import {
 } from "@tabler/icons-react";
 
 export default function Campaigns() {
+  const [search, setSearch] = useDebouncedState("", 300);
+  const [enabled, setEnabled] = useDebouncedState("", 300);
+  
   const { selectedAccount } = useDashboardContext();
 
   if (!selectedAccount) return null;
 
   const { data } = useListCampaign({
     accountId: selectedAccount.id,
-    params: {},
+    params: {
+      search
+    },
   });
 
   const campaigns = (data?.pages.flat() ?? []) as Campaign[];
@@ -40,7 +47,7 @@ export default function Campaigns() {
               placeholder="Search"
               leftSection={<IconSearch size="16px" />}
               flex={1}
-              //   onChange={(e) => setSearch(e.currentTarget.value.trim())}
+              onChange={(e) => setSearch(e.currentTarget.value.trim())}
               radius="sm"
             />
 
@@ -57,7 +64,7 @@ export default function Campaigns() {
         </Flex>
       }
       cards={campaigns.map((campaign) => (
-        <CampaignCard key={campaign.id} />
+        <CampaignCard key={campaign.id} campaign={campaign} />
       ))}
     />
   );

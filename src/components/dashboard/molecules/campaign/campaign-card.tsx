@@ -1,3 +1,4 @@
+import { Campaign, CampaignWithProfile, SocialProfile } from "@/declarators";
 import {
   Avatar,
   Badge,
@@ -11,9 +12,12 @@ import {
   Text,
 } from "@mantine/core";
 import { IconSchema } from "@tabler/icons-react";
+import moment from "moment";
 import { FC } from "react";
 
-export const CampaignCard: FC<any> = () => {
+export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
+  campaign,
+}) => {
   return (
     <Card flex={1} p={20} withBorder={false}>
       <Flex gap={20}>
@@ -25,15 +29,22 @@ export const CampaignCard: FC<any> = () => {
           <Flex align="start" justify="space-between">
             <Flex direction="column">
               <Text fw={600} size="lg">
-                Text si i dids si s s ds dsadisa
+                {campaign.title}
               </Text>
 
               <Text c="dimmed" size="sm">
-                Created at: 16/08/2025
+                Created at: {moment(campaign.createdAt).format("DD/MM/YYYY")}
               </Text>
-              <Text c="dimmed" size="sm">
+
+              {campaign.needsApprovation && (
+                <Text c="dimmed" size="sm">
+                  Needs approbation of: {campaign.emailToApprove}
+                </Text>
+              )}
+
+              {/* <Text c="dimmed" size="sm">
                 Ends at: 26/08/2025
-              </Text>
+              </Text> */}
             </Flex>
 
             <Badge size="md" radius="sm">
@@ -46,7 +57,45 @@ export const CampaignCard: FC<any> = () => {
               Schedule content
             </Text>
 
-            <WeekSchedule />
+            <Flex wrap="wrap" gap={10}>
+              {[
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday",
+              ].map((day) => {
+                if (!campaign[day]) return null;
+
+                const iaEnabled =
+                  campaign[`${day}Config`]?.imagesEnabled ?? false;
+
+                return (
+                  <Card p={10}>
+                    <Text fw={500} size="xs">
+                      {day} - {campaign[`${day}Hour`]}
+                    </Text>
+
+                    <Text fw={500} size="md">
+                      {campaign[day]}
+                    </Text>
+
+                    <Text fw={500} size="xs">
+                      Images enabled:{" "}
+                      {iaEnabled
+                        ? `Yes (${
+                            campaign[`${day}Config`]?.images?.iaGenerated
+                              ? "IA"
+                              : campaign[`${day}Config`]?.images?.category
+                          })`
+                        : "No"}
+                    </Text>
+                  </Card>
+                );
+              })}
+            </Flex>
           </Card>
 
           <Card mt={10} p={10}>
@@ -55,14 +104,14 @@ export const CampaignCard: FC<any> = () => {
             </Text>
 
             <Flex gap={10} wrap="wrap">
-              {[...Array(5)].map(() => (
+              {campaign.profiles.map((socialProfile) => (
                 <Card p={10}>
                   <Flex gap={20}>
                     <Image src="#" w={30} h={30} />
 
                     <Flex direction="column">
-                      <Text>Facebook</Text>
-                      <Text>aosis oi djsaoidj soidasoi</Text>
+                      <Text>{socialProfile.channel}</Text>
+                      <Text>{socialProfile.profileTitle}</Text>
                     </Flex>
                   </Flex>
                 </Card>
@@ -84,48 +133,5 @@ export const CampaignCard: FC<any> = () => {
         </Flex>
       </Flex>
     </Card>
-  );
-};
-
-const elements = [
-  {
-    sunday: "Provocative",
-    monday: "Provocative",
-    tuesday: "Provocative",
-    wednesday: "Provocative",
-    thursday: "Provocative",
-    friday: "Provocative",
-    saturday: "Provocative",
-  },
-];
-
-const WeekSchedule = () => {
-  const rows = elements.map((element, key) => (
-    <Table.Tr key={key}>
-      <Table.Td>{element.sunday}</Table.Td>
-      <Table.Td>{element.monday}</Table.Td>
-      <Table.Td>{element.tuesday}</Table.Td>
-      <Table.Td>{element.wednesday}</Table.Td>
-      <Table.Td>{element.thursday}</Table.Td>
-      <Table.Td>{element.friday}</Table.Td>
-      <Table.Td>{element.saturday}</Table.Td>
-    </Table.Tr>
-  ));
-
-  return (
-    <Table>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>Sunday</Table.Th>
-          <Table.Th>Monday</Table.Th>
-          <Table.Th>Tuesday</Table.Th>
-          <Table.Th>Wednesday</Table.Th>
-          <Table.Th>Thursday</Table.Th>
-          <Table.Th>Friday</Table.Th>
-          <Table.Th>Saturday</Table.Th>
-        </Table.Tr>
-      </Table.Thead>
-      <Table.Tbody>{rows}</Table.Tbody>
-    </Table>
   );
 };
