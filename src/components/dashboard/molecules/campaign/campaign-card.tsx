@@ -2,6 +2,7 @@ import { Campaign, CampaignWithProfile, SocialProfile } from "@/declarators";
 import {
   Avatar,
   Badge,
+  Box,
   Card,
   Divider,
   Flex,
@@ -19,10 +20,10 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
   campaign,
 }) => {
   return (
-    <Card flex={1} p={20} withBorder={false}>
+    <Card flex={1} p={20} withBorder={false} radius="sm">
       <Flex gap={20}>
-        <Avatar radius="md">
-          <IconSchema />
+        <Avatar radius="sm">
+          {campaign.title[0].toLocaleUpperCase()}
         </Avatar>
 
         <Flex direction="column" w="100%">
@@ -32,12 +33,12 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
                 {campaign.title}
               </Text>
 
-              <Text c="dimmed" size="sm">
+              <Text c="dimmed" size="xs">
                 Created at: {moment(campaign.createdAt).format("DD/MM/YYYY")}
               </Text>
 
               {campaign.needsApprovation && (
-                <Text c="dimmed" size="sm">
+                <Text c="dimmed" size="xs">
                   Needs approbation of: {campaign.emailToApprove}
                 </Text>
               )}
@@ -52,9 +53,9 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
             </Badge>
           </Flex>
 
-          <Card mt={10} p={10}>
-            <Text size="sm" fw={600} mb={10}>
-              Schedule content
+          <Box mt={10}>
+            <Text size="xs" fw={600} mb={10}>
+              Week content
             </Text>
 
             <Flex wrap="wrap" gap={10}>
@@ -73,12 +74,12 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
                   campaign[`${day}Config`]?.imagesEnabled ?? false;
 
                 return (
-                  <Card p={10}>
+                  <Card p={10} radius="sm">
                     <Text fw={500} size="xs">
                       {day} - {campaign[`${day}Hour`]}
                     </Text>
 
-                    <Text fw={500} size="md">
+                    <Text fw={500} size="sm">
                       {campaign[day]}
                     </Text>
 
@@ -96,22 +97,24 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
                 );
               })}
             </Flex>
-          </Card>
+          </Box>
 
-          <Card mt={10} p={10}>
-            <Text size="sm" fw={600} mb={10}>
+          <Card mt={10} p={10} radius="sm">
+            <Text size="xs" fw={600} mb={10}>
               Social profiles
             </Text>
 
             <Flex gap={10} wrap="wrap">
               {campaign.profiles.map((socialProfile) => (
-                <Card p={10}>
-                  <Flex gap={20}>
-                    <Image src="#" w={30} h={30} />
+                <Card p={5} px={10} radius="sm">
+                  <Flex gap={10} align="center">
+                    <Image src="#" w={20} h={20} />
 
                     <Flex direction="column">
-                      <Text>{socialProfile.channel}</Text>
-                      <Text>{socialProfile.profileTitle}</Text>
+                      <Text fw={500} size="10px">
+                        {socialProfile.channel}
+                      </Text>
+                      <Text size="sm">{socialProfile.profileTitle}</Text>
                     </Flex>
                   </Flex>
                 </Card>
@@ -122,11 +125,11 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
           <Divider my={10} />
 
           <Flex gap={10}>
-            <Badge size="sm" radius="sm">
+            <Badge size="sm" radius="sm" variant="light">
               Adaptative content for each social media: Yes
             </Badge>
 
-            <Badge size="sm" radius="sm">
+            <Badge size="sm" radius="sm" variant="light">
               Generated content: 13 contents
             </Badge>
           </Flex>

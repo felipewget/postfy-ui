@@ -1,11 +1,13 @@
 "use client";
 
+import { useListApprovedPublications } from "@/apis/publications.api";
 import { CalendarFilter } from "@/components/dashboard/atoms/inputs/calendar-filter";
+import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
+import { PublicationScheduleCard } from "@/components/dashboard/molecules/publication/publication-schedule-card";
 import { Header } from "@/components/dashboard/organisms/header";
-import { ListTemplate } from "@/components/dashboard/templates/list-template";
+import { useDashboardContext } from "@/components/dashboard/templates/navbar";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import {
-  ActionIcon,
   Badge,
   Box,
   Button,
@@ -13,25 +15,32 @@ import {
   Divider,
   Flex,
   Image,
-  Input,
-  Menu,
   SegmentedControl,
   Select,
-  Tabs,
   Text,
 } from "@mantine/core";
-import {
-  IconClock,
-  IconDots,
-  IconFilterFilled,
-  IconHome,
-  IconMessages,
-  IconSearch,
-  IconTrash,
-  IconUsersGroup,
-} from "@tabler/icons-react";
+import { IconCalendar, IconClock, IconUsersGroup } from "@tabler/icons-react";
+import moment from "moment";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function Schedule() {
+  const { selectedAccount } = useDashboardContext();
+  const [step, setStep] = useState("upcoming");
+  const [date, setDate] = useState();
+
+  const { data } = useListApprovedPublications({
+    accountId: selectedAccount?.id ?? 0,
+    params: {
+      filters: {
+        step,
+        date,
+      },
+    },
+  });
+
+  const approvedPublications = data?.pages.flat() ?? [];
+
   return (
     <PageTemplate>
       <Header
@@ -40,11 +49,17 @@ export default function Schedule() {
         description="Manage your clients, link them with projects base knowledgment"
         button={
           <Flex gap={10}>
-            <Button radius="md" variant="light">
-              Create publication
-            </Button>
+            <Link href="/publications/create">
+              <Button size="xs" radius="sm" variant="light">
+                Create publication
+              </Button>
+            </Link>
 
-            <Button radius="md">Manage campaigns</Button>
+            <Link href="/campaings">
+              <Button size="xs" radius="sm">
+                Manage campaigns
+              </Button>
+            </Link>
           </Flex>
         }
       />
@@ -54,100 +69,78 @@ export default function Schedule() {
           <Flex direction="column" gap={20}>
             <Flex justify="space-between" align="center">
               <Flex align="center" gap={10}>
-                <IconClock />
+                <IconCalendar />
 
-                <Text>Posts</Text>
+                <Text fw={500} size="lg">
+                  Pulications calendar
+                </Text>
               </Flex>
 
               <Select placeholder="All platforms" data={[]} radius="sm" />
             </Flex>
 
-            <SegmentedControl
-              // value={value}
-              // onChange={setValue}
-              data={[
-                { label: "Upcoming", value: "upcoming" },
-                { label: "Published", value: "published" },
-                { label: "Failed", value: "failed" },
-              ]}
-              radius="md"
-              size="sm"
-              fullWidth={false}
-              styles={(theme) => ({
-                control: {
-                  border: "none", // remove a divisória entre os itens
-                },
-              })}
-            />
+            {date && (
+              <Flex w="100%">
+                <Card withBorder={false} p={10} flex={1} bg="light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))">
+                  <Flex gap={20} align="center" justify="center">
+                    <Text fw={500} size="sm">
+                      Selected date: {moment(date).format("D [of] MMM, YYYY")}
+                    </Text>
+                  </Flex>
+                </Card>
+              </Flex>
+            )}
 
-            {[...Array(6)].map(() => (
+            {!date && (
+              <SegmentedControl
+                value={step}
+                onChange={setStep}
+                data={[
+                  { label: "Upcoming", value: "upcoming" },
+                  { label: "Published", value: "published" },
+                  { label: "Failed", value: "failed" },
+                ]}
+                radius="md"
+                size="sm"
+                fullWidth={false}
+                styles={(theme) => ({
+                  control: {
+                    border: "none",
+                  },
+                })}
+              />
+            )}
+
+            {approvedPublications.map((publication) => (
               <>
-                <Flex w="100%">
-                  <Flex
-                    direction="column"
-                    align="center"
-                    w="150px"
-                    style={{
-                      minWidth: "150px",
-                    }}
-                  >
-                    <Text fw={600}>12:30</Text>
-
-                    <Text fw={600}>Jan 2025</Text>
-                  </Flex>
-
-                  <Flex direction="column" flex={1}>
-                    <Flex gap={10}>
-                      <Image src="#" w="50px" h="50px" />
-
-                      <Flex direction="column">
-                        <Text>
-                          ausd asud dua uasd asud sau uad ud aud auda du dua
-                          duad aud u
-                        </Text>
-
-                        <Flex gap={10} align="center" mt={5}>
-                          <Image src="#" w="20px" h="20px" />
-
-                          <Text>Page name</Text>
-
-                          <Box
-                            w="5px"
-                            h="5px"
-                            bg="violet"
-                            style={{
-                              borderRadius: "50%",
-                            }}
-                          />
-
-                          <Text>Facebook</Text>
-                        </Flex>
-                      </Flex>
-                    </Flex>
-                  </Flex>
-
-                  <Badge>Published</Badge>
-                </Flex>
+                <PublicationScheduleCard publication={publication} />
 
                 <Divider />
               </>
             ))}
 
-            <Flex direction="column" align="center" my={20} gap={10}>
-              <IconClock size="30px" />
+            {approvedPublications.length === 0 && (
+              <NoContentBlock
+                image="/images/calendar.svg"
+                title="No publications"
+                description="Crete a custom new publication or program a campaign to create your publications automatically"
+                footer={
+                  <Flex gap={10}>
+                    <Link href="/publications/create">
+                      <Button radius="sm" size="xs" variant="light">
+                        Create publication
+                      </Button>
+                    </Link>
 
-              <Text>No publication for this day</Text>
-
-              <Text>aoidjasoid</Text>
-
-              <Flex gap={10}>
-                <Button radius="md" variant="light">
-                  Create publication
-                </Button>
-
-                <Button radius="md">Manage campaigns</Button>
-              </Flex>
-            </Flex>
+                    <Link href="/campaings">
+                      <Button radius="sm" size="xs">
+                        Manage campaigns
+                      </Button>
+                    </Link>
+                  </Flex>
+                }
+              />
+            )}
           </Flex>
         </Card>
 
@@ -161,7 +154,11 @@ export default function Schedule() {
             minWidth: "300px",
           }}
         >
-          <CalendarFilter />
+          <CalendarFilter
+            onChange={(date) =>
+              setDate(date ? moment(date).format("YYYY-MM-DD") : null)
+            }
+          />
 
           <Card my={20} withBorder={false} shadow="none">
             <Text fw={500} size="lg">

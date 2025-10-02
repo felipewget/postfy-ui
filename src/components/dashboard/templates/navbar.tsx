@@ -16,7 +16,9 @@ import {
   IconClockHour9,
   IconContract,
   IconFlask,
+  IconImageInPicture,
   IconLayoutCollage,
+  IconLibraryPhoto,
   IconListCheck,
   IconLogout,
   IconMinus,
@@ -45,17 +47,15 @@ type DashboardContextType = {
   selectedAccount?: Account;
 };
 
-const DashboardContext = createContext<DashboardContextType | null>(
-  null
-);
+const DashboardContext = createContext<DashboardContextType | null>(null);
 
 export const useDashboardContext = () => {
   const context = useContext(DashboardContext);
-  
+
   if (!context) throw new Error("Values are undefined");
 
   return context;
-}
+};
 
 export const Dashboard = ({
   children,
@@ -98,46 +98,58 @@ export const Dashboard = ({
               </Flex>
 
               <Flex direction="column" w="100%">
-                {menuItems.map((item) => (
-                  <Tooltip
-                    label={item.text}
-                    arrowSize={4}
-                    position="right"
-                    disabled={!collapsed}
-                  >
-                    <Link
-                      href={item.link}
-                      style={{
-                        textDecoration: "none",
-                      }}
+                {menuItems.map((item) => {
+                  if (item.type === "section") {
+                    if (collapsed) return null;
+
+                    return (
+                      <Flex mt={10} mb={5} px={20}>
+                        <Text size="xs">{item.text}</Text>
+                      </Flex>
+                    );
+                  }
+
+                  return (
+                    <Tooltip
+                      label={item.text}
+                      arrowSize={4}
+                      position="right"
+                      disabled={!collapsed}
                     >
-                      <Flex
-                        className={classes.menu}
-                        h={40}
-                        w="100%"
-                        align="center"
-                        pl={20}
-                        pr={30}
+                      <Link
+                        href={item.link}
                         style={{
-                          minWidth: "60px",
+                          textDecoration: "none",
                         }}
                       >
-                        {!collapsed && (
-                          <Text
-                            color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))"
-                            size="sm"
-                            fw={500}
-                            flex={1}
-                          >
-                            {item.text}
-                          </Text>
-                        )}
+                        <Flex
+                          className={classes.menu}
+                          h={40}
+                          w="100%"
+                          align="center"
+                          pl={20}
+                          pr={30}
+                          style={{
+                            minWidth: "60px",
+                          }}
+                        >
+                          {!collapsed && (
+                            <Text
+                              color="light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-2))"
+                              size="sm"
+                              fw={500}
+                              flex={1}
+                            >
+                              {item.text}
+                            </Text>
+                          )}
 
-                        <Flex color="black">{item.icon}</Flex>
-                      </Flex>
-                    </Link>
-                  </Tooltip>
-                ))}
+                          <Flex color="black">{item.icon}</Flex>
+                        </Flex>
+                      </Link>
+                    </Tooltip>
+                  );
+                })}
 
                 <Flex
                   className={classes.menu}
@@ -295,24 +307,32 @@ const iconAttributes = {
 
 const menuItems = [
   {
+    type: "link",
     text: "Dashboard",
     icon: <IconLayoutCollage {...iconAttributes} />,
     link: "/",
   },
   {
+    type: "link",
     text: "Create Publication",
     icon: <IconUsersGroup {...iconAttributes} />,
     link: "/publications/create",
   },
   {
+    type: "link",
     text: "Campaigns",
     icon: <IconFlask {...iconAttributes} />,
     link: "/campaings",
   },
   {
-    text: "Schedule",
+    type: "link",
+    text: "Calendar",
     icon: <IconFlask {...iconAttributes} />,
     link: "/schedule",
+  },
+  {
+    type: "section",
+    text: "Account configuration",
   },
   {
     text: "Knowledgment AI",
@@ -325,9 +345,18 @@ const menuItems = [
     link: "/social-profiles",
   },
   {
+    text: "Media bank",
+    icon: <IconLibraryPhoto {...iconAttributes} />,
+    link: "/social-profiles",
+  },
+  {
     text: "Settings",
     icon: <IconSettings {...iconAttributes} />,
     link: "/settings",
+  },
+  {
+    type: "section",
+    text: "Others",
   },
   {
     text: "Support",
