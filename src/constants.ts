@@ -1,4 +1,5 @@
 export const BASE_BACKEND_URL = "http://localhost:3001";
+export const BUCKET_URL = "http://localhost:9444/postfy/"
 
 export const TYPE_OF_CONTENT_OPTION = [
   {
@@ -245,3 +246,4 @@ export type Config = {
   weekBusinessDays: WeekDay[];
   hoursPerDay: number;
 };
+

@@ -29,7 +29,7 @@ export default function Schedule() {
   const [step, setStep] = useState("upcoming");
   const [date, setDate] = useState();
 
-  const { data } = useListApprovedPublications({
+  const { data, hasNextPage } = useListApprovedPublications({
     accountId: selectedAccount?.id ?? 0,
     params: {
       filters: {
@@ -65,7 +65,7 @@ export default function Schedule() {
       />
 
       <Flex my={20} gap={20} align="start">
-        <Card flex={1} withBorder={false}>
+        <Card flex={1} withBorder={false} radius="sm">
           <Flex direction="column" gap={20}>
             <Flex justify="space-between" align="center">
               <Flex align="center" gap={10}>
@@ -81,7 +81,13 @@ export default function Schedule() {
 
             {date && (
               <Flex w="100%">
-                <Card withBorder={false} p={10} flex={1} bg="light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))">
+                <Card
+                  radius="sm"
+                  withBorder={false}
+                  p={10}
+                  flex={1}
+                  bg="light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7))"
+                >
                   <Flex gap={20} align="center" justify="center">
                     <Text fw={500} size="sm">
                       Selected date: {moment(date).format("D [of] MMM, YYYY")}
@@ -112,12 +118,14 @@ export default function Schedule() {
             )}
 
             {approvedPublications.map((publication) => (
-              <>
-                <PublicationScheduleCard publication={publication} />
-
-                <Divider />
-              </>
+              <PublicationScheduleCard publication={publication} />
             ))}
+
+            {hasNextPage && (
+              <Flex w="100%" justify="center" my={10}>
+                <Button>Load more publications</Button>
+              </Flex>
+            )}
 
             {approvedPublications.length === 0 && (
               <NoContentBlock
@@ -160,17 +168,35 @@ export default function Schedule() {
             }
           />
 
-          <Card my={20} withBorder={false} shadow="none">
-            <Text fw={500} size="lg">
-              Connected social profiles
+          <Card my={20} withBorder={false} shadow="none" radius="sm" p={20}>
+            <Text fw={500}>Connected social profiles</Text>
+
+            <Text size="sm" c="dimmed">
+              No platform connected yet
             </Text>
 
-            <Text>No platform connected yet</Text>
-
-            <Flex mt={20} w="100%">
-              <Button radius="md" fullWidth variant="light">
+            <Flex mt={10} w="100%">
+              <Button radius="sm" fullWidth variant="light" size="xs">
                 Manage social profiles
               </Button>
+            </Flex>
+
+            <Flex direction="column" gap={10} w="100%">
+              <Divider mt={10} />
+
+              {[...Array(3)].map(() => (
+                <Flex gap={10} align="center">
+                  <Image src="#" w={25} h={25} />
+
+                  <Flex direction="column">
+                    <Text fw={500} size="sm">
+                      {"profile.profileTitle"}
+                    </Text>
+
+                    <Text size="xs">{"profile.channel"}</Text>
+                  </Flex>
+                </Flex>
+              ))}
             </Flex>
           </Card>
         </Card>

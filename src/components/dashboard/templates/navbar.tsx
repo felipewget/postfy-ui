@@ -332,7 +332,7 @@ const menuItems = [
   },
   {
     type: "section",
-    text: "Account configuration",
+    text: "Brand kit",
   },
   {
     text: "Knowledgment AI",
@@ -347,7 +347,7 @@ const menuItems = [
   {
     text: "Media bank",
     icon: <IconLibraryPhoto {...iconAttributes} />,
-    link: "/social-profiles",
+    link: "/media-bank",
   },
   {
     text: "Settings",

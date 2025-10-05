@@ -3,6 +3,7 @@
 import { useListCampaign } from "@/apis/campaign.api";
 import { useList } from "@/apis/crud.api";
 import { CampaignCard } from "@/components/dashboard/molecules/campaign/campaign-card";
+import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { useDashboardContext } from "@/components/dashboard/templates/navbar";
 import { Campaign, SocialProfile } from "@/declarators";
@@ -13,11 +14,12 @@ import {
   IconSearch,
   IconUsersGroup,
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function Campaigns() {
   const [search, setSearch] = useDebouncedState("", 300);
   const [enabled, setEnabled] = useDebouncedState("", 300);
-  
+
   const { selectedAccount } = useDashboardContext();
 
   if (!selectedAccount) return null;
@@ -25,7 +27,7 @@ export default function Campaigns() {
   const { data } = useListCampaign({
     accountId: selectedAccount.id,
     params: {
-      search
+      search,
     },
   });
 
@@ -38,7 +40,11 @@ export default function Campaigns() {
         icon: <IconUsersGroup size="30px" />,
         title: "Campaigns",
         description: "Manage your clients, link them with projects",
-        button: <Button radius="md">Create project</Button>,
+        button: (
+          <Button radius="sm" size="xs">
+            Create project
+          </Button>
+        ),
       }}
       searchPanel={
         <Flex w="100%" gap={15} p={2}>
@@ -66,6 +72,22 @@ export default function Campaigns() {
       cards={campaigns.map((campaign) => (
         <CampaignCard key={campaign.id} campaign={campaign} />
       ))}
+      noContentBlock={
+        <NoContentBlock
+          image="/images/write-post.svg"
+          title="No campaigns"
+          description="Crete a custom new publication or program a campaign to create your publications automatically"
+          footer={
+            <Flex gap={10}>
+              <Link href="/publications/create">
+                <Button radius="sm" size="xs">
+                  Create your first campaign
+                </Button>
+              </Link>
+            </Flex>
+          }
+        />
+      }
     />
   );
 }

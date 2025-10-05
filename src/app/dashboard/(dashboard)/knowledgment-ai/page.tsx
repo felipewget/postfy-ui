@@ -3,6 +3,7 @@
 import { useList } from "@/apis/crud.api";
 import { useListDocuments } from "@/apis/knowledgement-document.api";
 import { ModalAddDocuments } from "@/components/dashboard/molecules/knowledgment-document/modal-add-document";
+import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { Header } from "@/components/dashboard/organisms/header";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { useDashboardContext } from "@/components/dashboard/templates/navbar";
@@ -21,7 +22,7 @@ import {
   Text,
   Textarea,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDebouncedState, useDisclosure } from "@mantine/hooks";
 import {
   IconDots,
   IconFile,
@@ -36,14 +37,20 @@ import { useContext } from "react";
 
 export default function BrainAI() {
   const { selectedAccount } = useDashboardContext();
+
   if (!selectedAccount) return null;
+
+  const [search, setSearch] = useDebouncedState("", 300);
+  const [type, setType] = useDebouncedState("all", 300);
 
   const { data } = useListDocuments({
     accountId: selectedAccount.id,
-    sourceType: 'knowledment',
+    sourceType: "knowledment",
     params: {
-      // search,
-      // searchFields: "name,emails,websites",
+      search,
+      filters: {
+        type: type == "all" ? undefined : type,
+      },
     },
   });
 
@@ -57,7 +64,11 @@ export default function BrainAI() {
         description="Manage your clients, link them with projects base knowledgment"
         button={
           <ModalAddDocuments
-            element={<Button radius="md">Add knowledgment</Button>}
+            element={
+              <Button radius="sm" size="xs">
+                Add knowledgment
+              </Button>
+            }
             accountId={selectedAccount.id}
             sourceType="knowledment"
           />
@@ -69,13 +80,13 @@ export default function BrainAI() {
           placeholder="Search"
           leftSection={<IconSearch size="16px" />}
           flex={1}
-          //   onChange={(e) => setSearch(e.currentTarget.value.trim())}
+          onChange={(e) => setSearch(e.currentTarget.value.trim())}
           radius="sm"
         />
 
         <SegmentedControl
-          // value={value}
-          // onChange={setValue}
+          value={type}
+          onChange={setType}
           data={[
             { label: "All", value: "all" },
             { label: "Documents", value: "documents" },
@@ -95,7 +106,7 @@ export default function BrainAI() {
 
       <Flex direction="column" gap={10}>
         {documents.map((document) => (
-          <Card withBorder={false} p={15}>
+          <Card withBorder={false} p={15} radius="sm">
             <Flex direction="column" gap={10}>
               <Flex align="center" gap={20} justify="space-between">
                 <Flex gap={10} align="center">
@@ -106,8 +117,8 @@ export default function BrainAI() {
                   </Text>
                 </Flex>
 
-                <Button bg="red" size="xs" radius="sm">
-                  <IconTrash size="12px" />
+                <Button size="20px" px={5} variant="light" radius="sm">
+                  <IconDots size="13px" />
                 </Button>
               </Flex>
 
@@ -118,13 +129,32 @@ export default function BrainAI() {
                 p={10}
                 bg="light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))"
               >
-                Text aodias aoi asdasi Text aodias aoi asdasi Text aodias aoi
-                asdasi Text aodias aoi asdasi Text aodias aoi asdasi Text aodias
-                aoi asdasi Text aodias aoi asdasi...
+                {document.description}
               </Flex>
             </Flex>
           </Card>
         ))}
+
+        {documents.length === 0 && (
+          <NoContentBlock
+            image="/images/files.svg"
+            title="No knowledgments added"
+            description="Crete a custom new publication or program a campaign to create your publications automatically"
+            footer={
+              <Flex gap={10}>
+                <ModalAddDocuments
+                  element={
+                    <Button radius="sm" size="xs">
+                      Add documents with informations about your brand
+                    </Button>
+                  }
+                  accountId={selectedAccount.id}
+                  sourceType="knowledment"
+                />
+              </Flex>
+            }
+          />
+        )}
       </Flex>
     </PageTemplate>
   );

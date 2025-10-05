@@ -1,43 +1,22 @@
 "use client";
 
-import { useList } from "@/apis/crud.api";
 import { useGetTickets } from "@/apis/ticket.api";
-import { CalendarFilter } from "@/components/dashboard/atoms/inputs/calendar-filter";
+import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { ModalAddTicket } from "@/components/dashboard/molecules/ticket/modal-add-ticket";
 import { TicketCard } from "@/components/dashboard/molecules/ticket/ticket-card";
 import { Header } from "@/components/dashboard/organisms/header";
-import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { useDashboardContext } from "@/components/dashboard/templates/navbar";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import { Ticket } from "@/declarators";
 import {
-  ActionIcon,
-  Badge,
-  Box,
   Button,
   Card,
-  Checkbox,
-  Divider,
   Flex,
-  Input,
-  Menu,
-  SegmentedControl,
   Select,
-  Switch,
-  Tabs,
   Text,
-  Textarea,
 } from "@mantine/core";
 import {
-  IconClock,
-  IconDots,
-  IconFilterFilled,
   IconFlagQuestion,
-  IconHome,
-  IconMessages,
-  IconQuestionMark,
-  IconSearch,
-  IconTrash,
   IconUsersGroup,
 } from "@tabler/icons-react";
 import { useState } from "react";
@@ -66,7 +45,7 @@ export default function Support() {
         button={
           <ModalAddTicket
             accountId={selectedAccount.id}
-            element={<Button radius="md">Open ticket</Button>}
+            element={<Button radius="sm" size="xs">Open ticket</Button>}
           />
         }
       />
@@ -110,20 +89,19 @@ export default function Support() {
         )}
 
         {tickets.length === 0 && (
-          <Card mt={10} withBorder={false}>
-            <Flex justify="center">
-              <Flex direction="column">
-                <Text>You dont have opened tickets yet</Text>
-
-                <Text>
-                  Create your first support ticket to get help from our team.
-                </Text>
-
-                <Button>create your first ticket</Button>
-              </Flex>
-            </Flex>
-          </Card>
-        )}
+          <NoContentBlock
+                image="/images/support.svg"
+                title="You dont have opened tickets"
+                description="Create your first support ticket to get help from our team."
+                footer={
+                  <Flex gap={10}>
+                    <ModalAddTicket
+            accountId={selectedAccount.id}
+            element={<Button radius="sm" size="xs" variant="light">Open ticket</Button>} />
+                  </Flex>
+                }
+              />
+        )} 
       </Flex>
     </PageTemplate>
   );

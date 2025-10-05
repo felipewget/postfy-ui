@@ -15,6 +15,7 @@ type ListTemplateProps = {
   listType?: "grid" | "row";
   searchPanel?: ReactNode;
   cards: ReactNode[];
+  noContentBlock?: ReactNode;
 };
 
 export const ListTemplate: FC<ListTemplateProps> = ({
@@ -22,6 +23,7 @@ export const ListTemplate: FC<ListTemplateProps> = ({
   searchPanel,
   cards,
   listType = "grid",
+  noContentBlock,
 }) => (
   <Flex
     p={20}
@@ -62,5 +64,7 @@ export const ListTemplate: FC<ListTemplateProps> = ({
         ))}
       </Flex>
     )}
+
+    {cards.length === 0 && (noContentBlock ?? "")}
   </Flex>
 );

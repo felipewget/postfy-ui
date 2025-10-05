@@ -1,3 +1,11 @@
+export type Media = {
+  description?: string;
+  filename: string;
+  mimetype: string;
+  tags: string[];
+  url: string;
+}
+
 export type SocialProfile = {
   id: number;
   channel: string;

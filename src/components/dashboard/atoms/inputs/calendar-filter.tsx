@@ -12,7 +12,7 @@ export const CalendarFilter: FC<CalendarFilterParams> = ({ onChange }) => {
 
   return (
     <Card withBorder={false} w="100%" shadow="none" bg="transparent" p={0}>
-      <Text fw={500} size="lg">
+      <Text fw={500} size="sm">
         Filter by Date
       </Text>
 
@@ -29,7 +29,7 @@ export const CalendarFilter: FC<CalendarFilterParams> = ({ onChange }) => {
 
       <Flex mt={20} w="100%">
         <Button
-          radius="md"
+          radius="sm"
           fullWidth
           disabled={!value}
           onClick={() => {

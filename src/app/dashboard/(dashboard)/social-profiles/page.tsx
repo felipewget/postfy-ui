@@ -1,6 +1,7 @@
 "use client";
 
 import { useList } from "@/apis/crud.api";
+import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { BASE_BACKEND_URL } from "@/constants";
 import { SocialProfile } from "@/declarators";
@@ -130,6 +131,13 @@ export default function Campaigns() {
           </Flex>
         </Card>
       ))}
+      noContentBlock={
+        <NoContentBlock
+          image="/images/profile-art.svg"
+          title="No social profiles"
+          description="Add your social profiles to be managed by Postfy"
+        />
+      }
     />
   );
 }

@@ -3,6 +3,7 @@ import {
   Avatar,
   Badge,
   Box,
+  Button,
   Card,
   Divider,
   Flex,
@@ -12,7 +13,7 @@ import {
   Table,
   Text,
 } from "@mantine/core";
-import { IconSchema } from "@tabler/icons-react";
+import { IconDots, IconSchema } from "@tabler/icons-react";
 import moment from "moment";
 import { FC } from "react";
 
@@ -22,9 +23,7 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
   return (
     <Card flex={1} p={20} withBorder={false} radius="sm">
       <Flex gap={20}>
-        <Avatar radius="sm">
-          {campaign.title[0].toLocaleUpperCase()}
-        </Avatar>
+        <Avatar radius="sm">{campaign.title[0].toLocaleUpperCase()}</Avatar>
 
         <Flex direction="column" w="100%">
           <Flex align="start" justify="space-between">
@@ -48,9 +47,17 @@ export const CampaignCard: FC<{ campaign: CampaignWithProfile }> = ({
               </Text> */}
             </Flex>
 
-            <Badge size="md" radius="sm">
-              Generated
-            </Badge>
+            <Flex align="center" gap={10}>
+              <Badge size="md" radius="sm">
+                Generated
+              </Badge>
+
+              <Flex>
+                <Button size="20px" px={5} variant="light" radius="sm">
+                  <IconDots size="13px" />
+                </Button>
+              </Flex>
+            </Flex>
           </Flex>
 
           <Box mt={10}>
