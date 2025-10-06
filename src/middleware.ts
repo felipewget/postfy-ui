@@ -1,31 +1,43 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getSubdomain } from './utils/url.utils';
+import { NextRequest, NextResponse } from "next/server";
+import { getSubdomain } from "./utils/url.utils";
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
   const isStaticAsset =
-    url.pathname.startsWith('/_next') ||
-    url.pathname.startsWith('/static') ||
-    url.pathname.startsWith('/favicon.ico') ||
+    url.pathname.startsWith("/_next") ||
+    url.pathname.startsWith("/static") ||
+    url.pathname.startsWith("/favicon.ico") ||
     url.pathname.match(
       /\.(css|js|json|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|otf)$/
     );
 
   // Return all static files with no validation
-  if (isStaticAsset) return NextResponse.next(); 
+  if (isStaticAsset) return NextResponse.next();
 
   const subdomain = await getSubdomain();
+  console.log("subdomainsubdomain", subdomain);
 
-  // if(subdomain){
-  //   url.pathname = subdomain === 'admin'
-  //     ? `/admin${url.pathname}`
-  //     : `/profile${url.pathname}`
-  // } else {
-  //     url.pathname = `/site${url.pathname}`;
-  // }
-  url.pathname = `/dashboard${url.pathname}`;
-  // url.pathname = `/site${url.pathname}`;
+  switch (subdomain) {
+    case "app":
+      url.pathname = `/dashboard${url.pathname}`;
+      break;
+      
+    default:
+      url.pathname = `/site${url.pathname}`;
+  }
+  //   if(subdomain === 'app'){
+
+  //   }
+  // // if(subdomain){
+  // //   url.pathname = subdomain === 'admin'
+  // //     ? `/admin${url.pathname}`
+  // //     : `/profile${url.pathname}`
+  // // } else {
+  // //     url.pathname = `/site${url.pathname}`;
+  // // }
+  // url.pathname = `/dashboard${url.pathname}`;
+  // // url.pathname = `/site${url.pathname}`;
 
   return NextResponse.rewrite(url);
 }

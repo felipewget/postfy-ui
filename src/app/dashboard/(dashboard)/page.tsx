@@ -27,38 +27,62 @@ export default function Home() {
         }
       />
 
-      <Card withBorder={false} mt={10}>
-        <Flex direction="column" gap={10}>
-          <Text size="lg" fw={700}>
-            Complete your setup
-          </Text>
+      <Flex w="100%" direction="column" gap={20}>
+        <Card withBorder={false} mt={10} radius="sm">
+          <Flex direction="column" gap={10}>
+            <Text size="lg" fw={700}>
+              Complete your setup
+            </Text>
 
-          <Text>
-            Add your knowledge base and connect social media accounts to start
-            generating content.
-          </Text>
+            <Text>
+              Add your knowledge base and connect social media accounts to start
+              generating content.
+            </Text>
 
-          <Progress value={12} />
+            <Progress value={12} />
 
-          <Flex gap={10} mt={10}>
-            {[...Array(4)].map(() => (
-              <Card p={10} withBorder={true}>
-                <Flex gap={20} align="center">
-                  <Avatar>
-                    <IconCheck />
-                  </Avatar>
+            <Flex gap={10} mt={10}>
+              {[...Array(4)].map(() => (
+                <Card p={10} withBorder={true}>
+                  <Flex gap={20} align="center">
+                    <Avatar>
+                      <IconCheck />
+                    </Avatar>
 
-                  <Flex direction="column">
-                    <Text>Link your social profiles</Text>
+                    <Flex direction="column">
+                      <Text>Link your social profiles</Text>
 
-                    <Text c="dimmed">Link your social profiles</Text>
+                      <Text c="dimmed">Link your social profiles</Text>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </Flex>
           </Flex>
+        </Card>
+
+        <Card withBorder={false}>Alerts</Card>
+
+        <Flex gap={20}>
+          <Card withBorder={false} mt={10} radius="sm">
+            Current week
+          </Card>
+
+          <Card withBorder={false} mt={10} radius="sm">
+            Week Summary
+          </Card>
         </Flex>
-      </Card>
+
+        <Flex gap={20}>
+          <Card withBorder={false} mt={10} radius="sm">
+            Current week publications
+          </Card>
+
+          <Card withBorder={false} mt={10} radius="sm">
+            Next week publications
+          </Card>
+        </Flex>
+      </Flex>
     </PageTemplate>
   );
 }

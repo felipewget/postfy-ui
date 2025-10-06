@@ -29,6 +29,7 @@ import {
   UnstyledButton,
   useMantineTheme,
 } from "@mantine/core";
+import { Logo } from "@/components/dashboard/atoms/logo";
 
 type SiteTemplateProps = {
   children: ReactNode;
@@ -37,34 +38,19 @@ type SiteTemplateProps = {
 const mockdata = [
   {
     icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
+    title: "Automation on content creation",
+    description: "Postfy create content to you",
   },
   {
     icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
+    title: "Automation on publication",
+    description: "Your publication will be scheduled automatically",
   },
   {
     icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
-  },
-  {
-    icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
-  },
-  {
-    icon: IconChartPie3,
     title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
-  },
-  {
-    icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
-  },
+    description: "Postfy collects data from your publications and improves itself",
+  }
 ];
 
 export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
@@ -91,25 +77,28 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
       <Flex
         pos="sticky"
         top={0}
-        h="60px"
+        h={50}
         bg="white"
         justify="center"
         style={{
+          overflow: 'hidden',
           zIndex: 1000,
+          borderBottom: "solid 1px #DDD",
         }}
       >
         <Flex
           w={{ base: "100%", md: "950px", lg: "1200px" }}
-          justify="space-between"
           px={10}
+          justify="space-between"
+          align="center"
         >
-          <Flex w="50px" h="50px" bg="blue" my={5} />
+          <Logo size={30} />
 
-          {/*  */}
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="#" className={classes.link}>
               Home
             </a>
+
             <HoverCard
               width={600}
               position="bottom"
@@ -121,9 +110,11 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
                 <a href="#" className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
-                      Solutions
+                      <Text size="sm" fw={500}>
+                        Solutions
+                      </Text>
                     </Box>
-                    <IconChevronDown size={16} color={"blue"} />
+                    <IconChevronDown size={16} color="#7c3aed" />
                   </Center>
                 </a>
               </HoverCard.Target>
@@ -154,19 +145,29 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <a href="#" className={classes.link}>
-              About us
-            </a>
-            <a href="#" className={classes.link}>
-              Contact sales
-            </a>
+
+            <Link href="#" className={classes.link}>
+              <Text size="sm" fw={500}>
+                About us
+              </Text>
+            </Link>
+
+            <Link href="#" className={classes.link}>
+              <Text size="sm" fw={500}>
+                Book one presentation
+              </Text>
+            </Link>
           </Group>
 
-          {/*  */}
+          <Flex gap={10}>
+            <Button radius="sm" size="xs" my={10} variant="outline">
+              Create your account
+            </Button>
 
-          <Button h="40px" my={10}>
-            Login on my TeamTime
-          </Button>
+            <Button radius="sm" size="xs" my={10}>
+              Login on my TeamTime
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
 
@@ -182,14 +183,9 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
           direction={{ base: "column", sm: "row" }}
         >
           <Flex gap={20} py={20} align="center">
-            <Image
-              alt=""
-              width={50}
-              height={50}
-              src="https://substackcdn.com/image/fetch/w_800,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack.com%2Fimg%2Fabout_page_3%2Fpie.png"
-            />
+            <Logo size={20} />
 
-            <Text fw={500}>Teamtime</Text>
+            <Text fw={500}>Postfy</Text>
           </Flex>
 
           <Flex gap={50} wrap="wrap" justify="center">
@@ -209,10 +205,13 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
                   }}
                 >
                   <Text c="black" fw={500}>
-                    <IconLabel size={14} style={{
-                      marginTop: "7px",
-                      marginRight: "5px"
-                    }} />
+                    <IconLabel
+                      size={14}
+                      style={{
+                        marginTop: "7px",
+                        marginRight: "5px",
+                      }}
+                    />
 
                     {item.label}
                   </Text>
@@ -239,10 +238,13 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
                   }}
                 >
                   <Text c="black" fw={500}>
-                    <IconLabel size={14} style={{
-                      marginTop: "7px",
-                      marginRight: "5px"
-                    }} />
+                    <IconLabel
+                      size={14}
+                      style={{
+                        marginTop: "7px",
+                        marginRight: "5px",
+                      }}
+                    />
 
                     {item.label}
                   </Text>
@@ -265,11 +267,14 @@ export const SiteTemplate: FC<SiteTemplateProps> = ({ children }) => {
                     textDecoration: "none",
                   }}
                 >
-                  <Text c="black" fw={500} >
-                    <IconLabel size={14} style={{
-                      marginTop: "7px",
-                      marginRight: "5px"
-                    }} />
+                  <Text c="black" fw={500}>
+                    <IconLabel
+                      size={14}
+                      style={{
+                        marginTop: "7px",
+                        marginRight: "5px",
+                      }}
+                    />
 
                     {item.label}
                   </Text>

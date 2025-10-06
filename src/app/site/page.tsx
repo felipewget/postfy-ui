@@ -6,16 +6,26 @@ import { BoardTodo } from "@/components/dashboard/organisms/board-todo";
 import { TextCentralized } from "@/components/site/molecules/text-centralized";
 import { TextNextToImage } from "@/components/site/molecules/text-next-to-image";
 import {
+  Badge,
   Button,
   Card,
   Divider,
   Flex,
+  Grid,
+  Group,
   Image,
   PasswordInput,
+  Stack,
   Text,
   TextInput,
+  Title,
 } from "@mantine/core";
-import { IconArrowRight } from "@tabler/icons-react";
+import {
+  IconArrowRight,
+  IconRobot,
+  IconRobotFace,
+  IconStar,
+} from "@tabler/icons-react";
 
 export default function Home() {
   return (
@@ -27,100 +37,86 @@ export default function Home() {
         gap={20}
         px={20}
       >
-        <Flex
-          align="center"
-          gap={{ base: 30, sm: 50 }}
-          py={50}
-          direction={{ base: "column", sm: "row" }}
-        >
-          <Flex
-            direction="column"
-            w="100%"
-            gap={20}
-            align={{ base: "center", sm: "start" }}
-          >
-            <Text size="2xl" fw={500}>
-              Team, productivity and workflow management platform
-            </Text>
+        <Flex justify="center" gap={50} py={50}>
+          {[...Array(4)].map(() => (
+            <Flex direction="column" gap={10}>
+              <Flex gap={10} align="center">
+                <Image src="#" w="30px" h="30px" />
 
-            <Text size="md">
-              A way better way of working Balance your workflow: plan, track,
-              collaborate, thrive
-            </Text>
-          </Flex>
+                <Flex direction="column">
+                  <Text size="md" fw={500}>
+                    Title asiodsdoi sdiosd js
+                  </Text>
 
-          <Flex direction="column" gap={10} w={{ base: "100%", sm: "600px" }}>
-            <Text>Start your trial right now</Text>
-
-            <TextInput placeholder="E-mail/login" />
-
-            <PasswordInput placeholder="Password" />
-
-            <TextInput
-              placeholder="Subdomain"
-              rightSectionWidth={120}
-              rightSection={<Text>.teamtime.io</Text>}
-            />
-
-            <Button radius="sm" variant="light">
-              Comecar agora mesmo
-            </Button>
-
-            <Flex w="100%" direction="column" align="center" my={10}>
-              <Divider w="100%" />
-
-              <Text mt={-25} mb={-25} bg="white" p={10}>
-                ou
-              </Text>
-            </Flex>
-
-            <Button radius="sm">Agente uma apresentacao</Button>
-          </Flex>
-        </Flex>
-
-        <Flex gap={20} wrap={{ base: "wrap", md: "initial" }}>
-          {cardsAreas.map((card) => (
-            <Card
-              w={{
-                base: "calc(50% - 20px)",
-                sm: "calc(33.3% - 20px)",
-                md: "250px",
-              }}
-              withBorder={false}
-              shadow="lg"
-            >
-              <Text fw={800} size="md" mb={20}>
-                {card.title}
-              </Text>
-
-              <Text size="md" h="100px">
-                {card.description}
-              </Text>
-
-              <Image
-                alt=""
-                bg="blue"
-                height={400}
-                src="https://substackcdn.com/image/fetch/w_800,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack.com%2Fimg%2Fabout_page_3%2Fpie.png"
-              />
+                  <Text size="sm" c="dimmed">
+                    Facebook
+                  </Text>
+                </Flex>
+              </Flex>
 
               <Flex>
-                <Button
-                  size="sm"
-                  rightSection={<IconArrowRight />}
-                  variant="transparent"
-                  m={0}
-                  mt={20}
-                >
-                  See more
-                </Button>
+                {[...Array(5)].map(() => (
+                  <IconStar size="13px" />
+                ))}
               </Flex>
-            </Card>
+
+              <Text>"Amazing social media scheduler"</Text>
+            </Flex>
           ))}
+        </Flex>
+
+        <Flex direction="column" gap={20} align="center">
+          <Badge radius="sm" size="sm" variant="light" py={10}>
+            <Flex align="center" gap={5}>
+              <IconRobotFace size={15} /> Automação com IA
+            </Flex>
+          </Badge>
+
+          <Text ta="center" size="40px" fw={700}>
+            Sua presença online rodando no automático
+          </Text>
+
+          <Text ta="center" size="20px" fw={500}>
+            Postfy cria, agenda e publica conteudo pra você nas redes sociais
+          </Text>
+
+          <Text
+            ta="center"
+            size="sm"
+            style={{
+              maxWidth: "500px",
+            }}
+          >
+            Postfy, a inteligência artificial que entende sua marca, se ajusta
+            ao seu estilo e produz conteúdo que engaja o público em todas as
+            redes sociais.
+          </Text>
+
+          <Button radius="sm">Criar minha conta e começar agora mesmo</Button>
+        </Flex>
+
+        <Flex justify="center" gap={10} mt={50}>
+          <Flex
+            w="1200px"
+            h="400px"
+            bg="violet"
+            style={{
+              borderRadius: "5px",
+            }}
+          />
         </Flex>
       </Flex>
 
-      <Flex bg="violet.3" py={50} w="100%" justify="center" mt={50}>
+      <Flex
+        bg="violet"
+        py={50}
+        w="100%"
+        justify="center"
+        mt={-10}
+        style={{
+          boxShadow: "0px 0px 5px violet",
+        }}
+      >
         <Flex direction="column" gap={50} py={20} align="center">
           <Flex
             justify="center"
@@ -133,26 +129,33 @@ export default function Home() {
               descriptions={[
                 "When communities pay for a subscription on Substack, an average of 86% of the revenue goes to the publisher, with the remainder covering our revenue share and Stripe’s payment processing fees. Since we only make money when writers and creators do, our interests are aligned with those of publishers and their subscribers. To date, subscribers have paid writers and creators hundreds of millions of dollars through Substack.",
               ]}
+              textProps={{
+                c: "white",
+              }}
               descriptionProps={{
-                color: "dimmed",
+                color: "#CCC",
               }}
             />
           </Flex>
 
-          {[...Array(3)].map((_, key) => (
+          {[...Array(4)].map((_, key) => (
             <TextNextToImage
               contents={[
                 {
-                  label: "asdasdasdas",
-                  title: "doaisjdiasdjioasda",
-                  description: "aosidjasiodjasoidas. aisdioas asi sa",
-                },
-                {
+                  label: "1. Brain AI",
+                  title:
+                    "Uma camada de inteligência em crescimento que sabe o que funciona, onde e por quê — e treina a IA para escrever de acordo.",
                   description:
-                    "aosidjasiodjasoidas asidjasoidjasdio asoi djasiod aosijdoaisdj aos jdaoisd aosidj saoid joaisdj osadjaosidj asoid josijdaosid jasoid jasoidja soidja soida",
+                    "Aprende com o sucesso específico da plataforma, atualiza com mudanças de algoritmo e otimiza cada post com dados reais",
                 },
               ]}
-              justify={key !== 1 ? "row-reverse" : "row"}
+              textProps={{
+                c: "white",
+              }}
+              descriptionProps={{
+                c: "white",
+              }}
+              justify={key !== 1 && key !== 3 ? "row-reverse" : "row"}
               imageSize={{
                 lg: "600px",
                 md: "390px",
@@ -166,66 +169,91 @@ export default function Home() {
       </Flex>
 
       <Flex w="100%" justify="center">
-        <Flex direction="column" w="950px" gap={50} py={50}>
+        <Flex direction="column" w="1200px" gap={50} py={50}>
           <TextCentralized
-            label="What makes TeamTime special?"
-            title="What amke TeamTime special"
+            label="Publique todos os dias"
+            title="Como sua presença online poderia ser"
             descriptions={[
-              "When communities pay for a subscription on Substack, an average of 86% of the revenue goes to the publisher, with the remainder covering our revenue share and Stripe’s payment processing fees. Since we only make money when writers and creators do, our interests are aligned with those of publishers and their subscribers. To date, subscribers have paid writers and creators hundreds of millions of dollars through Substack.",
+              "Conteúdo estratégico e designs impactantes, adaptados para cada rede social diariamente.",
             ]}
             descriptionProps={{
               color: "dimmed",
             }}
           />
 
-          <Flex gap={20} wrap="wrap" px={20} justify="center">
-            {[...Array(3)].map(() => (
-              <Card w={{base: "calc(50% - 20px)", md: "calc(33.3% - 20px)"}}>
-                <Text size="lg">What amke TeamTime special</Text>
+          <Flex gap={20} w="100%">
+            {[...Array(2)].map(() => (
+              <Flex direction="column" gap={20} flex={1}>
+                <Card p={0} withBorder={false}>
+                  <Image src="https://miro.medium.com/v2/resize:fit:1002/1*BCw5I1J5mIYutcgVDcAhnw.png" />
+                </Card>
 
-                <Text size="md">
-                  A way better way of working Balance your workflow: plan,
-                  track, collaborate, thrive
-                </Text>
-              </Card>
+                <Card p={0} withBorder={false}>
+                  <Image src="https://miro.medium.com/v2/resize:fit:1002/1*BCw5I1J5mIYutcgVDcAhnw.png" />
+                </Card>
+              </Flex>
             ))}
           </Flex>
         </Flex>
       </Flex>
 
-      <Flex w="200">
-        <Divider flex={1} />
-      </Flex>
+      <Flex direction="column" w="1200px" py={50}>
+        <TextCentralized
+            title="Plans"
+            descriptions={[
+              "Impacte e alcance novos publicos com a Postfy",
+            ]}
+            descriptionProps={{
+              color: "dimmed",
+            }}
+          />
 
-      <Flex w="100%" align="center" direction="column" py={50}>
-        <Flex justify="space-between" gap={100} direction={{base: "column", md: "row"}}>
-          <Flex align="center" justify="center" flex={1} display={{base: "none", md: "flex"}}>
-            <Button>Schedule a presentation</Button>
-          </Flex>
+        <Grid w="100%" mt={50}>
+          {plans.map((plan) => (
+            <Grid.Col span={4} key={plan.name}>
+              <Card
+                withBorder
+                shadow={plan.highlighted ? "md" : "sm"}
+                radius="md"
+                padding="lg"
+                style={{
+                  borderColor: plan.highlighted ? "#7A4DFF" : undefined,
+                }}
+              >
+                <Stack>
+                  <Flex direction="column">
+                    <Title order={3}>{plan.name}</Title>
 
-          <Flex gap={20}>
-            <Image
-            display={{base: "none", sm: "block"}}
-              alt="image"
-              w={200}
-              h={200}
-              src="https://dam-cdn.atl.orangelogic.com/AssetLink/737g80fw6ml20lr326ccpphj50d7xex2.webp"
-            />
+                    <Text c="dimmed">Perfect for growing businesses</Text>
+                  </Flex>
 
-            <Flex gap={20} direction="column" w={300} px={20}>
-              <Text fw={500} size="lg">
-                "We've created one company more fair and with more productivity
-                since we've stared with Teamtime and the company grew up 24%
-              </Text>
+                  <Text size="xl" fw={700}>
+                    {plan.price}
+                  </Text>
 
-              <Flex direction="column">
-                <Text>Jose diniz Novello</Text>
+                  <Stack gap="xs">
+                    {plan.features.map((feature) => (
+                      <Text key={feature} size="sm" c="dimmed">
+                        • {feature}
+                      </Text>
+                    ))}
+                  </Stack>
 
-                <Text>CEO, ioasjsaioda</Text>
-              </Flex>
-            </Flex>
-          </Flex>
-        </Flex>
+                  <Group justify="center" mt="md">
+                    <Button
+                      fullWidth
+                      radius="md"
+                      variant={plan.highlighted ? "filled" : "light"}
+                      color="violet"
+                    >
+                      {plan.highlighted ? "Get started" : "Choose"}
+                    </Button>
+                  </Group>
+                </Stack>
+              </Card>
+            </Grid.Col>
+          ))}
+        </Grid>
       </Flex>
     </Flex>
   );
@@ -254,5 +282,26 @@ const cardsAreas = [
     title: "Reports & Analytics",
     description:
       "Relatórios de performance, tempo gasto e lucros por projeto ou equipe",
+  },
+];
+
+const plans = [
+  {
+    name: "Free",
+    price: "$0",
+    features: ["1 project", "Community support", "Basic analytics"],
+    highlighted: false,
+  },
+  {
+    name: "Pro",
+    price: "$19/mo",
+    features: ["Unlimited projects", "Priority support", "Advanced analytics"],
+    highlighted: true,
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    features: ["Dedicated manager", "Custom features", "24/7 support"],
+    highlighted: false,
   },
 ];
