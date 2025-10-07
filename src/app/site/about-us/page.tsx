@@ -30,148 +30,179 @@ export default function AboutUs() {
         px={20}
         direction={{ base: "column", md: "row" }}
       >
-        <Flex direction="column" gap={20}>
-          <Text>Who we are</Text>
-
-          <Text fw={500} size="2xl">
-            We help teams and companies to change the world
-          </Text>
-
-          <Flex direction="column">
-            <Text>We help teams and companies to change the world</Text>
-
-            <Text>
-              We help teams and companies to change the worlda doisajdosiajd
-              saoij dsioajdiosad jsa
+        <Flex w="100%" gap={80}>
+          <Flex direction="column" gap={20} justify="center">
+            <Text size="40px" fw={700}>
+              We help companies to have voice and presence online
             </Text>
 
-            <Text>
-              We help teams and companies to change the worlda doisajdosiajd
-              saoij dsioajdiosad jsa
-            </Text>
+            <Flex direction="column" gap={20}>
+              <Text size="20px">
+                Behind every great human achievement, there is a team.
+              </Text>
+
+              <Text size="20px">
+                From medicine and space travel, to disaster response and pizza
+                deliveries, our products help teams all over the planet advance
+                humanity through the power of software.
+              </Text>
+
+              <Text size="20px">
+                Our mission is to help unleash the potential of every team
+                through open work.
+              </Text>
+            </Flex>
           </Flex>
-        </Flex>
 
-        <Image
-          alt=""
-          bg="blue"
-          width={500}
-          src="https://substackcdn.com/image/fetch/w_800,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack.com%2Fimg%2Fabout_page_3%2Fpie.png"
-        />
+          <Image w="50%" src="images/header1.png" />
+        </Flex>
+      </Flex>
+
+      <Flex justify="space-between" w={{ base: "100%", md: "950px" }}>
+        {[...Array(5)].map(() => (
+          <Image
+            w="100px"
+            src="https://www.vhv.rs/dpng/d/561-5613230_azure-logo-png-transparent-png.png"
+          />
+        ))}
       </Flex>
 
       <Flex justify="center" w="100%" display={{ base: "none", sm: "flex" }}>
         <Flex
           w={{ base: "100%", md: "950px", lg: "1200px" }}
-          gap="10px"
-          wrap="wrap"
+          gap="80px"
           justify="center"
+          align="center"
+          py={50}
         >
-          {[...Array(3)].map(() => (
-            <Flex
-              gap={20}
-              align="center"
-              w="calc(33.3% - 10px)"
-              justify="center"
-            >
-              <IconDiamond />
+          <Flex w="50%" justify="center">
+            <Image
+              w="500px"
+              src="https://cdn-front.freepik.com/landing-about-us/who/who-01-v3.png?w=1200&h=1920&q=90"
+            />
+          </Flex>
 
-              <Text fw={500} size="lg">
-                Inovacao sempre
+          <Flex w="50%" justify="center">
+            <Flex
+              direction="column"
+              gap={20}
+              style={{
+                maxWidth: "400px",
+              }}
+            >
+              <Text size="20px">Who we are</Text>
+
+              <Text size="30px" fw={600}>
+                We are cool
+              </Text>
+
+              <Text>
+                We gather talent and inspiration from creatives all around the
+                world –all in one place– and looove it when we help you make
+                your great ideas happen.
+              </Text>
+
+              <Text>
+                We believe in the power of good design and community. Our spirit
+                is restless, and our inner joyful rebel says: Don't follow all
+                the conventions; rewrite them.
               </Text>
             </Flex>
-          ))}
+          </Flex>
         </Flex>
       </Flex>
 
+      {/*  */}
       <Flex
-        w="100%"
-        bg="violet.5"
-        py={{ base: 0, md: 50 }}
-        mt={50}
         justify="center"
-        align="center"
+        w="100%"
+        display={{ base: "none", sm: "flex" }}
+        bg="violet.1"
       >
-        <Flex w={{ base: "100%", md: "950px", lg: "1200px" }}>
-          <Flex w="700px" bg="white" direction="column" gap={10} p={40}>
-            <Text size="2xl">Brief history</Text>
+        <Flex
+          w={{ base: "100%", md: "950px", lg: "1200px" }}
+          gap="80px"
+          justify="center"
+          align="center"
+          py={50}
+        >
+          <Flex w="50%" justify="center">
+            <Flex
+              direction="column"
+              gap={20}
+              style={{
+                maxWidth: "400px",
+              }}
+            >
+              <Text size="20px">Who we are</Text>
 
-            {[...Array(3)].map(() => (
-              <Text>
-                osdjasdoijsaiod jsoidjsa diosaiodsa jiodasijod ajsod ajsio sd
-                sdsadsadsadsad asosdjasdoijsaiod jsoidjsa diosaiodsa jiodasijod
-                ajsod ajsio sd sdsadsadsadsad asosdjasdoijsaiod jsoidjsa
-                diosaiodsa jiodasijod ajsod ajsio sd sdsadsadsadsad
-                asosdjasdoijsaiod jsoidjsa diosaiodsa jiodasijod ajsod ajsio sd
-                sdsadsadsadsad as
+              <Text size="30px" fw={600}>
+                We are cool
               </Text>
-            ))}
+
+              <Text>
+                We gather talent and inspiration from creatives all around the
+                world –all in one place– and looove it when we help you make
+                your great ideas happen.
+              </Text>
+
+              <Text>
+                We believe in the power of good design and community. Our spirit
+                is restless, and our inner joyful rebel says: Don't follow all
+                the conventions; rewrite them.
+              </Text>
+            </Flex>
           </Flex>
 
-          <Flex>
+          <Flex w="50%" justify="center">
             <Image
-              alt=""
-              bg="blue"
-              width={300}
-              src="https://substackcdn.com/image/fetch/w_800,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack.com%2Fimg%2Fabout_page_3%2Fpie.png"
+              w="500px"
+              src="https://cdn-front.freepik.com/landing-about-us/what/what-01.png?w=1200&h=1920&q=90"
             />
           </Flex>
         </Flex>
       </Flex>
 
-      <Flex bg="violet.1" w="100%" justify="center" pb={30}>
-        <Flex direction="column" gap={40} py={50}>
-          <TextNextToImage
-            contents={[
-              {
-                label: "asdasdasdas",
-                title: "doaisjdiasdjioasda",
-                description: "aosidjasiodjasoidas. aisdioas asi sa",
-              },
-            ]}
-            imageSize={{
-              lg: "600px",
-              md: "390px",
-              sm: "220px",
-              base: "500px",
-            }}
-            image="https://dam-cdn.atl.orangelogic.com/AssetLink/737g80fw6ml20lr326ccpphj50d7xex2.webp"
-          />
+      {/*  */}
+      <Flex direction="column" gap={20} py={50}>
+        <Text ta="center" size="20px">
+          Who we are
+        </Text>
 
-          <TextNextToImage
-            contents={[
-              {
-                label: "asdasdasdas",
-                title: "doaisjdiasdjioasda",
-                description: "aosidjasiodjasoidas. aisdioas asi sa",
-              },
-            ]}
-            imageSize={{
-              lg: "600px",
-              md: "390px",
-              sm: "220px",
-              base: "500px",
-            }}
-            image="https://dam-cdn.atl.orangelogic.com/AssetLink/737g80fw6ml20lr326ccpphj50d7xex2.webp"
-          />
+        <Text ta="center" size="30px" fw={600}>
+          We are cool
+        </Text>
 
-          <TextNextToImage
-            contents={[
-              {
-                label: "asdasdasdas",
-                title: "doaisjdiasdjioasda",
-                description: "aosidjasiodjasoidas. aisdioas asi sa",
-              },
-            ]}
-            imageSize={{
-              lg: "600px",
-              md: "390px",
-              sm: "220px",
-              base: "500px",
-            }}
-            image="https://dam-cdn.atl.orangelogic.com/AssetLink/737g80fw6ml20lr326ccpphj50d7xex2.webp"
-          />
-        </Flex>
+        <Text
+          ta="center"
+          style={{
+            maxWidth: "700px",
+          }}
+        >
+          Yeah, that’s right. We talk to each other openly and honestly. Why?
+          Because we care about working in an environment where everyone
+          communicates directly and respectfully.
+        </Text>
+      </Flex>
+
+      <Flex gap={50} justify="center">
+        {[...Array(4)].map(() => (
+          <Flex direction="column" gap={20} w="230px">
+            <Image
+              src="https://cdn-front.freepik.com/landing-about-us/values/value-action.png?w=256&h=1920&q=100"
+              w="80px"
+              mb={10}
+            />
+
+            <Text fw={700}>We walk and then we run</Text>
+
+            <Text>
+              We like to take it one step at a time. We explore our playground,
+              own it, and then expand it to meet new challenges. Each goal sets
+              the stage for the next.
+            </Text>
+          </Flex>
+        ))}
       </Flex>
 
       <Card
@@ -180,35 +211,26 @@ export default function AboutUs() {
           sm: "100%",
           base: "500px",
         }}
+        shadow="lg"
         withBorder={false}
         mb={30}
-        mt={-40}
+        mt={70}
         mx={20}
       >
         <Flex justify="space-between" align="center" gap={20}>
-          <Flex direction="column" gap={5}>
-            <Text size="2xl">
+          <Flex direction="column" align="center" gap={5}>
+            <Text size="2xl" fw={700}>
               “If you can’t measure it, you can’t manage it.”
             </Text>
 
-            <Text>Marcelo Grassano</Text>
+            <Text>Marcelo Grassano - CEO, acdis</Text>
 
-            <Text>CEO, acdis</Text>
-
-            <Flex gap={10} mt={10}>
-              <Button variant="outline">Start your trial now</Button>
-
-              <Button>Book a shceudle</Button>
-            </Flex>
           </Flex>
+            <Flex gap={10} mt={10}>
+              <Button radius="sm" size="xs" variant="outline">Start your trial now</Button>
 
-          <Image
-            alt=""
-            bg="blue"
-            width={300}
-            height={200}
-            src="https://substackcdn.com/image/fetch/w_800,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack.com%2Fimg%2Fabout_page_3%2Fpie.png"
-          />
+              <Button radius="sm" size="xs">Book a shceudle</Button>
+            </Flex>
         </Flex>
       </Card>
     </Flex>
