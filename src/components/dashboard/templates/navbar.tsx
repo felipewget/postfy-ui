@@ -35,16 +35,18 @@ import {
 } from "@tabler/icons-react";
 import classes from "./Dashboard.module.css";
 import Link from "next/link";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "../atoms/logo";
 import { useList } from "@/apis/crud.api";
 import { Account } from "@/declarators";
+import { ModalAccounts } from "../molecules/account/modal-accounts";
 
 type DashboardContextType = {
   accounts: Account[];
   selectedAccount?: Account;
+  selectAccount: (accountId: number) => void;
 };
 
 const DashboardContext = createContext<DashboardContextType | null>(null);
@@ -60,17 +62,37 @@ export const useDashboardContext = () => {
 export const Dashboard = ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
-  const { data: dataAccount } = useList({ entity: "accounts", params: {} });
+  const { data: dataAccount, isLoading } = useList({
+    entity: "accounts",
+    params: {},
+  });
+  const [accountId, setAccountId] = useState<number | undefined>();
 
   const accounts = (dataAccount?.pages.flat() ?? []) as Account[];
-  const selectedAccount = accounts[0]; // @TODO a hook here
+  const selectedAccount = accounts.find((account) => account.id === accountId);
 
   const collapsed = useMediaQuery(`(max-width: 900px)`);
 
   const [reportItemOpened, setReportItemOpened] = useState<boolean>(false);
 
+  const selectAccount = (accountId: number) => setAccountId(accountId);
+
+  useEffect(() => {
+    if (!accountId && accounts.length > 0) {
+      setAccountId(accounts[0].id);
+    }
+  }, [accounts]);
+
+  if (isLoading) return <p>Loading...</p>;
+
+  if (accounts.length === 0) return <p>Redirect to create account</p>;
+
+  if (!selectedAccount) return null;
+
   return (
-    <DashboardContext.Provider value={{ accounts, selectedAccount }}>
+    <DashboardContext.Provider
+      value={{ accounts, selectedAccount, selectAccount }}
+    >
       <Flex w="100%" justify="center" className={classes.background}>
         <Flex
           w="100%"
@@ -228,28 +250,30 @@ export const Dashboard = ({
               </Flex>
             </Flex>
 
-            <Flex mb={10} direction="column">
-              {collapsed ? (
-                <Paper m={10} withBorder={false} p={10}>
-                  <Flex align="center" justify="center">
-                    <IconUser size="11px" />
-                  </Flex>
-                </Paper>
-              ) : (
-                <Paper m={10} withBorder={false} p={10}>
-                  <Flex align="center">
-                    <Flex direction="column" flex={1}>
-                      <Text size="xs">Account</Text>
-
-                      <Text size="sm" fw={500}>
-                        Google
-                      </Text>
+            <Flex mb={10} direction="column" >
+              <ModalAccounts>
+                {collapsed ? (
+                  <Paper m={10} withBorder={false} p={10} w="100%">
+                    <Flex align="center" justify="center">
+                      <IconUser size="11px" />
                     </Flex>
+                  </Paper>
+                ) : (
+                  <Paper m={10} withBorder={false} p={10} w="100%">
+                    <Flex align="center">
+                      <Flex direction="column" flex={1}>
+                        <Text size="xs">Account</Text>
 
-                    <IconChevronRight size="11px" />
-                  </Flex>
-                </Paper>
-              )}
+                        <Text size="sm" fw={500}>
+                          {selectedAccount.accountName}
+                        </Text>
+                      </Flex>
+
+                      <IconChevronRight size="11px" />
+                    </Flex>
+                  </Paper>
+                )}
+              </ModalAccounts>
 
               <Divider m={10} mb={0} />
 
