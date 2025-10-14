@@ -1,12 +1,13 @@
 "use client";
 
 import { useListApprovedPublications } from "@/apis/publications.api";
+import { ModalAccounts } from "@/components/dashboard/molecules/account/modal-accounts";
 import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { CardWeekPublication } from "@/components/dashboard/molecules/publication/card-week-publication";
 import { CardWeekStrategy } from "@/components/dashboard/molecules/publication/card-week-strategy";
 import { PublicationScheduleCard } from "@/components/dashboard/molecules/publication/publication-schedule-card";
 import { Header } from "@/components/dashboard/organisms/header";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import {
   Avatar,
@@ -39,15 +40,19 @@ export default function Home() {
         description="sdsd sads dsaasdasdadasdadsada dasds adasdsa"
         button={
           <Flex gap={10}>
-            <Button
-              variant="outline"
-              radius="md"
-              leftSection={<IconUsersGroup />}
-            >
-              <Text>5 accounts</Text>
-            </Button>
+            <ModalAccounts>
+              <Button
+                variant="outline"
+                radius="md"
+                leftSection={<IconUsersGroup />}
+              >
+                <Text>5 accounts</Text>
+              </Button>
+            </ModalAccounts>
 
-            <Button radius="md">Add account</Button>
+            <Link href="/account/create">
+              <Button radius="md">Add account</Button>
+            </Link>
           </Flex>
         }
       />
@@ -140,7 +145,10 @@ export default function Home() {
 
                 <WeekSummary label="Egagement ratee" value="145%" />
 
-                <WeekSummary label="Likes overange" value="124 per publication" />
+                <WeekSummary
+                  label="Likes overange"
+                  value="124 per publication"
+                />
 
                 <WeekSummary label="Best platform" value="Facebook" />
               </Flex>
@@ -154,7 +162,10 @@ export default function Home() {
   );
 }
 
-const WeekSummary:FC<{label: string; value: string;}> = ({label, value}) => {
+const WeekSummary: FC<{ label: string; value: string }> = ({
+  label,
+  value,
+}) => {
   return (
     <Flex justify="space-between" align="start">
       <Flex direction="column">

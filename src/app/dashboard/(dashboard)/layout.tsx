@@ -1,7 +1,7 @@
 "use client";
 
+import { Dashboard } from "@/components/dashboard/templates/dashboard.template";
 import ThemeProvider from "@/providers";
-import { Dashboard } from "@/components/dashboard/templates/navbar";
 
 export default function AdminLayout({
   children,

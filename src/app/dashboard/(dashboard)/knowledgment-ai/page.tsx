@@ -6,7 +6,7 @@ import { ModalAddDocuments } from "@/components/dashboard/molecules/knowledgment
 import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { Header } from "@/components/dashboard/organisms/header";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import {
   ActionIcon,

@@ -5,7 +5,7 @@ import { MediaCard } from "@/components/dashboard/molecules/media-bank/media-car
 import { ModalAddMedia } from "@/components/dashboard/molecules/media-bank/modal-add-media";
 import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { Media } from "@/declarators";
 import { Button, Flex, Input } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";

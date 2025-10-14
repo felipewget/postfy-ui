@@ -1,5 +1,5 @@
 import { FC, useMemo } from "react";
-import { useDashboardContext } from "../../templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { Avatar, Card, Flex, Text } from "@mantine/core";
 import { IconCalendar, IconThumbUp } from "@tabler/icons-react";
 import { useListCampaign } from "@/apis/campaign.api";

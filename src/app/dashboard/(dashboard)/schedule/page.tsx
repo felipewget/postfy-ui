@@ -5,7 +5,7 @@ import { CalendarFilter } from "@/components/dashboard/atoms/inputs/calendar-fil
 import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { PublicationScheduleCard } from "@/components/dashboard/molecules/publication/publication-schedule-card";
 import { Header } from "@/components/dashboard/organisms/header";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import {
   Badge,

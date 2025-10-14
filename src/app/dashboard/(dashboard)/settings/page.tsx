@@ -3,7 +3,7 @@
 import { AccountBrainAiBlock } from "@/components/dashboard/molecules/account/account-brain-ai-block";
 import { AccountGenericBlock } from "@/components/dashboard/molecules/account/account-generic-block";
 import { Header } from "@/components/dashboard/organisms/header";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import { Account } from "@/declarators";
 import { Box, Card, Divider, Flex, Select, Switch, Text } from "@mantine/core";

@@ -28,6 +28,11 @@ if (typeof window !== 'undefined') {
     error => {
       if(!window) return;
 
+       if (error?.response?.status === 401) {
+        window.location.href = '/authentication/login';
+        return; // evita propagação do erro
+      }
+
       return Promise.reject(error);
     }
   );

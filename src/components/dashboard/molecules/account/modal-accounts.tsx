@@ -4,8 +4,9 @@ import { Flex, Text, Modal, Paper, Box } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { FC, ReactNode } from "react";
 import * as yup from "yup";
-import { useDashboardContext } from "../../templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { useDisclosure } from "@mantine/hooks";
+import { CardAccount } from "./card-account";
 
 type ModalAccounts = {
   children: ReactNode;
@@ -46,27 +47,9 @@ export const ModalAccounts: FC<ModalAccounts> = ({ children }) => {
         }}
       >
         {accounts.map((account) => (
-          <Paper
-            onClick={() => selectAccount(account.id)}
-            my={10}
-            withBorder={false}
-            p={10}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <Flex align="center">
-              <Flex direction="column" flex={1}>
-                <Text size="xs">Account</Text>
-
-                <Text size="sm" fw={500}>
-                  {account.accountName}
-                </Text>
-              </Flex>
-
-              <IconChevronRight size="11px" />
-            </Flex>
-          </Paper>
+          <Flex onClick={() => selectAccount(account.id)}>
+            <CardAccount account={account} />
+          </Flex>
         ))}
       </Modal>
     </Box>

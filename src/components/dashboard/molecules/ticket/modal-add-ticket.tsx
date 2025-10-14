@@ -19,7 +19,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FC, ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDashboardContext } from "../../templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import {
   useAddDocumentByContent,
   useAddDocumentByDocument,

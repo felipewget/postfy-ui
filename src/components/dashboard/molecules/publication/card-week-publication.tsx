@@ -11,7 +11,7 @@ import { IconCalendar } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
 import { FC, useState } from "react";
-import { useDashboardContext } from "../../templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { NoContentBlock } from "../no-content-block";
 import { PublicationScheduleCard } from "./publication-schedule-card";
 

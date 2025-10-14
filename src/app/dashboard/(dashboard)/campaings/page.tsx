@@ -5,7 +5,7 @@ import { useList } from "@/apis/crud.api";
 import { CampaignCard } from "@/components/dashboard/molecules/campaign/campaign-card";
 import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { Campaign, SocialProfile } from "@/declarators";
 import { Button, Card, Flex, Input, Select, Text } from "@mantine/core";
 import { useDebouncedState } from "@mantine/hooks";

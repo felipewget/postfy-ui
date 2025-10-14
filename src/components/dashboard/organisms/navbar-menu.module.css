@@ -1,0 +1,12 @@
+.background {
+  background: linear-gradient(to right, white 50%, #F5F5F5 50%);
+  min-height: 100vh;
+}
+
+.menu {
+  cursor: pointer;
+}
+
+.menu:hover {
+  background: "light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-5))";
+}

@@ -24,7 +24,7 @@ import { useList } from "@/apis/crud.api";
 import { SocialProfile } from "@/declarators";
 import { useState } from "react";
 import { useAddCampaign } from "@/apis/campaign.api";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 
 export const IMAGE_CATEGORY_OPTIONS = [
   { label: "Negócios", value: "business" },

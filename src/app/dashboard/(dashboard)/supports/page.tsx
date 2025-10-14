@@ -5,7 +5,7 @@ import { NoContentBlock } from "@/components/dashboard/molecules/no-content-bloc
 import { ModalAddTicket } from "@/components/dashboard/molecules/ticket/modal-add-ticket";
 import { TicketCard } from "@/components/dashboard/molecules/ticket/ticket-card";
 import { Header } from "@/components/dashboard/organisms/header";
-import { useDashboardContext } from "@/components/dashboard/templates/navbar";
+import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import { Ticket } from "@/declarators";
 import {
