@@ -89,9 +89,9 @@ export default function BrainAI() {
           onChange={setType}
           data={[
             { label: "All", value: "all" },
-            { label: "Documents", value: "documents" },
-            { label: "Links", value: "links" },
-            { label: "Content", value: "contents" },
+            { label: "Documents", value: "document" },
+            { label: "Links", value: "link" },
+            { label: "Content", value: "content" },
           ]}
           radius="md"
           size="sm"

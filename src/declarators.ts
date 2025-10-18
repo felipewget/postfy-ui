@@ -26,7 +26,15 @@ export type Account = {
   useEmoji: boolean;
   toneOfVoice?: string;
   createdAt: string;
+  settings?: AccountSettings;
 };
+
+export type AccountSettings = {
+  id: number;
+  sendAccountDisconnections: "true" | "false";
+  sendPostFailures: "true" | "false";
+  sendWeeklyReport: "true" | "false";
+}
 
 export type Ticket = {
   category: string;

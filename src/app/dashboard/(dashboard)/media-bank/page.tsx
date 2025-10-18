@@ -50,7 +50,7 @@ export default function Medias() {
       }}
       searchPanel={
         <Flex w="100%" gap={15} p={2}>
-          <Flex w="100%" gap={5}>
+          <Flex w="50%" gap={5}>
             <Input
               placeholder="Search"
               leftSection={<IconSearch size="16px" />}

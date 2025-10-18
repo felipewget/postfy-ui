@@ -53,7 +53,7 @@ export default function Home() {
         <Button>Theme</Button>
       </Flex>
 
-      {/* <Stepper children={undefined} active={step} size="xs">
+      <Stepper children={undefined} active={step} size="xs">
         <Stepper.Step label="Profile">
           <Card radius="sm" withBorder={false} w="600px">
             <ProfileForm
@@ -80,9 +80,9 @@ export default function Home() {
             <SocialForm />
           </Card>
         </Stepper.Step>
-      </Stepper> */}
+      </Stepper>
 
-      <NoContentBlock
+      {/* <NoContentBlock
         image="/images/profile-art.svg"
         title="Congratulations!"
         description="Your initial setup for your account is done!"
@@ -96,7 +96,7 @@ export default function Home() {
 
           </Flex>
         }
-      />
+      /> */}
     </Flex>
   );
 }

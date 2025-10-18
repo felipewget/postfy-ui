@@ -5,7 +5,7 @@ import { FC } from "react";
 
 export const CardAccount: FC<{ account: Account }> = ({ account }) => {
   return (
-    <Paper m={10} withBorder={false} p={10} w="100%">
+    <Paper mx={10} withBorder={false} p={10} w="100%">
       <Flex align="center">
         <Flex direction="column" flex={1}>
           <Text size="xs">Account</Text>

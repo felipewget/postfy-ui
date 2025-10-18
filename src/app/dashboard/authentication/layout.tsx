@@ -1,4 +1,3 @@
-"use client";
 
 import ThemeProvider from "@/providers";
 // import { Logo } from '@/ui-kit/ui/site/logo';
@@ -6,6 +5,10 @@ import { Avatar, Box, Card, Divider, Flex, Text } from "@mantine/core";
 // import '@mantine/core/styles.css';
 import Link from "next/link";
 import { FC } from "react";
+
+export const metadata = {
+  title: "Postfy | Authentication",
+};
 
 export default function AuthenticationLayout({
   children,

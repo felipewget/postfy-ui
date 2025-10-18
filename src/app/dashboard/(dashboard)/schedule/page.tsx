@@ -19,6 +19,7 @@ import {
   Select,
   Text,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { IconCalendar, IconClock, IconUsersGroup } from "@tabler/icons-react";
 import moment from "moment";
 import Link from "next/link";
@@ -41,6 +42,9 @@ export default function Schedule() {
 
   const approvedPublications = data?.pages.flat() ?? [];
 
+  const collapsed = useMediaQuery(`(max-width: 1150px)`);
+  const accountButton = useMediaQuery(`(min-width: 700px)`);
+
   return (
     <PageTemplate>
       <Header
@@ -48,12 +52,14 @@ export default function Schedule() {
         title="Publications schedule"
         description="Manage your clients, link them with projects base knowledgment"
         button={
-          <Flex gap={10}>
-            <Link href="/publications/create">
-              <Button size="xs" radius="sm" variant="light">
-                Create publication
-              </Button>
-            </Link>
+          <Flex gap={10} ml={20}>
+            {accountButton && (
+              <Link href="/publications/create">
+                <Button size="xs" radius="sm" variant="light">
+                  Create publication
+                </Button>
+              </Link>
+            )}
 
             <Link href="/campaings">
               <Button size="xs" radius="sm">
@@ -152,54 +158,56 @@ export default function Schedule() {
           </Flex>
         </Card>
 
-        <Card
-          withBorder={false}
-          shadow="none"
-          bg="transparent"
-          p={0}
-          w="300px"
-          style={{
-            minWidth: "300px",
-          }}
-        >
-          <CalendarFilter
-            onChange={(date) =>
-              setDate(date ? moment(date).format("YYYY-MM-DD") : null)
-            }
-          />
+        {!collapsed && (
+          <Card
+            withBorder={false}
+            shadow="none"
+            bg="transparent"
+            p={0}
+            w="300px"
+            style={{
+              minWidth: "300px",
+            }}
+          >
+            <CalendarFilter
+              onChange={(date) =>
+                setDate(date ? moment(date).format("YYYY-MM-DD") : null)
+              }
+            />
 
-          <Card my={20} withBorder={false} shadow="none" radius="sm" p={20}>
-            <Text fw={500}>Connected social profiles</Text>
+            <Card my={20} withBorder={false} shadow="none" radius="sm" p={20}>
+              <Text fw={500}>Connected social profiles</Text>
 
-            <Text size="sm" c="dimmed">
-              No platform connected yet
-            </Text>
+              <Text size="sm" c="dimmed">
+                No platform connected yet
+              </Text>
 
-            <Flex mt={10} w="100%">
-              <Button radius="sm" fullWidth variant="light" size="xs">
-                Manage social profiles
-              </Button>
-            </Flex>
+              <Flex mt={10} w="100%">
+                <Button radius="sm" fullWidth variant="light" size="xs">
+                  Manage social profiles
+                </Button>
+              </Flex>
 
-            <Flex direction="column" gap={10} w="100%">
-              <Divider mt={10} />
+              <Flex direction="column" gap={10} w="100%">
+                <Divider mt={10} />
 
-              {[...Array(3)].map(() => (
-                <Flex gap={10} align="center">
-                  <Image src="#" w={25} h={25} />
+                {[...Array(3)].map(() => (
+                  <Flex gap={10} align="center">
+                    <Image src="#" w={25} h={25} />
 
-                  <Flex direction="column">
-                    <Text fw={500} size="sm">
-                      {"profile.profileTitle"}
-                    </Text>
+                    <Flex direction="column">
+                      <Text fw={500} size="sm">
+                        {"profile.profileTitle"}
+                      </Text>
 
-                    <Text size="xs">{"profile.channel"}</Text>
+                      <Text size="xs">{"profile.channel"}</Text>
+                    </Flex>
                   </Flex>
-                </Flex>
-              ))}
-            </Flex>
+                ))}
+              </Flex>
+            </Card>
           </Card>
-        </Card>
+        )}
       </Flex>
     </PageTemplate>
   );

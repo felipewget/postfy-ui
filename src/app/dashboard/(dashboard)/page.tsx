@@ -1,37 +1,28 @@
 "use client";
 
-import { useListApprovedPublications } from "@/apis/publications.api";
 import { ModalAccounts } from "@/components/dashboard/molecules/account/modal-accounts";
-import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
 import { CardWeekPublication } from "@/components/dashboard/molecules/publication/card-week-publication";
 import { CardWeekStrategy } from "@/components/dashboard/molecules/publication/card-week-strategy";
-import { PublicationScheduleCard } from "@/components/dashboard/molecules/publication/publication-schedule-card";
 import { Header } from "@/components/dashboard/organisms/header";
 import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
-import {
-  Avatar,
-  Button,
-  Card,
-  Flex,
-  Progress,
-  SegmentedControl,
-  Select,
-  Text,
-} from "@mantine/core";
+import { Avatar, Button, Card, Flex, Progress, Text } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   IconCalendar,
   IconCheck,
-  IconHome,
   IconThumbUp,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import moment from "moment";
 import Link from "next/link";
-import { FC, useState } from "react";
-import { date } from "yup";
+import { FC } from "react";
 
 export default function Home() {
+  const collapsed = useMediaQuery(`(max-width: 1000px)`);
+  const accountButton = useMediaQuery(`(min-width: 700px)`);
+
+  const { accounts } = useDashboardContext();
+
   return (
     <PageTemplate>
       <Header
@@ -39,19 +30,24 @@ export default function Home() {
         title="Dashboard"
         description="sdsd sads dsaasdasdadasdadsada dasds adasdsa"
         button={
-          <Flex gap={10}>
+          <Flex gap={10} ml={20}>
             <ModalAccounts>
               <Button
+                radius="sm"
+                size="xs"
                 variant="outline"
-                radius="md"
-                leftSection={<IconUsersGroup />}
+                leftSection={<IconUsersGroup size="16px" />}
               >
-                <Text>5 accounts</Text>
+                <Text>
+                  {accounts.length} {accountButton ? "accounts" : ""}
+                </Text>
               </Button>
             </ModalAccounts>
 
             <Link href="/account/create">
-              <Button radius="md">Add account</Button>
+              <Button radius="sm" size="xs">
+                Add account
+              </Button>
             </Link>
           </Flex>
         }
@@ -119,10 +115,15 @@ export default function Home() {
           {/*  */}
         </Card>
 
-        <Flex gap={10} align="start">
+        <Flex
+          gap={10}
+          align="start"
+          direction={collapsed ? "column-reverse" : "row"}
+        >
           <CardWeekPublication />
 
           <Card
+            w={collapsed ? "100%" : "auto"}
             withBorder={false}
             radius="sm"
             style={{

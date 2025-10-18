@@ -1,23 +1,34 @@
 import { Ticket } from "@/declarators";
-import { Card, Flex, Badge, Text, Divider } from "@mantine/core";
+import { Card, Flex, Badge, Text, Divider, Button } from "@mantine/core";
+import { IconDots } from "@tabler/icons-react";
 import { FC } from "react";
 
 export const TicketCard: FC<{ ticket: Ticket }> = ({ ticket }) => {
   return (
-    <Card p={10}>
+    <Card p={10} radius="sm" bg="light-dark(var(--mantine-color-white), var(--mantine-color-dark-7))">
       <Flex justify="space-between">
-        <Flex direction="column" gap={10}>
-          <Text c="dimmed">{ticket.message}</Text>
+        <Flex direction="column" gap={5}>
+          <Text size="sm" c="dimmed">
+            {ticket.message}
+          </Text>
 
           <Text fw={500} size="sm">
-            {ticket.category} - {ticket.subject}
+            Subject: {ticket.subject}
           </Text>
         </Flex>
 
-        <Flex justify="end" style={{ minWidth: "150px" }}>
+        <Flex justify="end" gap={10} style={{ minWidth: "150px" }}>
+          <Badge radius="sm" size="sm" variant="light">
+            {ticket.category}
+          </Badge>
+
           <Badge radius="sm" size="sm">
             {ticket.status}
           </Badge>
+
+          <Button size="20px" px={5} variant="light" radius="sm">
+            <IconDots size="13px" />
+          </Button>
         </Flex>
       </Flex>
 

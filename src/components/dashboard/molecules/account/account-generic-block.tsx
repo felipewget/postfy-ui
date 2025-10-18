@@ -15,25 +15,15 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconClock, IconFilterFilled } from "@tabler/icons-react";
-import { AxiosError } from "axios";
 import { FC } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 export const AccountGenericBlock: FC<{ account: Account }> = ({ account }) => {
-  const onLoginSuccess = (response: { access_token: string }) => {};
-
-  const onError = ({ response }: AxiosError) => {};
-
   const { mutate: updateRecord, isPending } = useUpdate({
     entity: "accounts",
     recordId: account.id,
   });
-  //   const { mutate: login, isPending } = useCreateSession(
-  //     onLoginSuccess,
-  //     onError
-  //   );
-  // console.log("accountaccount", account.accountName);
 
   const form = useForm<any>({
     resolver: yupResolver(loginSchema),
@@ -43,9 +33,6 @@ export const AccountGenericBlock: FC<{ account: Account }> = ({ account }) => {
   const errors = form.formState.errors;
   const register = form.register;
 
-  console.log("errors", errors);
-
-  //   const onSubmit = (payload: RegisterPayload) => login(payload);
   const onSubmit = (payload: any) => {
     updateRecord(payload);
 
@@ -59,7 +46,7 @@ export const AccountGenericBlock: FC<{ account: Account }> = ({ account }) => {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Card flex={1} withBorder={false}>
+        <Card flex={1} withBorder={false} radius="sm">
           <Flex direction="column" gap={20}>
             <Flex justify="space-between" align="center">
               <Flex align="center" gap={10}>
@@ -186,7 +173,7 @@ export const AccountGenericBlock: FC<{ account: Account }> = ({ account }) => {
             <Divider />
 
             <Flex justify="end">
-              <Button type="submit" loading={isPending}>
+              <Button type="submit" loading={isPending} size="xs" radius="xs">
                 Save changes
               </Button>
             </Flex>

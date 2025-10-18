@@ -14,9 +14,13 @@ import { FC, useState } from "react";
 import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { NoContentBlock } from "../no-content-block";
 import { PublicationScheduleCard } from "./publication-schedule-card";
+import { useMediaQuery } from "@mantine/hooks";
 
 export const CardWeekPublication: FC<{}> = ({}) => {
   const { selectedAccount } = useDashboardContext();
+
+  const collapsed = useMediaQuery(`(max-width: 800px)`);
+
   const weekDays = Array.from({ length: 7 }).map((_, i) => {
     const day = moment()
       .startOf("week")
@@ -43,7 +47,7 @@ export const CardWeekPublication: FC<{}> = ({}) => {
   const approvedPublications = data?.pages.flat() ?? [];
 
   return (
-    <Card flex={1} withBorder={false} radius="sm">
+    <Card flex={1} withBorder={false} radius="sm" w="100%">
       <Flex direction="column" gap={20}>
         <Flex justify="space-between" align="center">
           <Flex align="center" gap={10}>
@@ -57,19 +61,21 @@ export const CardWeekPublication: FC<{}> = ({}) => {
           <Select placeholder="All platforms" data={[]} radius="sm" />
         </Flex>
 
-        <SegmentedControl
-          value={date}
-          onChange={setDate}
-          data={weekDays}
-          radius="md"
-          size="sm"
-          fullWidth={false}
-          styles={(theme) => ({
-            control: {
-              border: "none",
-            },
-          })}
-        />
+        {!collapsed && (
+          <SegmentedControl
+            value={date}
+            onChange={setDate}
+            data={weekDays}
+            radius="md"
+            size="sm"
+            fullWidth={false}
+            styles={(theme) => ({
+              control: {
+                border: "none",
+              },
+            })}
+          />
+        )}
 
         {approvedPublications.map((publication) => (
           <PublicationScheduleCard publication={publication} />

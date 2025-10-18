@@ -2,6 +2,7 @@
 
 import { useList } from "@/apis/crud.api";
 import { NoContentBlock } from "@/components/dashboard/molecules/no-content-block";
+import { SocialProfileCard } from "@/components/dashboard/molecules/social-profile/social-profile-card";
 import { ListTemplate } from "@/components/dashboard/templates/list-template";
 import { BASE_BACKEND_URL } from "@/constants";
 import { SocialProfile } from "@/declarators";
@@ -34,7 +35,7 @@ export default function Campaigns() {
       search,
       searchFields: "profileTitle",
       filters: { channel },
-    }
+    },
   });
 
   const socialProfiles = (data?.pages.flat() ?? []) as SocialProfile[];
@@ -54,7 +55,9 @@ export default function Campaigns() {
               withinPortal
             >
               <Menu.Target>
-                <Button radius="md">Add social profiles</Button>
+                <Button radius="sm" size="xs">
+                  Add social profiles
+                </Button>
               </Menu.Target>
 
               <Menu.Dropdown>
@@ -112,24 +115,7 @@ export default function Campaigns() {
         </Flex>
       }
       cards={socialProfiles.map((profile) => (
-        <Card p={10} w="100%">
-          <Flex gap={10} align="center">
-            <Image
-              src={`https://graph.facebook.com/${profile.profileId}/picture?type=large`}
-              w={50}
-              h={50}
-              radius="sm"
-            />
-
-            <Flex direction="column">
-              <Text size="sm" c="dimmed">
-                {profile.channel}
-              </Text>
-
-              <Text fw={600}>{profile.profileTitle}</Text>
-            </Flex>
-          </Flex>
-        </Card>
+        <SocialProfileCard profile={profile} />
       ))}
       noContentBlock={
         <NoContentBlock

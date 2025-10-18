@@ -1,19 +1,26 @@
 "use client";
 
+import { useGetAccountById } from "@/apis/account.api";
 import { AccountBrainAiBlock } from "@/components/dashboard/molecules/account/account-brain-ai-block";
 import { AccountGenericBlock } from "@/components/dashboard/molecules/account/account-generic-block";
+import { AccountSettingsBlock } from "@/components/dashboard/molecules/account/account-settings-block";
 import { Header } from "@/components/dashboard/organisms/header";
 import { useDashboardContext } from "@/components/dashboard/templates/dashboard.template";
 import { PageTemplate } from "@/components/dashboard/templates/page-template";
 import { Account } from "@/declarators";
-import { Box, Card, Divider, Flex, Select, Switch, Text } from "@mantine/core";
-import { IconClock, IconUsersGroup } from "@tabler/icons-react";
-import { useEffect } from "react";
+import { Flex } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+import { IconUsersGroup } from "@tabler/icons-react";
 
 export default function Settings() {
   const { selectedAccount } = useDashboardContext();
+  const collapsed = useMediaQuery(`(max-width: 1000px)`);
 
-  if (!selectedAccount) {
+  const { data: accountData } = useGetAccountById({
+    accountId: selectedAccount?.id ?? 0,
+  });
+
+  if (!selectedAccount || !accountData) {
     return (
       <PageTemplate>
         <Header
@@ -35,49 +42,22 @@ export default function Settings() {
         description="Manage your clients, link them with projects base knowledgment"
       />
 
-      <Flex my={20} gap={20} align="start">
-        <Flex flex={1} direction="column" gap={10}>
+      <Flex
+        my={20}
+        gap={10}
+        align="start"
+        direction={collapsed ? "column" : "row"}
+        w="100%"
+      >
+        <Flex flex={1} direction="column" gap={10} w="100%">
           <AccountGenericBlock account={selectedAccount as Account} />
 
           <AccountBrainAiBlock account={selectedAccount as Account} />
         </Flex>
 
-        <Card
-          withBorder={false}
-          p={0}
-          w="450px"
-          style={{
-            minWidth: "300px",
-          }}
-        >
-          <Flex justify="space-between" align="center">
-            <Flex align="center" p={20} gap={10}>
-              <IconClock />
-
-              <Text>Behaviours</Text>
-            </Flex>
-          </Flex>
-
-          <Divider mx={10} />
-
-          <Flex direction="column" p={10} gap={10}>
-            {[...Array(5)].map(() => (
-              <Card withBorder={false}>
-                <Flex justify="space-between" align="center">
-                  <Flex direction="column">
-                    <Text size="sm">General email notificatins</Text>
-
-                    <Text size="lg">Promotions aoidhaoidjaiod</Text>
-                  </Flex>
-
-                  <Box>
-                    <Switch />
-                  </Box>
-                </Flex>
-              </Card>
-            ))}
-          </Flex>
-        </Card>
+        <Flex w={collapsed ? "100%" : "350px"}>
+          <AccountSettingsBlock account={accountData} />
+        </Flex>
       </Flex>
     </PageTemplate>
   );

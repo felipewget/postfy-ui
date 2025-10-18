@@ -18,6 +18,10 @@ import { ModalAccounts } from "../molecules/account/modal-accounts";
 import { ToggleThemeSwitch } from "../atoms/toggle-theme-switch";
 import { CardAccount } from "../molecules/account/card-account";
 import { NavbarMenu } from "../organisms/navbar-menu";
+import { modals } from "@mantine/modals";
+import { deleteCookie } from "@/utils";
+import { WEBSITE_URL } from "@/constants";
+import { notifications } from "@mantine/notifications";
 
 type DashboardContextType = {
   accounts: Account[];
@@ -139,7 +143,7 @@ export const Dashboard = ({
                 <Flex align="center">
                   <ToggleThemeSwitch />
 
-                  <Flex mx={10}>
+                  <Flex mx={10} onClick={openConfirm}>
                     <IconLogout size={20} />
                   </Flex>
                 </Flex>
@@ -148,6 +152,7 @@ export const Dashboard = ({
           )}
 
           <Flex
+            pb={collapsed ? 40 : 0}
             justify="center"
             ml={collapsed ? 0 : 210}
             style={{
@@ -162,3 +167,18 @@ export const Dashboard = ({
     </DashboardContext.Provider>
   );
 };
+
+const openConfirm = () => {
+    modals.openConfirmModal({
+      title: 'Confirmar saída',
+      children: 'Tem certeza que deseja sair?',
+      labels: { confirm: 'Logout', cancel: 'Cancel' },
+      onConfirm: () => {
+        deleteCookie("access_token");
+
+        window.location.href = WEBSITE_URL;
+
+        notifications.show({ title: "Logout", message: "You've logged with success!" });
+      },
+    });
+  };

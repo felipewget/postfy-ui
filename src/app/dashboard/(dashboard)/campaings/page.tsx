@@ -41,9 +41,11 @@ export default function Campaigns() {
         title: "Campaigns",
         description: "Manage your clients, link them with projects",
         button: (
-          <Button radius="sm" size="xs">
-            Create project
-          </Button>
+          <Link href="/campaings/create">
+            <Button radius="sm" size="xs">
+              Create campaign
+            </Button>
+          </Link>
         ),
       }}
       searchPanel={

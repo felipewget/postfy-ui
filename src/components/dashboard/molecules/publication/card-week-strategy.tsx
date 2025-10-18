@@ -3,12 +3,14 @@ import { useDashboardContext } from "@/components/dashboard/templates/dashboard.
 import { Avatar, Card, Flex, Text } from "@mantine/core";
 import { IconCalendar, IconThumbUp } from "@tabler/icons-react";
 import { useListCampaign } from "@/apis/campaign.api";
-import { Campaign } from "@/declarators";
 import { NoContentBlock } from "../no-content-block";
 import { groupBy } from "lodash";
+import { useMediaQuery } from "@mantine/hooks";
 
 export const CardWeekStrategy: FC<{}> = ({}) => {
   const { selectedAccount } = useDashboardContext();
+
+  const collapsed = useMediaQuery(`(max-width: 800px)`);
 
   const { data } = useListCampaign({
     accountId: selectedAccount?.id ?? 0,
@@ -42,23 +44,23 @@ export const CardWeekStrategy: FC<{}> = ({}) => {
   }, [campaigns]);
 
   const publicationChannels = useMemo(() => {
-    if(!campaigns){
-        return [];
+    if (!campaigns) {
+      return [];
     }
 
     let response = [];
 
-    campaigns?.forEach(campaign => {
-        const profiles = campaign.profiles.map((profile) => profile.channel);
+    campaigns?.forEach((campaign) => {
+      const profiles = campaign.profiles.map((profile) => profile.channel);
 
-        response.push(profiles);
-    })
-    
+      response.push(profiles);
+    });
+
     return response.flat();
   }, [campaigns]);
 
-  const groupedChannels = groupBy(publicationChannels, value => value);
-  console.log('campaignscampaigns', groupedChannels)
+  const groupedChannels = groupBy(publicationChannels, (value) => value);
+  console.log("campaignscampaigns", groupedChannels);
 
   if (groupedCampaigns["monday"] === undefined) return null;
 
@@ -75,20 +77,31 @@ export const CardWeekStrategy: FC<{}> = ({}) => {
           </Flex>
         </Flex>
 
-        <Flex align="start">
-          <Flex direction="column" gap={10} my={20} w="170px">
+        <Flex align="start" direction={collapsed ? "column" : "row"}>
+          <Flex
+            direction={collapsed ? "row" : "column"}
+            gap={10}
+            my={20}
+            w={collapsed ? "100%" : "170px"}
+          >
             <RowKpi label="Active campaigns" value={campaigns?.length ?? "-"} />
 
-            <RowKpi label="Total publications" value={publicationChannels?.length ?? '-'} />
+            <RowKpi
+              label="Total publications"
+              value={publicationChannels?.length ?? "-"}
+            />
 
-            <RowKpi label="Active channels" value={Object.keys(groupedChannels ?? {})?.length ?? '-'} />
+            <RowKpi
+              label="Active channels"
+              value={Object.keys(groupedChannels ?? {})?.length ?? "-"}
+            />
           </Flex>
 
           <Flex
             flex={1}
             gap={10}
             w="100%"
-            ml={20}
+            ml={collapsed ? 0 : 20}
             align="start"
             pb={10}
             style={{
@@ -153,7 +166,7 @@ const CardContent = () => (
 );
 
 const RowKpi: FC<{ label: string; value: string }> = ({ label, value }) => (
-  <Flex justify="space-between" align="start">
+  <Flex justify="space-between" align="start" flex={1}>
     <Flex direction="column">
       <Text size="sm" fw={700}>
         {label}

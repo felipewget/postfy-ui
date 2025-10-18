@@ -46,11 +46,13 @@ export const ModalAccounts: FC<ModalAccounts> = ({ children }) => {
           },
         }}
       >
+        <Flex direction="column" gap={10}>
         {accounts.map((account) => (
           <Flex onClick={() => selectAccount(account.id)}>
             <CardAccount account={account} />
           </Flex>
         ))}
+        </Flex>
       </Modal>
     </Box>
   );

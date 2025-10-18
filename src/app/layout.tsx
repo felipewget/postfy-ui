@@ -12,6 +12,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en"  {...mantineHtmlProps} >
+      <head>
+         <link rel="icon" href="/favicon.png" type="image/png" />
+      </head>
       <body>
         <QueryClientProvider>
           {children}

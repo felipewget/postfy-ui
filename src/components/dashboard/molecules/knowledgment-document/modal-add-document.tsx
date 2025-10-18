@@ -7,6 +7,7 @@ import {
   Textarea,
   Button,
   FileInput,
+  Text,
 } from "@mantine/core";
 import { IconFile, IconPdf, IconUpload } from "@tabler/icons-react";
 import * as yup from "yup";
@@ -20,6 +21,7 @@ import {
   useAddDocumentByLink,
 } from "@/apis/knowledgement-document.api";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
 
 type AddDocuments = {
   element: ReactNode;
@@ -35,38 +37,72 @@ export const ModalAddDocuments: FC<AddDocuments> = ({ element, ...props }) => {
     <>
       <Flex onClick={open}>{element}</Flex>
 
-      <Modal size="lg" opened={opened} title="Add content" onClose={close}>
+      <Modal
+        size="lg"
+        opened={opened}
+        title={
+          <Text size="sm" fw={600}>
+            Add content
+          </Text>
+        }
+        onClose={close}
+        styles={{
+          header: {
+            backgroundColor:
+              "light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))",
+          },
+          content: {
+            paddingTop: "0px",
+            paddingBottom: "0px",
+            paddingLeft: "0px",
+            paddingRight: "0px",
+            backgroundColor:
+              "light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-8))",
+            border: "none",
+          },
+        }}
+      >
         <SegmentedControl
           w="100%"
+          bg="light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-7))"
           onChange={(v) => setTab(v as any)}
-          data={[
-            { label: "File", value: "file" },
-            { label: "Link", value: "link" },
-            { label: "Direct content", value: "content" },
-          ]}
+          data={TAB_OPTIONS}
           radius="md"
           size="sm"
           fullWidth={false}
-          styles={(theme) => ({
+          styles={() => ({
             control: {
-              border: "none", // remove a divisória entre os itens
+              border: "none",
             },
           })}
         />
 
-        {tab === "file" && <FormDocument {...props} />}
-        {tab === "link" && <FormLink {...props} />}
-        {tab === "content" && <FormContent {...props} />}
+        {tab === "file" && <FormDocument {...props} close={close} />}
+        {tab === "link" && <FormLink {...props} close={close} />}
+        {tab === "content" && <FormContent {...props} close={close} />}
       </Modal>
     </>
   );
 };
 
-export const FormContent: FC<AddDocuments> = ({ accountId, sourceType }) => {
-  const { mutate: addKnowledgmentDocument } = useAddDocumentByContent({
-    accountId,
-    sourceType,
-  });
+export const FormContent: FC<any> = ({ accountId, sourceType, close }) => {
+  const onSuccess = () => {
+    // queryClient.invalidateQueries({ queryKey: ["crud-list-tasks"] });
+    notifications.show({
+      title: "Document processed with success",
+      message: "Document processed with success",
+    });
+
+    close();
+  };
+
+  const { mutate: addKnowledgmentDocument } = useAddDocumentByContent(
+    {
+      accountId,
+      sourceType,
+    },
+    onSuccess
+  );
 
   const {
     register,
@@ -81,11 +117,11 @@ export const FormContent: FC<AddDocuments> = ({ accountId, sourceType }) => {
   return (
     <Flex direction="column">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card my={20}>
+        <Card my={20} withBorder={false}>
           <Flex direction="column" gap={10}>
             <Input.Wrapper
               flex={1}
-              label="title"
+              label="Title"
               {...register("title")}
               error={errors?.title?.message as string}
             >
@@ -93,6 +129,8 @@ export const FormContent: FC<AddDocuments> = ({ accountId, sourceType }) => {
             </Input.Wrapper>
 
             <Textarea
+              label="Content"
+              autosize
               placeholder="Content"
               minRows={6}
               error={errors.content?.message}
@@ -102,11 +140,11 @@ export const FormContent: FC<AddDocuments> = ({ accountId, sourceType }) => {
         </Card>
 
         <Flex gap={10} justify="end">
-          <Button radius="md" variant="light">
+          <Button size="xs" radius="sm" variant="light">
             Cancel
           </Button>
 
-          <Button radius="md" type="submit">
+          <Button size="xs" radius="sm" type="submit">
             Add content
           </Button>
         </Flex>
@@ -115,11 +153,21 @@ export const FormContent: FC<AddDocuments> = ({ accountId, sourceType }) => {
   );
 };
 
-export const FormLink: FC<AddDocuments> = ({ accountId, sourceType }) => {
+export const FormLink: FC<any> = ({ accountId, sourceType, close }) => {
+  const onSuccess = () => {
+    // queryClient.invalidateQueries({ queryKey: ["crud-list-tasks"] });
+    notifications.show({
+      title: "Document processed with success",
+      message: "Document processed with success",
+    });
+
+    close();
+  };
+
   const { mutate: addKnowledgmentLink } = useAddDocumentByLink({
     accountId,
     sourceType,
-  });
+  }, onSuccess);
 
   const {
     register,
@@ -134,7 +182,7 @@ export const FormLink: FC<AddDocuments> = ({ accountId, sourceType }) => {
   return (
     <Flex direction="column">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card my={20}>
+        <Card my={20} withBorder={false}>
           <Flex direction="column" gap={10}>
             <Input.Wrapper flex={1} label="Link" error={errors.link?.message}>
               <Input
@@ -147,11 +195,11 @@ export const FormLink: FC<AddDocuments> = ({ accountId, sourceType }) => {
         </Card>
 
         <Flex gap={10} justify="end">
-          <Button radius="md" variant="light">
+          <Button size="xs" radius="sm" variant="light">
             Cancel
           </Button>
 
-          <Button radius="md" type="submit">
+          <Button size="xs" radius="sm" type="submit">
             Add link
           </Button>
         </Flex>
@@ -160,11 +208,21 @@ export const FormLink: FC<AddDocuments> = ({ accountId, sourceType }) => {
   );
 };
 
-export const FormDocument: FC<AddDocuments> = ({ accountId, sourceType }) => {
+export const FormDocument: FC<any> = ({ accountId, sourceType, close }) => {
+  const onSuccess = () => {
+    // queryClient.invalidateQueries({ queryKey: ["crud-list-tasks"] });
+    notifications.show({
+      title: "Document processed with success",
+      message: "Document processed with success",
+    });
+
+    close();
+  };
+  
   const { mutate: addKnowledgmentDocument } = useAddDocumentByDocument({
     accountId,
     sourceType,
-  });
+  }, onSuccess);
 
   const {
     register,
@@ -180,7 +238,7 @@ export const FormDocument: FC<AddDocuments> = ({ accountId, sourceType }) => {
   return (
     <Flex direction="column">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card my={20}>
+        <Card my={20} withBorder={false}>
           <Flex direction="column" gap={10}>
             <FileInput
               flex={1}
@@ -204,11 +262,11 @@ export const FormDocument: FC<AddDocuments> = ({ accountId, sourceType }) => {
         </Card>
 
         <Flex gap={10} justify="end">
-          <Button radius="md" variant="light">
+          <Button size="xs" radius="sm" variant="light">
             Cancel
           </Button>
 
-          <Button radius="md" type="submit">
+          <Button size="xs" radius="sm" type="submit">
             Add document
           </Button>
         </Flex>
@@ -241,3 +299,9 @@ const documentSchema = yup.object({
       return allowedTypes.includes(value.type);
     }),
 });
+
+const TAB_OPTIONS = [
+  { label: "File", value: "file" },
+  { label: "Link", value: "link" },
+  { label: "Direct content", value: "content" },
+];
